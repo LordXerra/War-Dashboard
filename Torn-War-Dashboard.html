@@ -362,6 +362,145 @@
                 padding: 8px;
             }
         }
+
+        /* Tab Styles */
+        .tabs-container {
+            margin-bottom: 20px;
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 0;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .tab-button {
+            padding: 12px 24px;
+            background: #f8f9fa;
+            border: none;
+            border-radius: 8px 8px 0 0;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            color: #666;
+            transition: all 0.3s;
+            margin-right: 4px;
+        }
+
+        .tab-button:hover {
+            background: #e9ecef;
+            color: #333;
+        }
+
+        .tab-button.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* War Portal specific styles */
+        .war-portal-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .member-card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            border-left: 4px solid #667eea;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .member-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .member-card.online {
+            border-left-color: #28a745;
+        }
+
+        .member-card.idle {
+            border-left-color: #ffc107;
+        }
+
+        .member-card.offline {
+            border-left-color: #dc3545;
+        }
+
+        .member-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .member-card-name {
+            font-weight: 600;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .member-card-name a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .member-card-name a:hover {
+            text-decoration: underline;
+        }
+
+        .member-card-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .member-card-detail {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .member-card-detail span:first-child {
+            color: #999;
+        }
+
+        .member-card-detail span:last-child {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .war-portal-filters {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .war-portal-filters input,
+        .war-portal-filters select {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .war-portal-filters input {
+            flex: 1;
+            min-width: 200px;
+        }
     </style>
 </head>
 <body>
@@ -633,7 +772,7 @@
                         </div>
                         <div class="info-item">
                             <label>Leader</label>
-                            <value>${factionData.leader ? `<a href="https://www.torn.com/profiles.php?XID=${factionData.leader}" target="_blank" style="color: #667eea; text-decoration: none;">${factionData.leader_name || 'N/A'}</a>` : 'N/A'}</value>
+                            <value>${factionData.leader ? `<a href="https://www.torn.com/profiles.php?XID=${factionData.leader}" target="_blank" style="color: #667eea; text-decoration: none;">${getLeaderName()}</a>` : 'N/A'}</value>
                         </div>
                     </div>
                 </div>
@@ -661,29 +800,51 @@
                         </div>
                     </div>
 
-                    <div class="filters">
-                        <input type="text" id="searchInput" placeholder="Search members..." onkeyup="filterMembers()">
-                        <select id="statusFilter" onchange="filterMembers()">
-                            <option value="">All Status</option>
-                            <option value="Online">Online</option>
-                            <option value="Idle">Idle</option>
-                            <option value="Offline">Offline</option>
-                        </select>
-                        <select id="locationFilter" onchange="filterMembers()">
-                            <option value="">All Locations</option>
-                            ${getUniqueLocations().map(loc => `<option value="${loc.toLowerCase()}">${loc}</option>`).join('')}
-                        </select>
-                        <select id="positionFilter" onchange="filterMembers()">
-                            <option value="">All Positions</option>
-                            ${getUniquePositions().map(pos => `<option value="${pos}">${pos}</option>`).join('')}
-                        </select>
-                    </div>
+                    <div class="tabs-container">
+                        <div class="tab-buttons">
+                            <button class="tab-button active" onclick="switchTab('war-planning')">War Planning</button>
+                            <button class="tab-button" onclick="switchTab('war-portal')">War Portal</button>
+                        </div>
 
-                    <div id="membersTableContainer"></div>
+                        <div id="war-planning" class="tab-content active">
+                            <div class="filters">
+                                <input type="text" id="searchInput" placeholder="Search members..." onkeyup="filterMembers()">
+                                <select id="statusFilter" onchange="filterMembers()">
+                                    <option value="">All Status</option>
+                                    <option value="Online">Online</option>
+                                    <option value="Idle">Idle</option>
+                                    <option value="Offline">Offline</option>
+                                </select>
+                                <select id="locationFilter" onchange="filterMembers()">
+                                    <option value="">All Locations</option>
+                                    ${getUniqueLocations().map(loc => `<option value="${loc.toLowerCase()}">${loc}</option>`).join('')}
+                                </select>
+                                <select id="positionFilter" onchange="filterMembers()">
+                                    <option value="">All Positions</option>
+                                    ${getUniquePositions().map(pos => `<option value="${pos}">${pos}</option>`).join('')}
+                                </select>
+                            </div>
+                            <div id="membersTableContainer"></div>
+                        </div>
+
+                        <div id="war-portal" class="tab-content">
+                            <div class="war-portal-filters">
+                                <input type="text" id="portalSearchInput" placeholder="Search members..." onkeyup="filterPortalMembers()">
+                                <select id="portalStatusFilter" onchange="filterPortalMembers()">
+                                    <option value="">All Status</option>
+                                    <option value="Online">Online</option>
+                                    <option value="Idle">Idle</option>
+                                    <option value="Offline">Offline</option>
+                                </select>
+                            </div>
+                            <div id="warPortalContainer"></div>
+                        </div>
+                    </div>
                 </div>
             `;
 
             renderMembersTable(membersData);
+            renderWarPortal(membersData);
         }
 
         function getUniquePositions() {
@@ -966,6 +1127,98 @@
         function formatTime(date) {
             if (!date) return 'Never';
             return date.toLocaleTimeString();
+        }
+
+        function getLeaderName() {
+            if (!factionData || !factionData.leader) return 'N/A';
+            // Look up leader name from members data
+            if (factionData.members && factionData.members[factionData.leader]) {
+                return factionData.members[factionData.leader].name;
+            }
+            // Fallback: check membersData array
+            const leaderMember = membersData.find(m => m.id == factionData.leader);
+            if (leaderMember) {
+                return leaderMember.name;
+            }
+            return 'N/A';
+        }
+
+        function switchTab(tabId) {
+            // Update tab buttons
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Update tab content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        function renderWarPortal(members) {
+            const container = document.getElementById('warPortalContainer');
+            if (!container) return;
+
+            container.innerHTML = `
+                <div class="war-portal-grid">
+                    ${members.map(member => {
+                        const statusClass = member.last_action.status === 'Online' ? 'online' :
+                                          member.last_action.status === 'Idle' ? 'idle' : 'offline';
+
+                        const stats = member.details.personalstats || {};
+                        const profile = member.details || member;
+
+                        const life = profile.life ? `${profile.life.current}/${profile.life.maximum}` : 'N/A';
+                        const userStatus = profile.status || {};
+                        let locationText = userStatus.description || userStatus.state || 'Unknown';
+
+                        return `
+                            <div class="member-card ${statusClass}">
+                                <div class="member-card-header">
+                                    <div class="member-card-name">
+                                        <span class="status-indicator ${statusClass}"></span>
+                                        <a href="https://www.torn.com/profiles.php?XID=${member.id}" target="_blank">${member.name}</a>
+                                    </div>
+                                    <span class="level-badge">Lv ${member.level || 'N/A'}</span>
+                                </div>
+                                <div class="member-card-details">
+                                    <div class="member-card-detail">
+                                        <span>Position</span>
+                                        <span>${member.position || 'N/A'}</span>
+                                    </div>
+                                    <div class="member-card-detail">
+                                        <span>Life</span>
+                                        <span>${life}</span>
+                                    </div>
+                                    <div class="member-card-detail">
+                                        <span>Status</span>
+                                        <span>${member.last_action.status}</span>
+                                    </div>
+                                    <div class="member-card-detail">
+                                        <span>Location</span>
+                                        <span>${locationText}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+        }
+
+        function filterPortalMembers() {
+            const searchTerm = document.getElementById('portalSearchInput').value.toLowerCase();
+            const statusFilter = document.getElementById('portalStatusFilter').value;
+
+            let filtered = membersData.filter(member => {
+                const matchesSearch = member.name.toLowerCase().includes(searchTerm);
+                const matchesStatus = !statusFilter || member.last_action.status === statusFilter;
+                return matchesSearch && matchesStatus;
+            });
+
+            renderWarPortal(filtered);
         }
     </script>
 </body>

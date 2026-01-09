@@ -1,0 +1,87 @@
+
+Pre War
+ 
+
+1.       I need to know where I can find the Enemy Faction ID. I know where I can find our faction ID but not sure how to find an enemies ID
+
+2.       The report contains everything I use from Pick/Ethan report so that is really useful.
+
+ 
+
+3.       It doesn’t include what I put on my spreadsheet – Battle stat Range, Spy Results and activity times
+
+ 
+
+Wish List = Not sure if any of this is possible
+
+          Auto Calculate Battle stat range and display it. – This is taken from Rank Medal & Level shown on a person’s home screen and Total number of Crimes and Total Networth from Personal Stats. If you can extract them I can give you the formula that will give you the Battle Stat ranges
+      I  Import and display of spies. – This is the format I get spies in (or could pull them from Torn stats where I load them into)
+ 
+
+Name: Havean [2093859]
+
+Level 100
+
+Strength: 908,923,932
+
+Defense: 1,099,030,319
+
+Speed: 1,000,274,719
+
+Dexterity: 505,197,009
+
+Total: 3,513,425,979
+
+ 
+
+3.       Record when enemy individual is active/idle/offline – Show active times
+
+ 
+
+Issues with current board
+
+ 
+
+           Slightly too wide but it looks like you have done something here already, however if extra data is included this won’t show fully on screen. Pre war we could lose Location and change titles to things like OD (rather than Overdose) to reduce current column width
+.         The green/red dots to show active/offline I can’t tell the difference without really closely looking. Is it possible to make the green brighter (fluorescent) and the red darker?
+ 
+
+Will starting doing the “During War” thoughts next but thought I would send these to you first.
+
+
+
+
+
+
+
+From the pre war report I split the enemy into 4 groups (Easy Kill, Should win but not low health, Could win might need help, leave alone unless group attack)
+
+ 
+
+For war I need a much more focused report. I don’t care how many Xanax taken, ELO Rating etc.
+
+ 
+
+I need the following
+
+ 
+
+Activity – red/yellow/green
+
+Location
+
+Hospital Timer – This is key (might show in Location I’m not sure)
+
+Battle stats/range is a nice to have but not essential to me
+
+Life is useful if it doesn’t take up too much space
+
+ 
+
+Preferably this would have both us and them on the same screen but I could live with it being on 2 screens (open up the report twice and populate one with us and the 2nd screen with them and toggle between the two) I have just checked and I can open the report twice (although both have our faction details in because I don’t know how to get enemy ID) but will both auto update?
+
+ 
+
+Final thought perhaps for the pre war report. A nice to have would be if it highlighted the time/date when the Xanax taken increases and does the same if/when the OD increases. Would give us a good indication for OD’s and who may be on Xanax CD.
+
+ 
