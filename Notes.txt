@@ -3,13 +3,13 @@ Pre War
  
 
 1.       I need to know where I can find the Enemy Faction ID. I know where I can find our faction ID but not sure how to find an enemies ID
-
+	
 2.       The report contains everything I use from Pick/Ethan report so that is really useful.
 
  
 
 3.       It doesn’t include what I put on my spreadsheet – Battle stat Range, Spy Results and activity times
-
+		Activity times are tricky. Best I can do is current status and mark the last hour they were online previously.
  
 
 Wish List = Not sure if any of this is possible

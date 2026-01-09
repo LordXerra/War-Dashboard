@@ -19,7 +19,7 @@
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1800px;
             margin: 0 auto;
         }
 
@@ -501,6 +501,80 @@
             flex: 1;
             min-width: 200px;
         }
+
+        /* Hourly Activity Grid Styles */
+        .activity-grid {
+            display: flex;
+            gap: 1px;
+            margin-top: 4px;
+        }
+
+        .hour-box {
+            width: 24px;
+            height: 16px;
+            border-radius: 2px;
+            font-size: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .hour-box.online {
+            background-color: #28a745;
+        }
+
+        .hour-box.partial {
+            background-color: #ffc107;
+        }
+
+        .hour-box.offline {
+            background-color: #dc3545;
+        }
+
+        .hour-box.unknown {
+            background-color: #6c757d;
+        }
+
+        .hour-box:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            white-space: nowrap;
+            z-index: 100;
+            margin-bottom: 4px;
+        }
+
+        .member-name-cell {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .member-name-row {
+            display: flex;
+            align-items: center;
+        }
+
+        /* Estimated Stats Column */
+        .est-stats {
+            font-size: 11px;
+            color: #666;
+        }
+
+        .est-stats-value {
+            font-weight: 600;
+            color: #667eea;
+        }
     </style>
 </head>
 <body>
@@ -512,13 +586,16 @@
                     type="text"
                     id="apiKey"
                     placeholder="Enter your Torn API Key"
-                    value="">
+                    value=""
+                    onkeypress="handleEnterKey(event)">
                 <input
                     type="text"
                     id="factionId"
                     placeholder="Faction ID (optional - leave empty for your faction)"
-                    value="">
+                    value=""
+                    onkeypress="handleEnterKey(event)">
                 <button class="btn" id="loadBtn" onclick="loadFactionData()">Load Faction Data</button>
+                <button class="btn" id="findEnemyBtn" onclick="findEnemy()" style="background: #dc3545;">Find Enemy</button>
             </div>
             <div class="info-text">
                 Your API key is stored locally in your browser and never sent anywhere except to Torn's official API.
@@ -544,8 +621,278 @@
         let refreshInterval = null;
         let lastRefreshTime = null;
 
+        // Activity history: stores status for each member per hour
+        // Format: { memberId: { hour: { online: count, total: count } } }
+        let activityHistory = {};
+
+        // Load activity history from localStorage
+        function loadActivityHistory() {
+            const saved = localStorage.getItem('tornActivityHistory');
+            if (saved) {
+                try {
+                    activityHistory = JSON.parse(saved);
+                    // Clean old data (older than 24 hours)
+                    cleanOldActivityData();
+                } catch (e) {
+                    activityHistory = {};
+                }
+            }
+        }
+
+        // Save activity history to localStorage
+        function saveActivityHistory() {
+            localStorage.setItem('tornActivityHistory', JSON.stringify(activityHistory));
+        }
+
+        // Clean data older than 24 hours
+        function cleanOldActivityData() {
+            const now = new Date();
+            const today = now.toISOString().split('T')[0];
+            const yesterday = new Date(now - 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+
+            for (const memberId in activityHistory) {
+                for (const hourKey in activityHistory[memberId]) {
+                    if (!hourKey.startsWith(today) && !hourKey.startsWith(yesterday)) {
+                        delete activityHistory[memberId][hourKey];
+                    }
+                }
+            }
+        }
+
+        // Infer historical activity from last_action.timestamp
+        // This marks the hour of their last known activity as online
+        function inferHistoricalActivity(member) {
+            if (!member.last_action || !member.last_action.timestamp) return;
+
+            const lastActionTime = new Date(member.last_action.timestamp * 1000);
+            const now = new Date();
+            const hoursDiff = Math.floor((now - lastActionTime) / (60 * 60 * 1000));
+
+            // Only infer for last 24 hours
+            if (hoursDiff > 24) return;
+
+            if (!activityHistory[member.id]) {
+                activityHistory[member.id] = {};
+            }
+
+            // Mark the hour of last activity as online (if we don't already have data for it)
+            const lastActionHourKey = lastActionTime.toISOString().split('T')[0] + '-' + lastActionTime.getHours().toString().padStart(2, '0');
+
+            if (!activityHistory[member.id][lastActionHourKey]) {
+                activityHistory[member.id][lastActionHourKey] = { online: 1, idle: 0, total: 1 };
+            }
+
+            // If they were active recently (within last hour), they were likely online for recent hours too
+            // Mark hours between last action and now as partially known
+            if (hoursDiff <= 1 && (member.last_action.status === 'Online' || member.last_action.status === 'Idle')) {
+                const currentHourKey = now.toISOString().split('T')[0] + '-' + now.getHours().toString().padStart(2, '0');
+                if (!activityHistory[member.id][currentHourKey]) {
+                    if (member.last_action.status === 'Online') {
+                        activityHistory[member.id][currentHourKey] = { online: 1, idle: 0, total: 1 };
+                    } else {
+                        activityHistory[member.id][currentHourKey] = { online: 0, idle: 1, total: 1 };
+                    }
+                }
+            }
+        }
+
+        // Record current status for all members
+        function recordActivityStatus() {
+            const now = new Date();
+            const hourKey = now.toISOString().split('T')[0] + '-' + now.getHours().toString().padStart(2, '0');
+
+            membersData.forEach(member => {
+                // First, infer any historical data from their last_action timestamp
+                inferHistoricalActivity(member);
+
+                if (!activityHistory[member.id]) {
+                    activityHistory[member.id] = {};
+                }
+                if (!activityHistory[member.id][hourKey]) {
+                    activityHistory[member.id][hourKey] = { online: 0, idle: 0, total: 0 };
+                }
+
+                activityHistory[member.id][hourKey].total++;
+                if (member.last_action.status === 'Online') {
+                    activityHistory[member.id][hourKey].online++;
+                } else if (member.last_action.status === 'Idle') {
+                    activityHistory[member.id][hourKey].idle++;
+                }
+            });
+
+            saveActivityHistory();
+        }
+
+        // Get activity status for an hour (returns 'online', 'partial', 'offline', or 'unknown')
+        function getHourStatus(memberId, hourKey) {
+            if (!activityHistory[memberId] || !activityHistory[memberId][hourKey]) {
+                return 'unknown';
+            }
+
+            const data = activityHistory[memberId][hourKey];
+            if (data.total === 0) return 'unknown';
+
+            const onlineRatio = (data.online + data.idle * 0.5) / data.total;
+
+            if (onlineRatio >= 0.8) return 'online';
+            if (onlineRatio >= 0.2) return 'partial';
+            return 'offline';
+        }
+
+        // Generate 24-hour activity grid HTML
+        function generateActivityGrid(memberId) {
+            const now = new Date();
+            const hours = [];
+
+            // Generate last 24 hours
+            for (let i = 23; i >= 0; i--) {
+                const hourDate = new Date(now - i * 60 * 60 * 1000);
+                const hourKey = hourDate.toISOString().split('T')[0] + '-' + hourDate.getHours().toString().padStart(2, '0');
+                const hourLabel = hourDate.getHours().toString().padStart(2, '0') + ':00';
+                const status = getHourStatus(memberId, hourKey);
+
+                hours.push(`<div class="hour-box ${status}" data-tooltip="${hourLabel}" title="${hourLabel}">${hourDate.getHours()}</div>`);
+            }
+
+            return `<div class="activity-grid">${hours.join('')}</div>`;
+        }
+
+        // Estimate battle stats based on publicly available data
+        // Formula based on community research: xanax is a strong indicator
+        // ~1 billion total stats per 1000 xanax for established players
+        function estimateBattleStats(member) {
+            const stats = member.details.personalstats || {};
+            const profile = member.details || {};
+
+            const level = member.level || 1;
+            const age = profile.age || 1;
+            const xanax = stats.xantaken || 0;
+            const refills = stats.energydrinkused || stats.refills || 0;
+            const attacks = (stats.attackswon || 0) + (stats.attackslost || 0);
+
+            // Base estimation using multiple factors
+            let estimate = 0;
+
+            // Primary factor: Xanax (most reliable indicator)
+            // ~1 billion stats per 1000 xanax for active trainers
+            if (xanax > 0) {
+                estimate = xanax * 1000000; // 1M per xanax as baseline
+            }
+
+            // Secondary factors for adjustment
+            const levelFactor = 1 + (level / 100); // Level adds up to ~2x multiplier at level 100
+            const ageFactor = 1 + Math.min(age / 3650, 1); // Age adds up to 2x over 10 years
+
+            // If no xanax data, use level/age based estimation
+            if (estimate === 0) {
+                const baseStat = 1500000;
+                estimate = baseStat * levelFactor * ageFactor;
+            } else {
+                // Apply modifiers
+                estimate = estimate * (levelFactor * 0.3 + 0.7) * (ageFactor * 0.3 + 0.7);
+            }
+
+            // Refills boost (energy refills indicate active player)
+            if (refills > 0) {
+                estimate *= 1 + Math.min(refills / 5000, 0.5);
+            }
+
+            return {
+                low: Math.round(estimate * 0.7),
+                mid: Math.round(estimate),
+                high: Math.round(estimate * 1.3)
+            };
+        }
+
+        // Format large numbers
+        function formatStatNumber(num) {
+            if (num >= 1e12) return (num / 1e12).toFixed(1) + 'T';
+            if (num >= 1e9) return (num / 1e9).toFixed(1) + 'B';
+            if (num >= 1e6) return (num / 1e6).toFixed(1) + 'M';
+            if (num >= 1e3) return (num / 1e3).toFixed(1) + 'K';
+            return num.toString();
+        }
+
+        // Handle Enter key press on input fields
+        function handleEnterKey(event) {
+            if (event.key === 'Enter') {
+                loadFactionData();
+            }
+        }
+
+        // Find and load enemy faction from current ranked war
+        async function findEnemy() {
+            const apiKey = document.getElementById('apiKey').value.trim();
+
+            if (!apiKey) {
+                showError('Please enter your API key first');
+                return;
+            }
+
+            showLoading();
+
+            try {
+                // First, get the user's faction ID
+                const userResponse = await fetch(`https://api.torn.com/user?selections=basic&key=${apiKey}`);
+                const userData = await userResponse.json();
+
+                if (userData.error) {
+                    throw new Error(userData.error.error);
+                }
+
+                const myFactionId = userData.faction.faction_id;
+
+                if (!myFactionId) {
+                    throw new Error('You are not in a faction');
+                }
+
+                // Get faction's ranked war info
+                const factionResponse = await fetch(`https://api.torn.com/faction/${myFactionId}?selections=rankedwars&key=${apiKey}`);
+                const factionData = await factionResponse.json();
+
+                if (factionData.error) {
+                    throw new Error(factionData.error.error);
+                }
+
+                console.log('Ranked wars data:', factionData);
+
+                // Find active ranked war
+                const rankedWars = factionData.rankedwars || {};
+                let enemyFactionId = null;
+
+                for (const warId in rankedWars) {
+                    const war = rankedWars[warId];
+                    // Check if war is active (has factions but no winner yet or is ongoing)
+                    if (war.factions) {
+                        for (const factionId in war.factions) {
+                            if (factionId != myFactionId) {
+                                enemyFactionId = factionId;
+                                break;
+                            }
+                        }
+                    }
+                    if (enemyFactionId) break;
+                }
+
+                if (!enemyFactionId) {
+                    throw new Error('You are not currently matched for a Ranked War against another faction!');
+                }
+
+                // Load the enemy faction
+                document.getElementById('factionId').value = enemyFactionId;
+                localStorage.setItem('tornFactionId', enemyFactionId);
+                loadFactionData();
+
+            } catch (error) {
+                console.error('Error finding enemy:', error);
+                showError(`Error finding enemy faction: ${error.message}`);
+            }
+        }
+
         // Load saved API key and faction ID from localStorage
         window.addEventListener('DOMContentLoaded', () => {
+            loadActivityHistory();
+
             const savedKey = localStorage.getItem('tornApiKey');
             if (savedKey) {
                 document.getElementById('apiKey').value = savedKey;
@@ -574,7 +921,7 @@
             // Save API key to localStorage
             localStorage.setItem('tornApiKey', apiKey);
 
-            // Save faction ID to localStorage
+            // Save faction ID to localStorage (if provided)
             if (factionId) {
                 localStorage.setItem('tornFactionId', factionId);
             }
@@ -598,6 +945,12 @@
                 }
 
                 factionData = data;
+
+                // If faction ID was blank, store the loaded faction's ID for future use
+                if (!factionId && data.ID) {
+                    localStorage.setItem('tornFactionId', data.ID.toString());
+                    document.getElementById('factionId').value = data.ID;
+                }
 
                 // Extract member IDs from the faction data which includes members in basic
                 const memberIds = data.members ? Object.keys(data.members) : [];
@@ -643,6 +996,7 @@
                 }
 
                 lastRefreshTime = new Date();
+                recordActivityStatus(); // Record activity for tracking
                 renderDashboard();
                 startAutoRefresh();
             } catch (error) {
@@ -700,6 +1054,7 @@
                     });
 
                     lastRefreshTime = new Date();
+                    recordActivityStatus(); // Record activity for tracking
 
                     // Update only the refresh time and re-apply filters
                     const refreshTimeElement = document.getElementById('lastRefreshTime');
@@ -940,6 +1295,10 @@
                         aVal = a.name.toLowerCase();
                         bVal = b.name.toLowerCase();
                         break;
+                    case 'est_stats':
+                        aVal = estimateBattleStats(a).mid;
+                        bVal = estimateBattleStats(b).mid;
+                        break;
                     case 'level':
                         aVal = a.level || 0;
                         bVal = b.level || 0;
@@ -1026,18 +1385,19 @@
                 <table class="members-table">
                     <thead>
                         <tr>
-                            <th class="${getSortClass('name')}" onclick="sortMembers('name')">Name</th>
+                            <th class="${getSortClass('name')}" onclick="sortMembers('name')">Name / 24h Activity</th>
+                            <th class="${getSortClass('est_stats')}" onclick="sortMembers('est_stats')">Est. Stats</th>
                             <th class="${getSortClass('level')}" onclick="sortMembers('level')">Level</th>
                             <th class="${getSortClass('age')}" onclick="sortMembers('age')">Age (days)</th>
                             <th class="${getSortClass('life')}" onclick="sortMembers('life')">Life</th>
-                            <th class="${getSortClass('elo')}" onclick="sortMembers('elo')">ELO Rating</th>
-                            <th class="${getSortClass('best_damage')}" onclick="sortMembers('best_damage')">Best Damage</th>
-                            <th class="${getSortClass('critical_hits')}" onclick="sortMembers('critical_hits')">Critical Hits %</th>
+                            <th class="${getSortClass('elo')}" onclick="sortMembers('elo')">ELO</th>
+                            <th class="${getSortClass('best_damage')}" onclick="sortMembers('best_damage')">Best DMG</th>
+                            <th class="${getSortClass('critical_hits')}" onclick="sortMembers('critical_hits')">Crit %</th>
                             <th class="${getSortClass('rw_hits')}" onclick="sortMembers('rw_hits')">RW Hits</th>
                             <th class="${getSortClass('xanax')}" onclick="sortMembers('xanax')">Xanax</th>
                             <th class="${getSortClass('vicodin')}" onclick="sortMembers('vicodin')">Vicodin</th>
-                            <th class="${getSortClass('overdosed')}" onclick="sortMembers('overdosed')">Overdosed</th>
-                            <th class="${getSortClass('refills')}" onclick="sortMembers('refills')">Energy Refills</th>
+                            <th class="${getSortClass('overdosed')}" onclick="sortMembers('overdosed')">OD</th>
+                            <th class="${getSortClass('refills')}" onclick="sortMembers('refills')">Refills</th>
                             <th class="${getSortClass('location')}" onclick="sortMembers('location')">Location</th>
                         </tr>
                     </thead>
@@ -1075,12 +1435,29 @@
                                 locationText = userStatus.state;
                             }
 
+                            // Format travel status to be shorter
+                            const flyingToMatch = locationText.match(/Flying to (.+)/i);
+                            const returningMatch = locationText.match(/Returning to (.+)/i);
+                            const travelingToMatch = locationText.match(/Traveling to (.+)/i);
+                            const inCountryMatch = locationText.match(/In (.+)/i);
+
+                            if (flyingToMatch) {
+                                locationText = 'Outbound: ' + flyingToMatch[1];
+                            } else if (travelingToMatch) {
+                                locationText = 'Outbound: ' + travelingToMatch[1];
+                            } else if (returningMatch) {
+                                locationText = 'Inbound: ' + returningMatch[1];
+                            } else if (inCountryMatch && !locationText.toLowerCase().includes('hospital') && !locationText.toLowerCase().includes('jail')) {
+                                // They're abroad in a country
+                                locationText = 'Abroad: ' + inCountryMatch[1];
+                            }
+
                             // Add color coding for different states
                             if (locationText.toLowerCase().includes('okay') || locationText.toLowerCase().includes('torn')) {
                                 locationClass = 'status-online';
                             } else if (locationText.toLowerCase().includes('hospital') || locationText.toLowerCase().includes('jail')) {
                                 locationClass = 'status-offline';
-                            } else if (locationText.toLowerCase().includes('travel') || locationText.toLowerCase().includes('abroad')) {
+                            } else if (locationText.toLowerCase().includes('outbound') || locationText.toLowerCase().includes('inbound') || locationText.toLowerCase().includes('abroad')) {
                                 locationClass = 'status-idle';
                             }
 
@@ -1092,13 +1469,25 @@
                                 statusIndicatorClass = 'idle';
                             }
 
+                            // Calculate estimated stats
+                            const estStats = estimateBattleStats(member);
+
                             return `
                                 <tr>
                                     <td>
-                                        <span class="status-indicator ${statusIndicatorClass}"></span>
-                                        <a href="https://www.torn.com/profiles.php?XID=${member.id}" target="_blank">
-                                            ${member.name}
-                                        </a>
+                                        <div class="member-name-cell">
+                                            <div class="member-name-row">
+                                                <span class="status-indicator ${statusIndicatorClass}"></span>
+                                                <a href="https://www.torn.com/profiles.php?XID=${member.id}" target="_blank">
+                                                    ${member.name}
+                                                </a>
+                                            </div>
+                                            ${generateActivityGrid(member.id)}
+                                        </div>
+                                    </td>
+                                    <td class="est-stats">
+                                        <span class="est-stats-value">${formatStatNumber(estStats.mid)}</span>
+                                        <br><span style="font-size:10px;color:#999;">${formatStatNumber(estStats.low)} - ${formatStatNumber(estStats.high)}</span>
                                     </td>
                                     <td><span class="level-badge">${member.level || 'N/A'}</span></td>
                                     <td>${age}</td>
