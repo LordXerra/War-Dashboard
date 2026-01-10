@@ -960,7 +960,7 @@
         <div class="header">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
                 <h1 style="font-size: 1.4em; margin: 0;">Torn Ranked War Dashboard by <a href="https://www.torn.com/profiles.php?XID=2775419" target="_blank" style="color: #667eea; text-decoration: none;">Xerra [2775419]</a> with thanks to <a href="https://www.torn.com/profiles.php?XID=2863072" target="_blank" style="color: #667eea; text-decoration: none;">NestFreemark [2863072]</a> and <a href="https://www.torn.com/profiles.php?XID=2935003" target="_blank" style="color: #667eea; text-decoration: none;">Pickaxe1977 [2935003]</a></h1>
-                <span style="font-size: 12px; color: #666; white-space: nowrap; margin-left: 15px;">V0.15 - 10/01/2026</span>
+                <span style="font-size: 12px; color: #666; white-space: nowrap; margin-left: 15px;">V0.16 - 10/01/2026</span>
             </div>
             <div class="api-input-group">
                 <input
@@ -1043,6 +1043,7 @@
         let sortDirection = 'asc';
         let refreshInterval = null;
         let lastRefreshTime = null;
+        let autoRefreshSeconds = 15; // Default refresh interval in seconds
 
         // Portal sorting state
         let ownPortalSortColumn = 'name';
@@ -2335,6 +2336,12 @@
             loadTornStatsCache();
             loadEnemyFactionDataFromCache();
 
+            // Load saved auto-refresh interval
+            const savedAutoRefresh = localStorage.getItem('tornAutoRefreshSeconds');
+            if (savedAutoRefresh) {
+                autoRefreshSeconds = parseInt(savedAutoRefresh);
+            }
+
             const savedKey = localStorage.getItem('tornApiKey');
             if (savedKey) {
                 document.getElementById('apiKey').value = savedKey;
@@ -2470,61 +2477,89 @@
                 clearInterval(refreshInterval);
             }
 
-            // Refresh every 60 seconds (Torn API allows this rate)
+            // Refresh based on user-selected interval - refreshes status for both factions
             refreshInterval = setInterval(async () => {
                 const apiKey = document.getElementById('apiKey').value.trim();
-                const factionId = document.getElementById('factionId').value.trim() || '';
 
                 if (!apiKey) return;
 
                 try {
-                    const factionUrl = factionId
-                        ? `https://api.torn.com/faction/${factionId}?selections=basic&key=${apiKey}`
-                        : `https://api.torn.com/faction?selections=basic&key=${apiKey}`;
+                    // Collect all member IDs to refresh (both own and enemy factions)
+                    const ownMemberIds = (userMembersData.length > 0 ? userMembersData : membersData).map(m => m.id);
+                    const enemyMemberIds = enemyMembersData.map(m => m.id);
+                    const allMemberIds = [...ownMemberIds, ...enemyMemberIds];
 
-                    const response = await fetch(factionUrl);
-                    const data = await response.json();
+                    if (allMemberIds.length === 0) return;
 
-                    if (data.error) {
-                        console.error('Auto-refresh error:', data.error);
-                        return;
-                    }
-
-                    factionData = data;
-
-                    // Fetch detailed stats for each member
-                    const memberIds = Object.keys(data.members || {});
-                    const memberDetailsPromises = memberIds.map(id =>
-                        fetch(`https://api.torn.com/user/${id}?selections=profile,personalstats&key=${apiKey}`)
+                    // Fetch basic status info for all members
+                    const statusPromises = allMemberIds.map(id =>
+                        fetch(`https://api.torn.com/user/${id}?selections=profile&key=${apiKey}`)
                             .then(r => r.json())
-                            .then(d => ({ ...d, member_id: id }))
-                            .catch(e => ({ member_id: id, error: e.message }))
+                            .then(d => ({ id, ...d }))
+                            .catch(e => ({ id, error: e.message }))
                     );
 
-                    const memberDetails = await Promise.all(memberDetailsPromises);
+                    const statusUpdates = await Promise.all(statusPromises);
 
-                    membersData = Object.entries(data.members || {}).map(([id, member]) => {
-                        const details = memberDetails.find(d => d.member_id == id || d.player_id == id);
-                        return {
-                            id,
-                            ...member,
-                            details: details || {}
-                        };
-                    });
+                    // Helper function to update member data with status
+                    const updateMemberStatus = (member) => {
+                        const update = statusUpdates.find(u => u.id === member.id);
+                        if (update && !update.error) {
+                            return {
+                                ...member,
+                                status: update.status || member.status,
+                                last_action: update.last_action || member.last_action,
+                                details: {
+                                    ...member.details,
+                                    status: update.status || member.details?.status,
+                                    last_action: update.last_action || member.details?.last_action,
+                                    life: update.life || member.details?.life
+                                }
+                            };
+                        }
+                        return member;
+                    };
+
+                    // Update own faction members
+                    if (userMembersData.length > 0) {
+                        userMembersData = userMembersData.map(updateMemberStatus);
+                    } else if (membersData.length > 0) {
+                        membersData = membersData.map(updateMemberStatus);
+                    }
+
+                    // Update enemy faction members
+                    if (enemyMembersData.length > 0) {
+                        enemyMembersData = enemyMembersData.map(updateMemberStatus);
+                    }
 
                     lastRefreshTime = new Date();
-                    recordActivityStatus(); // Record activity for tracking
 
-                    // Update only the refresh time and re-apply filters
+                    // Update the refresh time display
                     const refreshTimeElement = document.getElementById('lastRefreshTime');
                     if (refreshTimeElement) {
                         refreshTimeElement.textContent = formatTime(lastRefreshTime);
                     }
-                    filterMembers();
+
+                    // Re-render the War Portal to show updated status
+                    renderWarPortal();
                 } catch (error) {
                     console.error('Auto-refresh error:', error);
                 }
-            }, 60000); // 60 seconds
+            }, autoRefreshSeconds * 1000);
+        }
+
+        function changeAutoRefreshInterval(seconds) {
+            autoRefreshSeconds = parseInt(seconds);
+            localStorage.setItem('tornAutoRefreshSeconds', autoRefreshSeconds);
+
+            // Update the display text
+            const displaySpan = document.getElementById('autoRefreshDisplay');
+            if (displaySpan) {
+                displaySpan.textContent = autoRefreshSeconds;
+            }
+
+            // Restart the auto-refresh with the new interval
+            startAutoRefresh();
         }
 
         function stopAutoRefresh() {
@@ -2593,7 +2628,16 @@
 
                 <div class="members-section">
                     <h2>Members Overview: ${factionData.name || 'Unknown Faction'}</h2>
-                    <div class="refresh-info">Auto-refreshing every 60 seconds. Last updated: <span id="lastRefreshTime">${formatTime(lastRefreshTime)}</span></div>
+                    <div class="refresh-info">
+                        Auto-refreshing every <span id="autoRefreshDisplay">${autoRefreshSeconds}</span> seconds.
+                        <select id="autoRefreshSelect" onchange="changeAutoRefreshInterval(this.value)" style="margin-left: 10px; padding: 2px 5px; border-radius: 3px; border: 1px solid #ddd;">
+                            <option value="5" ${autoRefreshSeconds === 5 ? 'selected' : ''}>5s</option>
+                            <option value="10" ${autoRefreshSeconds === 10 ? 'selected' : ''}>10s</option>
+                            <option value="15" ${autoRefreshSeconds === 15 ? 'selected' : ''}>15s</option>
+                            <option value="30" ${autoRefreshSeconds === 30 ? 'selected' : ''}>30s</option>
+                        </select>
+                        Last updated: <span id="lastRefreshTime">${formatTime(lastRefreshTime)}</span>
+                    </div>
 
                     <div class="stats-summary">
                         <div class="stat-card">

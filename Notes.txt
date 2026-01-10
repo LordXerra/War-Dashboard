@@ -1,5 +1,3 @@
-Tornstats working, else we need manual spy info entered. Also read own faction stats from Tornstats.
-
 
 Final thought perhaps for the pre war report. A nice to have would be if it highlighted the time/date when the Xanax taken increases and does the same if/when the OD increases. Would give us a good indication for OD’s and who may be on Xanax CD.
 
@@ -7,3 +5,24 @@ Final thought perhaps for the pre war report. A nice to have would be if it high
 Sorting enemies on the planning panel into easy/tricky/hard/group sections based on their stats compared to the owner of the api key.
 
  
+Benefits over torn stats
+-----
+
+You can sort low to high on the last column to ensure you list the hospitalized players in the order they come out.
+
+The page is dynamic, meaning you can sort by all columns, swap column orders, resize columns, and layout is saved.
+
+When you reload the page then you stay on the war portal tab, if that's what you are on and your faction and the enemy faction are both cached so they reload instantly without reloading from torn data.
+
+When you first load an enemy faction then the list is loaded (may take a few seconds) but is saved so they don't need to be reloaded again unless you use the force load button to resynch everything. This is so we don't get locked out from too many hits to the API when a faction has a lot of members.
+
+You can sort view your faction country locations and if they are inbound/outbound as well as the enemies. This makes it very easy to send people to chase enemies when they are moving around on the map. With torn stats all it told you was they were traveling.
+
+The information is taken from torn stats as well as the Torn API itself. This is so we will always have records of spies we have taken historically as long as someone in the faction is recording the important ones within Torn stats.
+
+One problem with torn stats was the length of time before each refresh on the page. Currently this portal only looks for online status, status, life and hospital timers when doing an auto refresh cycle. This means you can have it set as low as 5 seconds (I've not tested lower yet) so you can spot almost instantly when an enemy comes out of hospital and tries to flee. Note: if you start getting an error about too many requests then you'll have to slow this timer down to probably 10 seconds.
+
+War planning tab shows estimated battle stats that Nest would post and also displays all the information we have from the new match report that Ethan and Pickaxe report in faction forums. No longer any need for that if using this page, unless you're on mobile.
+
+
+
