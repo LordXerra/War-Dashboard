@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Torn Ranked War Dashboard by Xerra [2775419]</title>
+    <title>Torn Ranked War Dashboard by Xerra [2775419] with thanks to NestFreemark [2863072] and Pickaxe1977 [2935003]</title>
     <style>
         * {
             margin: 0;
@@ -243,10 +243,33 @@
             user-select: none;
             white-space: nowrap;
             font-size: 12px;
+            position: relative;
+            border-right: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .members-table th:last-child {
+            border-right: none;
         }
 
         .members-table th:hover {
             background: #5568d3;
+        }
+
+        /* Column resize handle for war planning table */
+        .members-table th .wp-resize-handle {
+            position: absolute;
+            right: -3px;
+            top: 0;
+            bottom: 0;
+            width: 6px;
+            cursor: col-resize;
+            z-index: 20;
+            background: transparent;
+        }
+
+        .members-table th .wp-resize-handle:hover,
+        .members-table th .wp-resize-handle.resizing {
+            background: rgba(255, 193, 7, 0.7);
         }
 
         .members-table th.sortable::after {
@@ -264,10 +287,39 @@
             opacity: 1;
         }
 
+        /* Draggable column styles */
+        .members-table th[draggable="true"] {
+            cursor: grab;
+        }
+
+        .members-table th[draggable="true"]:active {
+            cursor: grabbing;
+        }
+
+        .members-table th.dragging {
+            opacity: 0.5;
+            background: #4455bb;
+        }
+
+        .members-table th.drag-over-left {
+            border-left: 3px solid #ffc107;
+        }
+
+        .members-table th.drag-over-right {
+            border-right: 3px solid #ffc107;
+        }
+
         .members-table td {
             padding: 8px;
             border-bottom: 1px solid #ddd;
+            border-right: 1px solid #eee;
             white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .members-table td:last-child {
+            border-right: none;
         }
 
         .members-table tbody tr:hover {
@@ -700,12 +752,16 @@
         }
 
         .portal-header-row > div {
-            cursor: pointer;
+            cursor: grab;
             user-select: none;
             padding: 0 10px;
             border-right: 1px solid #ccc;
             box-sizing: border-box;
             position: relative;
+        }
+
+        .portal-header-row > div:active {
+            cursor: grabbing;
         }
 
         .portal-header-row > div:last-child {
@@ -714,6 +770,19 @@
 
         .portal-header-row > div:hover {
             color: #667eea;
+        }
+
+        .portal-header-row > div.dragging {
+            opacity: 0.5;
+            background: #d0d0d0;
+        }
+
+        .portal-header-row > div.drag-over-left {
+            border-left: 3px solid #667eea;
+        }
+
+        .portal-header-row > div.drag-over-right {
+            border-right: 3px solid #667eea;
         }
 
         .portal-header-row > div.sorted-asc::after {
@@ -853,7 +922,10 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Torn Ranked War Dashboard by <a href="https://www.torn.com/profiles.php?XID=2775419" target="_blank" style="color: #667eea; text-decoration: none;">Xerra [2775419]</a></h1>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <h1 style="font-size: 1.4em; margin: 0;">Torn Ranked War Dashboard by <a href="https://www.torn.com/profiles.php?XID=2775419" target="_blank" style="color: #667eea; text-decoration: none;">Xerra [2775419]</a> with thanks to <a href="https://www.torn.com/profiles.php?XID=2863072" target="_blank" style="color: #667eea; text-decoration: none;">NestFreemark [2863072]</a> and <a href="https://www.torn.com/profiles.php?XID=2935003" target="_blank" style="color: #667eea; text-decoration: none;">Pickaxe1977 [2935003]</a></h1>
+                <span style="font-size: 12px; color: #666; white-space: nowrap; margin-left: 15px;">V0.14 - 10/01/2026</span>
+            </div>
             <div class="api-input-group">
                 <input
                     type="text"
@@ -920,6 +992,166 @@
         };
         let ownColumnWidths = { ...defaultColumnWidths };
         let enemyColumnWidths = { ...defaultColumnWidths };
+
+        // Portal column order (draggable columns)
+        const defaultPortalColumns = ['name', 'level', 'est_stats', 'life', 'status', 'timer'];
+        let ownPortalColumnOrder = [...defaultPortalColumns];
+        let enemyPortalColumnOrder = [...defaultPortalColumns];
+
+        // Portal column definitions
+        const portalColumnDefs = {
+            name: { label: 'Name', sortKey: 'name' },
+            level: { label: 'Level', sortKey: 'level' },
+            est_stats: { label: 'Est. Stats', sortKey: 'est_stats' },
+            life: { label: 'Life', sortKey: 'life' },
+            status: { label: 'Status', sortKey: 'status' },
+            timer: { label: 'Timer', sortKey: 'timer' }
+        };
+
+        // Portal drag state
+        let portalDraggedColumn = null;
+        let portalDraggedIndex = null;
+        let portalDragIsEnemy = false;
+
+        // Load portal column order from localStorage
+        function loadPortalColumnOrder() {
+            const savedOwn = localStorage.getItem('tornPortalOwnColumnOrder');
+            const savedEnemy = localStorage.getItem('tornPortalEnemyColumnOrder');
+            if (savedOwn) {
+                try {
+                    const parsed = JSON.parse(savedOwn);
+                    if (Array.isArray(parsed) && parsed.length === defaultPortalColumns.length) {
+                        ownPortalColumnOrder = parsed;
+                    }
+                } catch (e) {
+                    ownPortalColumnOrder = [...defaultPortalColumns];
+                }
+            }
+            if (savedEnemy) {
+                try {
+                    const parsed = JSON.parse(savedEnemy);
+                    if (Array.isArray(parsed) && parsed.length === defaultPortalColumns.length) {
+                        enemyPortalColumnOrder = parsed;
+                    }
+                } catch (e) {
+                    enemyPortalColumnOrder = [...defaultPortalColumns];
+                }
+            }
+        }
+
+        // Save portal column order to localStorage
+        function savePortalColumnOrder() {
+            localStorage.setItem('tornPortalOwnColumnOrder', JSON.stringify(ownPortalColumnOrder));
+            localStorage.setItem('tornPortalEnemyColumnOrder', JSON.stringify(enemyPortalColumnOrder));
+        }
+
+        // Handle portal drag start
+        function handlePortalDragStart(e, isEnemy) {
+            portalDraggedColumn = e.target.closest('div[data-column]');
+            if (!portalDraggedColumn) return;
+
+            portalDragIsEnemy = isEnemy;
+            const parent = portalDraggedColumn.parentNode;
+            const siblings = Array.from(parent.querySelectorAll('div[data-column]'));
+            portalDraggedIndex = siblings.indexOf(portalDraggedColumn);
+
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/plain', portalDraggedIndex);
+
+            setTimeout(() => {
+                portalDraggedColumn.classList.add('dragging');
+            }, 0);
+        }
+
+        // Handle portal drag over
+        function handlePortalDragOver(e, isEnemy) {
+            e.preventDefault();
+            if (portalDragIsEnemy !== isEnemy) return; // Don't allow cross-faction dragging
+
+            e.dataTransfer.dropEffect = 'move';
+
+            const targetCol = e.target.closest('div[data-column]');
+            if (!targetCol || targetCol === portalDraggedColumn) return;
+
+            // Clear all indicators in this header row
+            const parent = targetCol.parentNode;
+            parent.querySelectorAll('div[data-column]').forEach(col => {
+                col.classList.remove('drag-over-left', 'drag-over-right');
+            });
+
+            const rect = targetCol.getBoundingClientRect();
+            const midpoint = rect.left + rect.width / 2;
+
+            if (e.clientX < midpoint) {
+                targetCol.classList.add('drag-over-left');
+            } else {
+                targetCol.classList.add('drag-over-right');
+            }
+        }
+
+        // Handle portal drag leave
+        function handlePortalDragLeave(e) {
+            const targetCol = e.target.closest('div[data-column]');
+            if (targetCol) {
+                targetCol.classList.remove('drag-over-left', 'drag-over-right');
+            }
+        }
+
+        // Handle portal drop
+        function handlePortalDrop(e, isEnemy) {
+            e.preventDefault();
+            if (portalDragIsEnemy !== isEnemy) {
+                cleanupPortalDrag();
+                return;
+            }
+
+            const targetCol = e.target.closest('div[data-column]');
+            if (!targetCol || !portalDraggedColumn || targetCol === portalDraggedColumn) {
+                cleanupPortalDrag();
+                return;
+            }
+
+            const parent = targetCol.parentNode;
+            const siblings = Array.from(parent.querySelectorAll('div[data-column]'));
+            const targetIndex = siblings.indexOf(targetCol);
+
+            // Determine insert position
+            const rect = targetCol.getBoundingClientRect();
+            const midpoint = rect.left + rect.width / 2;
+            let insertIndex = e.clientX < midpoint ? targetIndex : targetIndex + 1;
+
+            if (portalDraggedIndex < insertIndex) {
+                insertIndex--;
+            }
+
+            // Reorder the column array
+            const columnOrder = isEnemy ? enemyPortalColumnOrder : ownPortalColumnOrder;
+            const [removed] = columnOrder.splice(portalDraggedIndex, 1);
+            columnOrder.splice(insertIndex, 0, removed);
+
+            // Save and re-render
+            savePortalColumnOrder();
+            renderWarPortal();
+
+            cleanupPortalDrag();
+        }
+
+        // Handle portal drag end
+        function handlePortalDragEnd(e) {
+            cleanupPortalDrag();
+        }
+
+        // Clean up portal drag state
+        function cleanupPortalDrag() {
+            if (portalDraggedColumn) {
+                portalDraggedColumn.classList.remove('dragging');
+            }
+            document.querySelectorAll('.portal-header-row div[data-column]').forEach(col => {
+                col.classList.remove('drag-over-left', 'drag-over-right');
+            });
+            portalDraggedColumn = null;
+            portalDraggedIndex = null;
+        }
 
         // Column resize state
         let isResizing = false;
@@ -1041,6 +1273,244 @@
                     }
                 });
             });
+        }
+
+        // War Planning column order (draggable columns)
+        const defaultWarPlanningColumns = [
+            'name', 'est_stats', 'level', 'age', 'life', 'elo', 'best_damage',
+            'critical_hits', 'rw_hits', 'xanax', 'vicodin', 'overdosed', 'refills', 'location'
+        ];
+        let warPlanningColumnOrder = [...defaultWarPlanningColumns];
+
+        // War Planning drag state
+        let draggedColumn = null;
+        let draggedColumnIndex = null;
+
+        // Load war planning column order from localStorage
+        function loadWarPlanningColumnOrder() {
+            const saved = localStorage.getItem('tornWarPlanningColumnOrder');
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    // Validate that all columns exist
+                    if (Array.isArray(parsed) && parsed.length === defaultWarPlanningColumns.length) {
+                        warPlanningColumnOrder = parsed;
+                    }
+                } catch (e) {
+                    warPlanningColumnOrder = [...defaultWarPlanningColumns];
+                }
+            }
+        }
+
+        // Save war planning column order to localStorage
+        function saveWarPlanningColumnOrder() {
+            localStorage.setItem('tornWarPlanningColumnOrder', JSON.stringify(warPlanningColumnOrder));
+        }
+
+        // Handle drag start for war planning columns
+        function handleWarPlanningDragStart(e) {
+            draggedColumn = e.target.closest('th');
+            if (!draggedColumn) return;
+
+            draggedColumnIndex = Array.from(draggedColumn.parentNode.children).indexOf(draggedColumn);
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/plain', draggedColumnIndex);
+
+            // Add dragging class after a short delay to allow drag image to be captured
+            setTimeout(() => {
+                draggedColumn.classList.add('dragging');
+            }, 0);
+        }
+
+        // Handle drag over for war planning columns
+        function handleWarPlanningDragOver(e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+
+            const th = e.target.closest('th');
+            if (!th || th === draggedColumn) return;
+
+            // Add visual indicator
+            const allThs = th.parentNode.querySelectorAll('th');
+            allThs.forEach(t => t.classList.remove('drag-over-left', 'drag-over-right'));
+
+            const rect = th.getBoundingClientRect();
+            const midpoint = rect.left + rect.width / 2;
+
+            if (e.clientX < midpoint) {
+                th.classList.add('drag-over-left');
+            } else {
+                th.classList.add('drag-over-right');
+            }
+        }
+
+        // Handle drag leave for war planning columns
+        function handleWarPlanningDragLeave(e) {
+            const th = e.target.closest('th');
+            if (th) {
+                th.classList.remove('drag-over-left', 'drag-over-right');
+            }
+        }
+
+        // Handle drop for war planning columns
+        function handleWarPlanningDrop(e) {
+            e.preventDefault();
+
+            const targetTh = e.target.closest('th');
+            if (!targetTh || !draggedColumn || targetTh === draggedColumn) {
+                cleanupDrag();
+                return;
+            }
+
+            const targetIndex = Array.from(targetTh.parentNode.children).indexOf(targetTh);
+
+            // Determine if we should insert before or after
+            const rect = targetTh.getBoundingClientRect();
+            const midpoint = rect.left + rect.width / 2;
+            let insertIndex = e.clientX < midpoint ? targetIndex : targetIndex + 1;
+
+            // Adjust for the removed element
+            if (draggedColumnIndex < insertIndex) {
+                insertIndex--;
+            }
+
+            // Reorder the column array
+            const [removed] = warPlanningColumnOrder.splice(draggedColumnIndex, 1);
+            warPlanningColumnOrder.splice(insertIndex, 0, removed);
+
+            // Save and re-render
+            saveWarPlanningColumnOrder();
+            filterMembers(); // This will re-render the table with new column order
+
+            cleanupDrag();
+        }
+
+        // Handle drag end for war planning columns
+        function handleWarPlanningDragEnd(e) {
+            cleanupDrag();
+        }
+
+        // Clean up drag state
+        function cleanupDrag() {
+            if (draggedColumn) {
+                draggedColumn.classList.remove('dragging');
+            }
+            document.querySelectorAll('.members-table th').forEach(th => {
+                th.classList.remove('drag-over-left', 'drag-over-right');
+            });
+            draggedColumn = null;
+            draggedColumnIndex = null;
+        }
+
+        // War Planning column widths (resizable)
+        const defaultWPColumnWidths = {
+            name: 180,
+            est_stats: 100,
+            level: 60,
+            age: 80,
+            life: 80,
+            elo: 60,
+            best_damage: 90,
+            critical_hits: 70,
+            rw_hits: 80,
+            xanax: 70,
+            vicodin: 70,
+            overdosed: 50,
+            refills: 70,
+            location: 120
+        };
+        let wpColumnWidths = { ...defaultWPColumnWidths };
+
+        // War Planning resize state
+        let isWPResizing = false;
+        let wpResizingColumn = null;
+        let wpResizeStartX = 0;
+        let wpResizeStartWidth = 0;
+
+        // Load war planning column widths from localStorage
+        function loadWPColumnWidths() {
+            const saved = localStorage.getItem('tornWarPlanningColumnWidths');
+            if (saved) {
+                try {
+                    wpColumnWidths = { ...defaultWPColumnWidths, ...JSON.parse(saved) };
+                } catch (e) {
+                    wpColumnWidths = { ...defaultWPColumnWidths };
+                }
+            }
+        }
+
+        // Save war planning column widths to localStorage
+        function saveWPColumnWidths() {
+            localStorage.setItem('tornWarPlanningColumnWidths', JSON.stringify(wpColumnWidths));
+        }
+
+        // Start resizing a war planning column
+        function startWPColumnResize(e, column) {
+            e.preventDefault();
+            e.stopPropagation();
+            isWPResizing = true;
+            wpResizingColumn = column;
+            wpResizeStartX = e.clientX;
+            wpResizeStartWidth = wpColumnWidths[column] || defaultWPColumnWidths[column];
+            document.body.classList.add('resizing-columns');
+            e.target.classList.add('resizing');
+        }
+
+        // Handle war planning column resize mouse move
+        function handleWPColumnResize(e) {
+            if (!isWPResizing) return;
+
+            const diff = e.clientX - wpResizeStartX;
+            const newWidth = Math.max(40, wpResizeStartWidth + diff);
+
+            wpColumnWidths[wpResizingColumn] = newWidth;
+            applyWPColumnWidths();
+        }
+
+        // Stop war planning column resize
+        function stopWPColumnResize() {
+            if (isWPResizing) {
+                isWPResizing = false;
+                document.body.classList.remove('resizing-columns');
+                document.querySelectorAll('.wp-resize-handle.resizing').forEach(el => el.classList.remove('resizing'));
+                saveWPColumnWidths();
+                wpResizingColumn = null;
+            }
+        }
+
+        // Apply column widths to war planning table
+        function applyWPColumnWidths() {
+            const table = document.querySelector('.members-table');
+            if (!table) return;
+
+            // Apply to header cells
+            const headerCells = table.querySelectorAll('thead th');
+            headerCells.forEach(th => {
+                const col = th.dataset.column;
+                if (col && wpColumnWidths[col]) {
+                    th.style.width = wpColumnWidths[col] + 'px';
+                    th.style.minWidth = wpColumnWidths[col] + 'px';
+                }
+            });
+
+            // Apply to body cells
+            const rows = table.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                cells.forEach((td, index) => {
+                    const col = warPlanningColumnOrder[index];
+                    if (col && wpColumnWidths[col]) {
+                        td.style.width = wpColumnWidths[col] + 'px';
+                        td.style.minWidth = wpColumnWidths[col] + 'px';
+                    }
+                });
+            });
+        }
+
+        // Initialize war planning column resize handlers
+        function initWPColumnResize() {
+            document.addEventListener('mousemove', handleWPColumnResize);
+            document.addEventListener('mouseup', stopWPColumnResize);
         }
 
         // Activity history: stores status for each member per hour
@@ -1523,7 +1993,11 @@
         window.addEventListener('DOMContentLoaded', () => {
             loadActivityHistory();
             loadColumnWidths();
+            loadPortalColumnOrder();
+            loadWarPlanningColumnOrder();
+            loadWPColumnWidths();
             initColumnResize();
+            initWPColumnResize();
 
             const savedKey = localStorage.getItem('tornApiKey');
             if (savedKey) {
@@ -2001,6 +2475,73 @@
             renderMembersTable(filtered);
         }
 
+        // Column definitions for War Planning table
+        const warPlanningColumnDefs = {
+            name: { label: 'Name / 24h Activity', sortKey: 'name' },
+            est_stats: { label: 'Est. Stats', sortKey: 'est_stats' },
+            level: { label: 'Level', sortKey: 'level' },
+            age: { label: 'Age (days)', sortKey: 'age' },
+            life: { label: 'Life', sortKey: 'life' },
+            elo: { label: 'ELO', sortKey: 'elo' },
+            best_damage: { label: 'Best DMG', sortKey: 'best_damage' },
+            critical_hits: { label: 'Crit %', sortKey: 'critical_hits' },
+            rw_hits: { label: 'RW Hits', sortKey: 'rw_hits' },
+            xanax: { label: 'Xanax', sortKey: 'xanax' },
+            vicodin: { label: 'Vicodin', sortKey: 'vicodin' },
+            overdosed: { label: 'OD', sortKey: 'overdosed' },
+            refills: { label: 'Refills', sortKey: 'refills' },
+            location: { label: 'Location', sortKey: 'location' }
+        };
+
+        // Get cell content for a specific column
+        function getWarPlanningCellContent(column, member, memberData) {
+            switch (column) {
+                case 'name':
+                    return `<td>
+                        <div class="member-name-cell">
+                            <div class="member-name-row">
+                                <span class="status-indicator ${memberData.statusIndicatorClass}"></span>
+                                <a href="https://www.torn.com/profiles.php?XID=${member.id}" target="_blank">
+                                    ${member.name}
+                                </a>
+                            </div>
+                            ${generateActivityGrid(member.id)}
+                        </div>
+                    </td>`;
+                case 'est_stats':
+                    return `<td class="est-stats">
+                        <span class="est-stats-value">${formatStatNumber(memberData.estStats.mid)}</span>
+                        <br><span style="font-size:10px;color:#999;">${formatStatNumber(memberData.estStats.low)} - ${formatStatNumber(memberData.estStats.high)}</span>
+                    </td>`;
+                case 'level':
+                    return `<td><span class="level-badge">${member.level || 'N/A'}</span></td>`;
+                case 'age':
+                    return `<td>${memberData.age}</td>`;
+                case 'life':
+                    return `<td>${memberData.life}</td>`;
+                case 'elo':
+                    return `<td>${memberData.elo}</td>`;
+                case 'best_damage':
+                    return `<td>${typeof memberData.bestDamage === 'number' ? memberData.bestDamage.toLocaleString() : memberData.bestDamage}</td>`;
+                case 'critical_hits':
+                    return `<td>${memberData.criticalPct}%</td>`;
+                case 'rw_hits':
+                    return `<td>${typeof memberData.rwHits === 'number' ? memberData.rwHits.toLocaleString() : memberData.rwHits}</td>`;
+                case 'xanax':
+                    return `<td>${typeof memberData.xanax === 'number' ? memberData.xanax.toLocaleString() : memberData.xanax}</td>`;
+                case 'vicodin':
+                    return `<td>${typeof memberData.vicodin === 'number' ? memberData.vicodin.toLocaleString() : memberData.vicodin}</td>`;
+                case 'overdosed':
+                    return `<td>${typeof memberData.overdosed === 'number' ? memberData.overdosed.toLocaleString() : memberData.overdosed}</td>`;
+                case 'refills':
+                    return `<td>${typeof memberData.refills === 'number' ? memberData.refills.toLocaleString() : memberData.refills}</td>`;
+                case 'location':
+                    return `<td class="${memberData.locationClass}">${memberData.locationText}</td>`;
+                default:
+                    return '<td>-</td>';
+            }
+        }
+
         function renderMembersTable(members) {
             const container = document.getElementById('membersTableContainer');
 
@@ -2009,132 +2550,105 @@
                 return sortDirection === 'asc' ? 'sorted-asc' : 'sorted-desc';
             };
 
+            // Generate header row based on column order with resize handles
+            const headerCells = warPlanningColumnOrder.map((col, index) => {
+                const def = warPlanningColumnDefs[col];
+                const width = wpColumnWidths[col] || defaultWPColumnWidths[col];
+                const isLast = index === warPlanningColumnOrder.length - 1;
+                const resizeHandle = isLast ? '' : `<span class="wp-resize-handle" onmousedown="startWPColumnResize(event, '${col}')"></span>`;
+                return `<th class="${getSortClass(def.sortKey)}"
+                    onclick="sortMembers('${def.sortKey}')"
+                    draggable="true"
+                    data-column="${col}"
+                    style="width: ${width}px; min-width: ${width}px;">${def.label}${resizeHandle}</th>`;
+            }).join('');
+
+            // Generate body rows
+            const bodyRows = members.map(member => {
+                const stats = member.details.personalstats || {};
+                const profile = member.details || member;
+
+                // Pre-calculate all member data
+                const memberData = {
+                    age: profile.age || 'N/A',
+                    life: profile.life ? `${profile.life.current}/${profile.life.maximum}` : 'N/A',
+                    elo: stats.elo || stats.rankedwarrating || 'N/A',
+                    bestDamage: stats.bestdamage || stats.highestbeaten || 'N/A',
+                    criticalPct: (stats.attackhits || 0) > 0 ? (((stats.attackcriticalhits || 0) / stats.attackhits) * 100).toFixed(2) : '0.00',
+                    rwHits: stats.rankedwarhits || 'N/A',
+                    xanax: stats.xantaken || 'N/A',
+                    vicodin: stats.victaken || 'N/A',
+                    overdosed: stats.overdosed || 'N/A',
+                    refills: stats.energydrinkused || stats.refills || 'N/A',
+                    estStats: estimateBattleStats(member),
+                    statusIndicatorClass: member.last_action.status === 'Online' ? 'online' :
+                                         member.last_action.status === 'Idle' ? 'idle' : 'offline',
+                    locationText: 'Unknown',
+                    locationClass: ''
+                };
+
+                // Get location/status information
+                const userStatus = profile.status || {};
+                if (userStatus.description) {
+                    memberData.locationText = userStatus.description;
+                } else if (userStatus.state) {
+                    memberData.locationText = userStatus.state;
+                }
+
+                // Format travel status to be shorter
+                const flyingToMatch = memberData.locationText.match(/Flying to (.+)/i);
+                const returningMatch = memberData.locationText.match(/Returning to (.+)/i);
+                const travelingToMatch = memberData.locationText.match(/Traveling to (.+)/i);
+                const inCountryMatch = memberData.locationText.match(/In (.+)/i);
+
+                if (flyingToMatch) {
+                    memberData.locationText = 'Outbound: ' + flyingToMatch[1];
+                } else if (travelingToMatch) {
+                    memberData.locationText = 'Outbound: ' + travelingToMatch[1];
+                } else if (returningMatch) {
+                    memberData.locationText = 'Inbound: ' + returningMatch[1];
+                } else if (inCountryMatch && !memberData.locationText.toLowerCase().includes('hospital') && !memberData.locationText.toLowerCase().includes('jail')) {
+                    memberData.locationText = 'Abroad: ' + inCountryMatch[1];
+                }
+
+                // Add color coding for different states
+                if (memberData.locationText.toLowerCase().includes('okay') || memberData.locationText.toLowerCase().includes('torn')) {
+                    memberData.locationClass = 'status-online';
+                } else if (memberData.locationText.toLowerCase().includes('hospital') || memberData.locationText.toLowerCase().includes('jail')) {
+                    memberData.locationClass = 'status-offline';
+                } else if (memberData.locationText.toLowerCase().includes('outbound') || memberData.locationText.toLowerCase().includes('inbound') || memberData.locationText.toLowerCase().includes('abroad')) {
+                    memberData.locationClass = 'status-idle';
+                }
+
+                // Generate cells in column order
+                const cells = warPlanningColumnOrder.map(col => getWarPlanningCellContent(col, member, memberData)).join('');
+
+                return `<tr>${cells}</tr>`;
+            }).join('');
+
             container.innerHTML = `
                 <table class="members-table">
                     <thead>
-                        <tr>
-                            <th class="${getSortClass('name')}" onclick="sortMembers('name')">Name / 24h Activity</th>
-                            <th class="${getSortClass('est_stats')}" onclick="sortMembers('est_stats')">Est. Stats</th>
-                            <th class="${getSortClass('level')}" onclick="sortMembers('level')">Level</th>
-                            <th class="${getSortClass('age')}" onclick="sortMembers('age')">Age (days)</th>
-                            <th class="${getSortClass('life')}" onclick="sortMembers('life')">Life</th>
-                            <th class="${getSortClass('elo')}" onclick="sortMembers('elo')">ELO</th>
-                            <th class="${getSortClass('best_damage')}" onclick="sortMembers('best_damage')">Best DMG</th>
-                            <th class="${getSortClass('critical_hits')}" onclick="sortMembers('critical_hits')">Crit %</th>
-                            <th class="${getSortClass('rw_hits')}" onclick="sortMembers('rw_hits')">RW Hits</th>
-                            <th class="${getSortClass('xanax')}" onclick="sortMembers('xanax')">Xanax</th>
-                            <th class="${getSortClass('vicodin')}" onclick="sortMembers('vicodin')">Vicodin</th>
-                            <th class="${getSortClass('overdosed')}" onclick="sortMembers('overdosed')">OD</th>
-                            <th class="${getSortClass('refills')}" onclick="sortMembers('refills')">Refills</th>
-                            <th class="${getSortClass('location')}" onclick="sortMembers('location')">Location</th>
-                        </tr>
+                        <tr>${headerCells}</tr>
                     </thead>
                     <tbody>
-                        ${members.map(member => {
-                            const statusClass = member.last_action.status === 'Online' ? 'status-online' :
-                                              member.last_action.status === 'Idle' ? 'status-idle' : 'status-offline';
-
-                            const stats = member.details.personalstats || {};
-                            const profile = member.details || member;
-
-                            const age = profile.age || 'N/A';
-                            const life = profile.life ? `${profile.life.current}/${profile.life.maximum}` : 'N/A';
-                            const elo = stats.elo || stats.rankedwarrating || 'N/A';
-                            const bestDamage = stats.bestdamage || stats.highestbeaten || 'N/A';
-
-                            const criticalHits = stats.attackcriticalhits || 0;
-                            const totalHits = stats.attackhits || 0;
-                            const criticalPct = totalHits > 0 ? ((criticalHits / totalHits) * 100).toFixed(2) : '0.00';
-
-                            const rwHits = stats.rankedwarhits || 'N/A';
-                            const xanax = stats.xantaken || 'N/A';
-                            const vicodin = stats.victaken || 'N/A';
-                            const overdosed = stats.overdosed || 'N/A';
-                            const refills = stats.energydrinkused || stats.refills || 'N/A';
-
-                            // Get location/status information
-                            const userStatus = profile.status || {};
-                            let locationText = 'Unknown';
-                            let locationClass = '';
-
-                            if (userStatus.description) {
-                                locationText = userStatus.description;
-                            } else if (userStatus.state) {
-                                locationText = userStatus.state;
-                            }
-
-                            // Format travel status to be shorter
-                            const flyingToMatch = locationText.match(/Flying to (.+)/i);
-                            const returningMatch = locationText.match(/Returning to (.+)/i);
-                            const travelingToMatch = locationText.match(/Traveling to (.+)/i);
-                            const inCountryMatch = locationText.match(/In (.+)/i);
-
-                            if (flyingToMatch) {
-                                locationText = 'Outbound: ' + flyingToMatch[1];
-                            } else if (travelingToMatch) {
-                                locationText = 'Outbound: ' + travelingToMatch[1];
-                            } else if (returningMatch) {
-                                locationText = 'Inbound: ' + returningMatch[1];
-                            } else if (inCountryMatch && !locationText.toLowerCase().includes('hospital') && !locationText.toLowerCase().includes('jail')) {
-                                // They're abroad in a country
-                                locationText = 'Abroad: ' + inCountryMatch[1];
-                            }
-
-                            // Add color coding for different states
-                            if (locationText.toLowerCase().includes('okay') || locationText.toLowerCase().includes('torn')) {
-                                locationClass = 'status-online';
-                            } else if (locationText.toLowerCase().includes('hospital') || locationText.toLowerCase().includes('jail')) {
-                                locationClass = 'status-offline';
-                            } else if (locationText.toLowerCase().includes('outbound') || locationText.toLowerCase().includes('inbound') || locationText.toLowerCase().includes('abroad')) {
-                                locationClass = 'status-idle';
-                            }
-
-                            // Determine status indicator class
-                            let statusIndicatorClass = 'offline';
-                            if (member.last_action.status === 'Online') {
-                                statusIndicatorClass = 'online';
-                            } else if (member.last_action.status === 'Idle') {
-                                statusIndicatorClass = 'idle';
-                            }
-
-                            // Calculate estimated stats
-                            const estStats = estimateBattleStats(member);
-
-                            return `
-                                <tr>
-                                    <td>
-                                        <div class="member-name-cell">
-                                            <div class="member-name-row">
-                                                <span class="status-indicator ${statusIndicatorClass}"></span>
-                                                <a href="https://www.torn.com/profiles.php?XID=${member.id}" target="_blank">
-                                                    ${member.name}
-                                                </a>
-                                            </div>
-                                            ${generateActivityGrid(member.id)}
-                                        </div>
-                                    </td>
-                                    <td class="est-stats">
-                                        <span class="est-stats-value">${formatStatNumber(estStats.mid)}</span>
-                                        <br><span style="font-size:10px;color:#999;">${formatStatNumber(estStats.low)} - ${formatStatNumber(estStats.high)}</span>
-                                    </td>
-                                    <td><span class="level-badge">${member.level || 'N/A'}</span></td>
-                                    <td>${age}</td>
-                                    <td>${life}</td>
-                                    <td>${elo}</td>
-                                    <td>${typeof bestDamage === 'number' ? bestDamage.toLocaleString() : bestDamage}</td>
-                                    <td>${criticalPct}%</td>
-                                    <td>${typeof rwHits === 'number' ? rwHits.toLocaleString() : rwHits}</td>
-                                    <td>${typeof xanax === 'number' ? xanax.toLocaleString() : xanax}</td>
-                                    <td>${typeof vicodin === 'number' ? vicodin.toLocaleString() : vicodin}</td>
-                                    <td>${typeof overdosed === 'number' ? overdosed.toLocaleString() : overdosed}</td>
-                                    <td>${typeof refills === 'number' ? refills.toLocaleString() : refills}</td>
-                                    <td class="${locationClass}">${locationText}</td>
-                                </tr>
-                            `;
-                        }).join('')}
+                        ${bodyRows}
                     </tbody>
                 </table>
             `;
+
+            // Add drag event listeners to header cells
+            const headerRow = container.querySelector('thead tr');
+            if (headerRow) {
+                headerRow.addEventListener('dragstart', handleWarPlanningDragStart);
+                headerRow.addEventListener('dragover', handleWarPlanningDragOver);
+                headerRow.addEventListener('dragleave', handleWarPlanningDragLeave);
+                headerRow.addEventListener('drop', handleWarPlanningDrop);
+                headerRow.addEventListener('dragend', handleWarPlanningDragEnd);
+            }
+
+            // Apply stored column widths to body cells
+            applyWPColumnWidths();
         }
 
         function formatLastAction(relative) {
@@ -2352,7 +2866,35 @@
             hospitalTimerInterval = setInterval(updateHospitalTimers, 1000);
         }
 
-        function renderMemberRow(member) {
+        // Get cell content for portal member row
+        function getPortalCellContent(column, member, memberData) {
+            switch (column) {
+                case 'name':
+                    return `<div class="portal-member-name">
+                        <span class="status-indicator ${memberData.statusClass}"></span>
+                        <a href="https://www.torn.com/profiles.php?XID=${member.id}" target="_blank">${member.name}</a>
+                    </div>`;
+                case 'level':
+                    return `<div class="portal-member-level">
+                        <span class="level-badge">Lv ${member.level || 'N/A'}</span>
+                    </div>`;
+                case 'est_stats':
+                    return `<div class="portal-member-stats">
+                        <span class="est-value">${formatStatNumber(memberData.estStats.mid)}</span>
+                        <br><span class="est-range">${formatStatNumber(memberData.estStats.low)} - ${formatStatNumber(memberData.estStats.high)}</span>
+                    </div>`;
+                case 'life':
+                    return `<div class="portal-member-life ${memberData.lifeClass}">${memberData.life}</div>`;
+                case 'status':
+                    return `<div class="portal-member-status ${memberData.statusInfo.statusClass}">${memberData.statusInfo.statusText}</div>`;
+                case 'timer':
+                    return `<div class="portal-member-timer ${memberData.timerClass}">${memberData.timerDisplay}</div>`;
+                default:
+                    return '<div>-</div>';
+            }
+        }
+
+        function renderMemberRow(member, isEnemy = false) {
             const statusClass = member.last_action?.status === 'Online' ? 'online' :
                               member.last_action?.status === 'Idle' ? 'idle' : 'offline';
 
@@ -2373,24 +2915,24 @@
                 timerClass = 'has-timer';
             }
 
-            return `
-                <div class="portal-member-row">
-                    <div class="portal-member-name">
-                        <span class="status-indicator ${statusClass}"></span>
-                        <a href="https://www.torn.com/profiles.php?XID=${member.id}" target="_blank">${member.name}</a>
-                    </div>
-                    <div class="portal-member-level">
-                        <span class="level-badge">Lv ${member.level || 'N/A'}</span>
-                    </div>
-                    <div class="portal-member-stats">
-                        <span class="est-value">${formatStatNumber(estStats.mid)}</span>
-                        <br><span class="est-range">${formatStatNumber(estStats.low)} - ${formatStatNumber(estStats.high)}</span>
-                    </div>
-                    <div class="portal-member-life ${lifeClass}">${life}</div>
-                    <div class="portal-member-status ${statusInfo.statusClass}">${statusInfo.statusText}</div>
-                    <div class="portal-member-timer ${timerClass}">${timerDisplay}</div>
-                </div>
-            `;
+            // Prepare member data for cell rendering
+            const memberData = {
+                statusClass,
+                life,
+                lifeClass,
+                estStats,
+                statusInfo,
+                timerDisplay,
+                timerClass
+            };
+
+            // Get the appropriate column order
+            const columnOrder = isEnemy ? enemyPortalColumnOrder : ownPortalColumnOrder;
+
+            // Generate cells in column order
+            const cells = columnOrder.map(col => getPortalCellContent(col, member, memberData)).join('');
+
+            return `<div class="portal-member-row">${cells}</div>`;
         }
 
         function renderWarPortal() {
@@ -2420,36 +2962,37 @@
             const getOwnSortClass = (col) => ownPortalSortColumn === col ? (ownPortalSortDirection === 'asc' ? 'sorted-asc' : 'sorted-desc') : '';
             const getEnemySortClass = (col) => enemyPortalSortColumn === col ? (enemyPortalSortDirection === 'asc' ? 'sorted-asc' : 'sorted-desc') : '';
 
-            // Helper to generate column with resize handle (not on last column)
+            // Helper to generate column with resize handle and drag support
             const colWithResize = (colName, sortClass, label, isEnemy, isLast = false) => {
                 const widths = isEnemy ? enemyColumnWidths : ownColumnWidths;
                 const width = widths[colName] || defaultColumnWidths[colName];
                 const resizeHandle = isLast ? '' : `<span class="col-resize-handle" onmousedown="startColumnResize(event, '${colName}', ${isEnemy})"></span>`;
                 return `<div class="portal-member-${colName === 'est_stats' ? 'stats' : colName} ${sortClass}"
                     onclick="sortPortalMembers('${colName}', ${isEnemy})"
+                    draggable="true"
+                    data-column="${colName}"
                     style="width: ${width}px; min-width: ${width}px; flex-shrink: 0;">${label}${resizeHandle}</div>`;
             };
 
-            // Column headers HTML with resize handles
+            // Generate headers based on column order
+            const generateHeaders = (columnOrder, getSortClass, isEnemy) => {
+                return columnOrder.map((col, index) => {
+                    const def = portalColumnDefs[col];
+                    const isLast = index === columnOrder.length - 1;
+                    return colWithResize(col, getSortClass(col), def.label, isEnemy, isLast);
+                }).join('');
+            };
+
+            // Column headers HTML with resize handles and drag support
             const ownHeadersHtml = `
-                <div class="portal-header-row">
-                    ${colWithResize('name', getOwnSortClass('name'), 'Name', false)}
-                    ${colWithResize('level', getOwnSortClass('level'), 'Level', false)}
-                    ${colWithResize('est_stats', getOwnSortClass('est_stats'), 'Est. Stats', false)}
-                    ${colWithResize('life', getOwnSortClass('life'), 'Life', false)}
-                    ${colWithResize('status', getOwnSortClass('status'), 'Status', false)}
-                    ${colWithResize('timer', getOwnSortClass('timer'), 'Timer', false, true)}
+                <div class="portal-header-row" id="ownPortalHeaderRow">
+                    ${generateHeaders(ownPortalColumnOrder, getOwnSortClass, false)}
                 </div>
             `;
 
             const enemyHeadersHtml = `
-                <div class="portal-header-row">
-                    ${colWithResize('name', getEnemySortClass('name'), 'Name', true)}
-                    ${colWithResize('level', getEnemySortClass('level'), 'Level', true)}
-                    ${colWithResize('est_stats', getEnemySortClass('est_stats'), 'Est. Stats', true)}
-                    ${colWithResize('life', getEnemySortClass('life'), 'Life', true)}
-                    ${colWithResize('status', getEnemySortClass('status'), 'Status', true)}
-                    ${colWithResize('timer', getEnemySortClass('timer'), 'Timer', true, true)}
+                <div class="portal-header-row" id="enemyPortalHeaderRow">
+                    ${generateHeaders(enemyPortalColumnOrder, getEnemySortClass, true)}
                 </div>
             `;
 
@@ -2467,7 +3010,7 @@
                         <div class="faction-members-list" id="ownMembersList">
                             ${ownHeadersHtml}
                             ${sortedOwnMembers.length > 0
-                                ? sortedOwnMembers.map(member => renderMemberRow(member)).join('')
+                                ? sortedOwnMembers.map(member => renderMemberRow(member, false)).join('')
                                 : '<div class="portal-no-data">Loading your faction data...</div>'
                             }
                         </div>
@@ -2487,7 +3030,7 @@
                         <div class="faction-members-list" id="enemyMembersList">
                             ${enemyHeadersHtml}
                             ${sortedEnemyMembers.length > 0
-                                ? sortedEnemyMembers.map(member => renderMemberRow(member)).join('')
+                                ? sortedEnemyMembers.map(member => renderMemberRow(member, true)).join('')
                                 : '<div class="portal-no-data">Enter enemy faction ID and click Load, or click Find Enemy</div>'
                             }
                         </div>
@@ -2501,6 +3044,26 @@
             // Apply stored column widths to member rows
             applyColumnWidths(false); // Own faction
             applyColumnWidths(true);  // Enemy faction
+
+            // Add drag event listeners for own faction header
+            const ownHeaderRow = document.getElementById('ownPortalHeaderRow');
+            if (ownHeaderRow) {
+                ownHeaderRow.addEventListener('dragstart', (e) => handlePortalDragStart(e, false));
+                ownHeaderRow.addEventListener('dragover', (e) => handlePortalDragOver(e, false));
+                ownHeaderRow.addEventListener('dragleave', handlePortalDragLeave);
+                ownHeaderRow.addEventListener('drop', (e) => handlePortalDrop(e, false));
+                ownHeaderRow.addEventListener('dragend', handlePortalDragEnd);
+            }
+
+            // Add drag event listeners for enemy faction header
+            const enemyHeaderRow = document.getElementById('enemyPortalHeaderRow');
+            if (enemyHeaderRow) {
+                enemyHeaderRow.addEventListener('dragstart', (e) => handlePortalDragStart(e, true));
+                enemyHeaderRow.addEventListener('dragover', (e) => handlePortalDragOver(e, true));
+                enemyHeaderRow.addEventListener('dragleave', handlePortalDragLeave);
+                enemyHeaderRow.addEventListener('drop', (e) => handlePortalDrop(e, true));
+                enemyHeaderRow.addEventListener('dragend', handlePortalDragEnd);
+            }
         }
 
         function filterPortalMembers() {
