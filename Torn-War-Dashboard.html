@@ -15,7 +15,7 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            padding: 20px;
+            padding: 10px;
         }
 
         .container {
@@ -25,29 +25,42 @@
 
         .header {
             background: white;
-            padding: 30px;
+            padding: 15px 20px;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
+            margin-bottom: 15px;
         }
 
         .header h1 {
             color: #333;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
 
         .api-input-group {
             display: flex;
             gap: 10px;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
+            align-items: flex-end;
+        }
+
+        .input-with-label {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .input-with-label label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #555;
         }
 
         .api-input-group input {
-            flex: 1;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 5px;
-            font-size: 14px;
+            width: 180px;
+            padding: 6px 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 12px;
         }
 
         .api-input-group input:focus {
@@ -56,19 +69,27 @@
         }
 
         .btn {
-            padding: 12px 30px;
+            padding: 8px 20px;
             background: #667eea;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             transition: background 0.3s;
         }
 
         .btn:hover {
             background: #5568d3;
+        }
+
+        .btn-blue {
+            background: #1565c0;
+        }
+
+        .btn-blue:hover {
+            background: #0d47a1;
         }
 
         .btn:disabled {
@@ -90,10 +111,10 @@
             background: #fff3cd;
             border: 1px solid #ffc107;
             color: #856404;
-            padding: 15px;
+            padding: 10px;
             border-radius: 5px;
-            margin-top: 15px;
-            font-size: 13px;
+            margin-top: 10px;
+            font-size: 12px;
         }
 
         .warning-box strong {
@@ -134,28 +155,28 @@
 
         .faction-info {
             background: white;
-            padding: 30px;
+            padding: 15px 20px;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
+            margin-bottom: 15px;
         }
 
         .faction-info h2 {
             color: #333;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
             border-bottom: 2px solid #667eea;
         }
 
         .info-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
+            gap: 10px;
+            margin-top: 10px;
         }
 
         .info-item {
-            padding: 15px;
+            padding: 8px 12px;
             background: #f8f9fa;
             border-radius: 5px;
         }
@@ -178,15 +199,15 @@
 
         .members-section {
             background: white;
-            padding: 30px;
+            padding: 15px 20px;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .members-section h2 {
             color: #333;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
             border-bottom: 2px solid #667eea;
         }
 
@@ -557,7 +578,7 @@
         /* War Portal Two-Faction Layout */
         .war-portal-container {
             display: flex;
-            gap: 20px;
+            gap: 10px;
         }
 
         .faction-column {
@@ -568,7 +589,7 @@
         .faction-header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 15px;
+            padding: 10px 15px;
             border-radius: 8px 8px 0 0;
             margin-bottom: 0;
         }
@@ -589,25 +610,25 @@
 
         .faction-input-panel {
             background: #f8f9fa;
-            padding: 10px 15px;
+            padding: 6px 10px;
             border: 1px solid #ddd;
             border-top: none;
             display: flex;
-            gap: 10px;
+            gap: 8px;
             align-items: center;
         }
 
         .faction-input-panel input {
             flex: 1;
-            padding: 8px 12px;
+            padding: 5px 10px;
             border: 2px solid #ddd;
             border-radius: 5px;
-            font-size: 13px;
+            font-size: 12px;
         }
 
         .faction-input-panel .btn {
-            padding: 8px 15px;
-            font-size: 13px;
+            padding: 5px 12px;
+            font-size: 12px;
         }
 
         .faction-members-list {
@@ -686,6 +707,17 @@
         .portal-member-stats .real-range {
             font-size: 10px;
             color: #28a745;
+        }
+
+        /* General styles for real/estimated values in tables */
+        td .real-value {
+            font-weight: 600;
+            color: #28a745;
+        }
+
+        td .est-value {
+            font-weight: 600;
+            color: #667eea;
         }
 
         .stats-legend {
@@ -963,26 +995,25 @@
                 <span style="font-size: 12px; color: #666; white-space: nowrap; margin-left: 15px;">V0.16 - 10/01/2026</span>
             </div>
             <div class="api-input-group">
-                <input
-                    type="text"
-                    id="apiKey"
-                    placeholder="Enter your Torn API Key"
-                    value=""
-                    onkeypress="handleEnterKey(event)">
-                <input
-                    type="text"
-                    id="tornStatsApiKey"
-                    placeholder="TornStats API Key (optional)"
-                    value=""
-                    onkeypress="handleEnterKey(event)">
-                <input
-                    type="text"
-                    id="factionId"
-                    placeholder="Faction ID (optional - leave empty for your faction)"
-                    value=""
-                    onkeypress="handleEnterKey(event)">
-                <button class="btn" id="loadBtn" onclick="loadFactionData()">Load Faction Data</button>
-                <button class="btn" id="findEnemyBtn" onclick="findEnemy()" style="background: #dc3545;">Find Enemy</button>
+                <div class="input-with-label">
+                    <label for="apiKey">Torn API Key</label>
+                    <input
+                        type="text"
+                        id="apiKey"
+                        placeholder="Required"
+                        value=""
+                        onkeypress="handleEnterKey(event)">
+                </div>
+                <div class="input-with-label">
+                    <label for="tornStatsApiKey">TornStats API Key</label>
+                    <input
+                        type="text"
+                        id="tornStatsApiKey"
+                        placeholder="Optional"
+                        value=""
+                        onkeypress="handleEnterKey(event)">
+                </div>
+                <button class="btn" id="getFactionBtn" onclick="getFaction()" style="background: #28a745;">Get Faction</button>
             </div>
             <div class="info-text">
                 Your API key is stored locally in your browser and never sent anywhere except to Torn's official API.
@@ -1007,6 +1038,8 @@
         let membersData = [];
         let enemyFactionData = null;
         let enemyMembersData = [];
+        let spyFactionData = null;
+        let spyMembersData = [];
 
         // Save enemy faction data to localStorage
         function saveEnemyFactionData() {
@@ -1398,6 +1431,29 @@
         let draggedColumn = null;
         let draggedColumnIndex = null;
 
+        // Spy Faction column order (same columns as War Planning)
+        let spyFactionColumnOrder = [...defaultWarPlanningColumns];
+        let spyFactionSortColumn = 'est_stats';
+        let spyFactionSortDirection = 'desc';
+
+        // Spy Faction drag state
+        let spyDraggedColumn = null;
+        let spyDraggedColumnIndex = null;
+
+        // Spy Faction column widths
+        let spyColumnWidths = {};
+
+        // TornStats columns to show alongside est_stats
+        const tornStatsColumns = ['str', 'def', 'spd', 'dex'];
+
+        // Column definitions for TornStats columns
+        const tornStatsColumnDefs = {
+            str: { label: 'STR', sortKey: 'str' },
+            def: { label: 'DEF', sortKey: 'def' },
+            spd: { label: 'SPD', sortKey: 'spd' },
+            dex: { label: 'DEX', sortKey: 'dex' }
+        };
+
         // Load war planning column order from localStorage
         function loadWarPlanningColumnOrder() {
             const saved = localStorage.getItem('tornWarPlanningColumnOrder');
@@ -1516,6 +1572,191 @@
             });
             draggedColumn = null;
             draggedColumnIndex = null;
+        }
+
+        // Load spy faction column order from localStorage
+        function loadSpyFactionColumnOrder() {
+            const saved = localStorage.getItem('tornSpyFactionColumnOrder');
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    const hasAllColumns = defaultWarPlanningColumns.every(col => parsed.includes(col));
+                    if (Array.isArray(parsed) && hasAllColumns && parsed.length === defaultWarPlanningColumns.length) {
+                        spyFactionColumnOrder = parsed;
+                    } else {
+                        spyFactionColumnOrder = [...defaultWarPlanningColumns];
+                    }
+                } catch (e) {
+                    spyFactionColumnOrder = [...defaultWarPlanningColumns];
+                }
+            }
+        }
+
+        // Save spy faction column order to localStorage
+        function saveSpyFactionColumnOrder() {
+            localStorage.setItem('tornSpyFactionColumnOrder', JSON.stringify(spyFactionColumnOrder));
+        }
+
+        // Load spy faction column widths from localStorage
+        function loadSpyColumnWidths() {
+            const saved = localStorage.getItem('tornSpyColumnWidths');
+            if (saved) {
+                try {
+                    spyColumnWidths = JSON.parse(saved);
+                } catch (e) {
+                    spyColumnWidths = { ...defaultWPColumnWidths };
+                }
+            } else {
+                spyColumnWidths = { ...defaultWPColumnWidths };
+            }
+        }
+
+        // Save spy faction column widths to localStorage
+        function saveSpyColumnWidths() {
+            localStorage.setItem('tornSpyColumnWidths', JSON.stringify(spyColumnWidths));
+        }
+
+        // Handle drag start for spy faction columns
+        function handleSpyFactionDragStart(e) {
+            spyDraggedColumn = e.target.closest('th');
+            if (!spyDraggedColumn) return;
+
+            spyDraggedColumnIndex = Array.from(spyDraggedColumn.parentNode.children).indexOf(spyDraggedColumn);
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/plain', spyDraggedColumnIndex);
+
+            setTimeout(() => {
+                spyDraggedColumn.classList.add('dragging');
+            }, 0);
+        }
+
+        // Handle drag over for spy faction columns
+        function handleSpyFactionDragOver(e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+
+            const th = e.target.closest('th');
+            if (!th || th === spyDraggedColumn) return;
+
+            const allThs = th.parentNode.querySelectorAll('th');
+            allThs.forEach(t => t.classList.remove('drag-over-left', 'drag-over-right'));
+
+            const rect = th.getBoundingClientRect();
+            const midpoint = rect.left + rect.width / 2;
+
+            if (e.clientX < midpoint) {
+                th.classList.add('drag-over-left');
+            } else {
+                th.classList.add('drag-over-right');
+            }
+        }
+
+        // Handle drag leave for spy faction columns
+        function handleSpyFactionDragLeave(e) {
+            const th = e.target.closest('th');
+            if (th) {
+                th.classList.remove('drag-over-left', 'drag-over-right');
+            }
+        }
+
+        // Handle drop for spy faction columns
+        function handleSpyFactionDrop(e) {
+            e.preventDefault();
+
+            const targetTh = e.target.closest('th');
+            if (!targetTh || !spyDraggedColumn || targetTh === spyDraggedColumn) {
+                cleanupSpyDrag();
+                return;
+            }
+
+            const targetIndex = Array.from(targetTh.parentNode.children).indexOf(targetTh);
+
+            const rect = targetTh.getBoundingClientRect();
+            const midpoint = rect.left + rect.width / 2;
+            let insertIndex = e.clientX < midpoint ? targetIndex : targetIndex + 1;
+
+            if (spyDraggedColumnIndex < insertIndex) {
+                insertIndex--;
+            }
+
+            const [removed] = spyFactionColumnOrder.splice(spyDraggedColumnIndex, 1);
+            spyFactionColumnOrder.splice(insertIndex, 0, removed);
+
+            saveSpyFactionColumnOrder();
+            filterSpyMembers();
+
+            cleanupSpyDrag();
+        }
+
+        // Handle drag end for spy faction columns
+        function handleSpyFactionDragEnd(e) {
+            cleanupSpyDrag();
+        }
+
+        // Clean up spy drag state
+        function cleanupSpyDrag() {
+            if (spyDraggedColumn) {
+                spyDraggedColumn.classList.remove('dragging');
+            }
+            document.querySelectorAll('#spyMembersTable th').forEach(th => {
+                th.classList.remove('drag-over-left', 'drag-over-right');
+            });
+            spyDraggedColumn = null;
+            spyDraggedColumnIndex = null;
+        }
+
+        // Sort spy faction members
+        function sortSpyMembers(column) {
+            if (spyFactionSortColumn === column) {
+                spyFactionSortDirection = spyFactionSortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                spyFactionSortColumn = column;
+                spyFactionSortDirection = 'desc';
+            }
+            filterSpyMembers();
+        }
+
+        // Spy column resize state
+        let isSpyResizing = false;
+        let spyResizingColumn = null;
+        let spyResizeStartX = 0;
+        let spyResizeStartWidth = 0;
+
+        // Start spy column resize
+        function startSpyColumnResize(e, columnName) {
+            e.preventDefault();
+            e.stopPropagation();
+            isSpyResizing = true;
+            spyResizingColumn = columnName;
+            spyResizeStartX = e.clientX;
+            spyResizeStartWidth = spyColumnWidths[columnName] || defaultWPColumnWidths[columnName];
+            document.addEventListener('mousemove', handleSpyColumnResize);
+            document.addEventListener('mouseup', stopSpyColumnResize);
+        }
+
+        // Handle spy column resize
+        function handleSpyColumnResize(e) {
+            if (!isSpyResizing) return;
+            const diff = e.clientX - spyResizeStartX;
+            const newWidth = Math.max(40, spyResizeStartWidth + diff);
+            spyColumnWidths[spyResizingColumn] = newWidth;
+
+            // Update column width in real-time
+            const headers = document.querySelectorAll(`#spyMembersTable th[data-column="${spyResizingColumn}"]`);
+            const cells = document.querySelectorAll(`#spyMembersTable td[data-column="${spyResizingColumn}"]`);
+            headers.forEach(h => { h.style.width = newWidth + 'px'; h.style.minWidth = newWidth + 'px'; });
+            cells.forEach(c => { c.style.width = newWidth + 'px'; c.style.minWidth = newWidth + 'px'; });
+        }
+
+        // Stop spy column resize
+        function stopSpyColumnResize() {
+            if (isSpyResizing) {
+                saveSpyColumnWidths();
+            }
+            isSpyResizing = false;
+            spyResizingColumn = null;
+            document.removeEventListener('mousemove', handleSpyColumnResize);
+            document.removeEventListener('mouseup', stopSpyColumnResize);
         }
 
         // War Planning column widths (resizable)
@@ -1814,10 +2055,46 @@
             };
         }
 
+        // Show TornStats checking indicator on a faction list
+        function showTornStatsIndicator(isEnemy, message) {
+            const listId = isEnemy ? 'enemyMembersList' : 'ownMembersList';
+            const list = document.getElementById(listId);
+            if (list) {
+                // Check if indicator already exists
+                let indicator = list.querySelector('.tornstats-indicator');
+                if (!indicator) {
+                    indicator = document.createElement('div');
+                    indicator.className = 'tornstats-indicator';
+                    indicator.style.cssText = 'background: #e3f2fd; color: #1565c0; padding: 8px 12px; text-align: center; font-size: 12px; border-bottom: 1px solid #ddd;';
+                    // Insert after header row
+                    const headerRow = list.querySelector('.portal-header-row');
+                    if (headerRow && headerRow.nextSibling) {
+                        list.insertBefore(indicator, headerRow.nextSibling);
+                    } else {
+                        list.insertBefore(indicator, list.firstChild);
+                    }
+                }
+                indicator.innerHTML = message;
+            }
+        }
+
+        // Hide TornStats checking indicator
+        function hideTornStatsIndicator(isEnemy) {
+            const listId = isEnemy ? 'enemyMembersList' : 'ownMembersList';
+            const list = document.getElementById(listId);
+            if (list) {
+                const indicator = list.querySelector('.tornstats-indicator');
+                if (indicator) {
+                    indicator.remove();
+                }
+            }
+        }
+
         // Fetch spy data from TornStats for a list of player IDs
         // forceUpdate: if true, fetches all players regardless of cache
+        // isEnemy: optional, indicates which faction list to show indicator on
         // Returns the number of players with real spy data found
-        async function fetchTornStatsSpyData(playerIds, forceUpdate = false) {
+        async function fetchTornStatsSpyData(playerIds, forceUpdate = false, isEnemy = null) {
             const tornStatsApiKey = document.getElementById('tornStatsApiKey').value.trim();
             if (!tornStatsApiKey) {
                 console.log('TornStats: No API key provided, skipping fetch');
@@ -1854,7 +2131,13 @@
                 return 0;
             }
 
+            // Show indicator if we know which list this is for
+            if (isEnemy !== null) {
+                showTornStatsIndicator(isEnemy, `Checking TornStats... (0/${idsToFetch.length})`);
+            }
+
             let foundCount = 0;
+            let checkedCount = 0;
 
             // TornStats API has rate limits, so we batch requests with delays
             const batchSize = 10;
@@ -1903,11 +2186,22 @@
                 });
 
                 await Promise.all(promises);
+                checkedCount += batch.length;
+
+                // Update indicator
+                if (isEnemy !== null) {
+                    showTornStatsIndicator(isEnemy, `Checking TornStats... (${checkedCount}/${idsToFetch.length})`);
+                }
 
                 // Delay before next batch (except for last batch)
                 if (i + batchSize < idsToFetch.length) {
                     await new Promise(resolve => setTimeout(resolve, delayMs));
                 }
+            }
+
+            // Hide indicator
+            if (isEnemy !== null) {
+                hideTornStatsIndicator(isEnemy);
             }
 
             // Save cache to localStorage
@@ -1963,7 +2257,91 @@
         // Handle Enter key press on input fields
         function handleEnterKey(event) {
             if (event.key === 'Enter') {
-                loadFactionData();
+                getFaction();
+            }
+        }
+
+        // Get faction: Load user's faction and switch to My Faction tab
+        async function getFaction() {
+            const apiKey = document.getElementById('apiKey').value.trim();
+
+            if (!apiKey) {
+                showError('Please enter your API key first');
+                return;
+            }
+
+            showLoading();
+
+            try {
+                // Get the user's faction ID
+                const userResponse = await fetch(`https://api.torn.com/user?selections=profile&key=${apiKey}`);
+                const userData = await userResponse.json();
+
+                if (userData.error) {
+                    throw new Error(userData.error.error);
+                }
+
+                const myFactionId = userData.faction?.faction_id || userData.faction_id;
+
+                if (!myFactionId) {
+                    throw new Error('You are not in a faction');
+                }
+
+                // Save user's faction ID
+                localStorage.setItem('tornUserFactionId', myFactionId.toString());
+
+                // Load the user's faction data
+                const factionUrl = `https://api.torn.com/faction/${myFactionId}?selections=basic&key=${apiKey}`;
+                const factionResponse = await fetch(factionUrl);
+                const factionBasicData = await factionResponse.json();
+
+                if (factionBasicData.error) {
+                    throw new Error(factionBasicData.error.error);
+                }
+
+                factionData = factionBasicData;
+
+                // Extract member IDs and fetch their details
+                const memberIds = factionBasicData.members ? Object.keys(factionBasicData.members) : [];
+                const memberDetailsPromises = memberIds.map(id =>
+                    fetch(`https://api.torn.com/user/${id}?selections=profile,personalstats&key=${apiKey}`)
+                        .then(r => r.json())
+                        .then(d => ({ id, ...d }))
+                        .catch(e => ({ id, error: e.message }))
+                );
+
+                const memberDetails = await Promise.all(memberDetailsPromises);
+
+                membersData = memberIds.map(id => {
+                    const member = factionBasicData.members[id];
+                    const details = memberDetails.find(d => d.id === id) || {};
+                    return {
+                        id,
+                        ...member,
+                        details: details || {}
+                    };
+                });
+
+                // Also set userFactionData and userMembersData
+                userFactionData = factionBasicData;
+                userMembersData = [...membersData];
+
+                // Render the dashboard
+                renderDashboard();
+
+                // Switch to My Faction tab
+                switchToTab('my-faction');
+
+                // Fetch TornStats spy data
+                await fetchTornStatsSpyData(memberIds, false, false);
+
+                // Re-render to show updated stats
+                renderMembersTable(membersData);
+
+                hideLoading();
+            } catch (error) {
+                hideLoading();
+                showError(error.message);
             }
         }
 
@@ -2026,13 +2404,299 @@
                 }
 
                 // Load the enemy faction
-                document.getElementById('factionId').value = enemyFactionId;
                 localStorage.setItem('tornFactionId', enemyFactionId);
                 loadFactionData();
 
             } catch (error) {
                 console.error('Error finding enemy:', error);
                 showError(`Error finding enemy faction: ${error.message}`);
+            }
+        }
+
+        // War Layout: Switch to War Portal and load both factions
+        async function warLayout() {
+            const apiKey = document.getElementById('apiKey').value.trim();
+
+            if (!apiKey) {
+                showError('Please enter your API key first');
+                return;
+            }
+
+            showLoading();
+
+            try {
+                // First, get the user's faction ID
+                const userResponse = await fetch(`https://api.torn.com/user?selections=profile&key=${apiKey}`);
+                const userData = await userResponse.json();
+
+                console.log('User API response:', userData);
+
+                if (userData.error) {
+                    throw new Error(userData.error.error);
+                }
+
+                // Check for faction ID in different possible locations
+                const myFactionId = userData.faction?.faction_id || userData.faction_id;
+
+                if (!myFactionId) {
+                    console.log('Faction data not found. userData.faction:', userData.faction);
+                    throw new Error('You are not in a faction');
+                }
+
+                // Save user's faction ID
+                localStorage.setItem('tornUserFactionId', myFactionId.toString());
+
+                // Get faction's ranked war info
+                const factionResponse = await fetch(`https://api.torn.com/faction/${myFactionId}?selections=rankedwars&key=${apiKey}`);
+                const factionRWData = await factionResponse.json();
+
+                if (factionRWData.error) {
+                    throw new Error(factionRWData.error.error);
+                }
+
+                // Find active ranked war enemy (war without an end time or end time in future)
+                const rankedWars = factionRWData.rankedwars || {};
+                let enemyFactionId = null;
+                const now = Math.floor(Date.now() / 1000);
+
+                console.log('Ranked wars data:', rankedWars);
+
+                // Sort war IDs descending (newest first) to get the most recent war
+                const sortedWarIds = Object.keys(rankedWars).sort((a, b) => parseInt(b) - parseInt(a));
+
+                for (const warId of sortedWarIds) {
+                    const war = rankedWars[warId];
+                    console.log(`War ${warId}:`, war, `end: ${war.end}, now: ${now}, hasEnded: ${war.end && war.end > 0 && war.end < now}`);
+
+                    // Check if war has ended (has an end time that's in the past)
+                    const hasEnded = war.end && war.end > 0 && war.end < now;
+
+                    if (!hasEnded && war.factions) {
+                        for (const fId in war.factions) {
+                            if (fId != myFactionId) {
+                                enemyFactionId = fId;
+                                console.log(`Found active enemy faction: ${fId} in war ${warId}`);
+                                break;
+                            }
+                        }
+                    }
+                    if (enemyFactionId) break;
+                }
+
+                if (!enemyFactionId) {
+                    throw new Error('You are not currently matched for a Ranked War against another faction!');
+                }
+
+                // Save enemy faction ID
+                localStorage.setItem('tornEnemyFactionId', enemyFactionId);
+
+                // First load the user's faction data to populate factionData and membersData
+                // This is needed so renderDashboard() has data to work with
+                const factionUrl = `https://api.torn.com/faction/${myFactionId}?selections=basic&key=${apiKey}`;
+                const factionResponse2 = await fetch(factionUrl);
+                const factionBasicData = await factionResponse2.json();
+
+                if (factionBasicData.error) {
+                    throw new Error(factionBasicData.error.error);
+                }
+
+                factionData = factionBasicData;
+
+                // Extract member IDs and fetch their details
+                const memberIds = factionBasicData.members ? Object.keys(factionBasicData.members) : [];
+                const memberDetailsPromises = memberIds.map(id =>
+                    fetch(`https://api.torn.com/user/${id}?selections=profile,personalstats&key=${apiKey}`)
+                        .then(r => r.json())
+                        .then(d => ({ id, ...d }))
+                        .catch(e => ({ id, error: e.message }))
+                );
+
+                const memberDetails = await Promise.all(memberDetailsPromises);
+
+                membersData = memberIds.map(id => {
+                    const member = factionBasicData.members[id];
+                    const details = memberDetails.find(d => d.id === id) || {};
+                    return {
+                        id,
+                        ...member,
+                        details: details || {}
+                    };
+                });
+
+                // Also set userFactionData and userMembersData
+                userFactionData = factionBasicData;
+                userMembersData = [...membersData];
+
+                // Now render the dashboard (this creates the warPortalContainer)
+                renderDashboard();
+
+                // Switch to War Portal tab first so indicators can be shown
+                switchToWarPortal();
+
+                // Fetch TornStats spy data (show indicator on own faction list)
+                await fetchTornStatsSpyData(memberIds, false, false);
+
+                // Re-render to show updated stats
+                renderWarPortal();
+
+                // Load enemy faction into right side
+                await loadEnemyFaction(enemyFactionId);
+
+            } catch (error) {
+                console.error('Error in war layout:', error);
+                document.getElementById('content').innerHTML = '';
+                showError(`Error setting up war layout: ${error.message}`);
+            }
+        }
+
+        // Helper function to switch to War Portal tab programmatically
+        function switchToWarPortal() {
+            // Update tab buttons
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            const portalBtn = document.querySelector('.tab-button[onclick*="war-portal"]');
+            if (portalBtn) {
+                portalBtn.classList.add('active');
+            }
+
+            // Update tab content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            const portalContent = document.getElementById('war-portal');
+            if (portalContent) {
+                portalContent.classList.add('active');
+            }
+
+            // Save active tab to localStorage
+            localStorage.setItem('tornActiveTab', 'war-portal');
+        }
+
+        // Helper function to switch to any tab programmatically
+        function switchToTab(tabId) {
+            // Get current tab before switching
+            const currentTab = localStorage.getItem('tornActiveTab');
+
+            // Update tab buttons
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            const tabBtn = document.querySelector(`.tab-button[onclick*="${tabId}"]`);
+            if (tabBtn) {
+                tabBtn.classList.add('active');
+            }
+
+            // Update tab content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            const tabContent = document.getElementById(tabId);
+            if (tabContent) {
+                tabContent.classList.add('active');
+            }
+
+            // Save active tab to localStorage
+            localStorage.setItem('tornActiveTab', tabId);
+
+            // Handle faction info display and auto-refresh visibility based on tab
+            const autoRefreshInfo = document.getElementById('autoRefreshInfo');
+            const membersOverviewTitle = document.getElementById('membersOverviewTitle');
+
+            if (tabId === 'faction-spying') {
+                // Hide auto-refresh info on Faction Spying tab
+                if (autoRefreshInfo) autoRefreshInfo.style.display = 'none';
+                // Update title for spying
+                if (membersOverviewTitle) membersOverviewTitle.textContent = 'Faction Spying';
+                // Update faction info and stats if we have spy data
+                if (spyFactionData) {
+                    updateMainFactionInfoForSpy();
+                    updateStatsSummaryForSpy();
+                }
+            } else if (tabId === 'war-portal') {
+                // Show auto-refresh info on War Portal tab
+                if (autoRefreshInfo) autoRefreshInfo.style.display = 'block';
+                // Update title for war portal
+                if (membersOverviewTitle) membersOverviewTitle.textContent = 'War Portal';
+                // Update faction info and stats for war portal (both factions)
+                updateMainFactionInfoForWarPortal();
+                updateStatsSummaryForWarPortal();
+            } else {
+                // Show auto-refresh info on other tabs
+                if (autoRefreshInfo) autoRefreshInfo.style.display = 'block';
+                // Restore user's faction info when switching away from faction-spying or war-portal
+                if (currentTab === 'faction-spying' || currentTab === 'war-portal') {
+                    restoreUserFactionInfo();
+                    restoreStatsSummaryForUser();
+                    if (membersOverviewTitle && factionData) {
+                        membersOverviewTitle.textContent = `Members Overview: ${factionData.name || 'Unknown Faction'}`;
+                    }
+                }
+            }
+        }
+
+        // Load user faction specifically for War Layout (includes TornStats)
+        async function loadUserFactionForWarLayout(factionId, apiKey) {
+            try {
+                // Load user's faction data
+                const factionUrl = `https://api.torn.com/faction/${factionId}?selections=basic&key=${apiKey}`;
+                const response = await fetch(factionUrl);
+                const data = await response.json();
+
+                if (data.error) {
+                    throw new Error(data.error.error);
+                }
+
+                userFactionData = data;
+
+                // Extract member IDs from the faction data
+                const memberIds = data.members ? Object.keys(data.members) : [];
+
+                // Fetch details for all members
+                const memberDetailsPromises = memberIds.map(id =>
+                    fetch(`https://api.torn.com/user/${id}?selections=profile,personalstats&key=${apiKey}`)
+                        .then(r => r.json())
+                        .then(d => ({ id, ...d }))
+                        .catch(e => ({ id, error: e.message }))
+                );
+
+                const memberDetails = await Promise.all(memberDetailsPromises);
+
+                // Merge member details with basic faction member data
+                userMembersData = memberIds.map(id => {
+                    const member = data.members[id];
+                    const details = memberDetails.find(d => d.id === id) || {};
+                    return {
+                        id,
+                        ...member,
+                        details: details || {}
+                    };
+                });
+
+                // Fetch TornStats spy data for own faction members (if API key provided)
+                await fetchTornStatsSpyData(memberIds, false, false);
+
+                // Save user faction data to localStorage for restore on reload
+                saveUserFactionData();
+
+                // Update the War Portal display
+                renderWarPortal();
+
+            } catch (error) {
+                console.error('Error loading user faction for war layout:', error);
+            }
+        }
+
+        // Save user faction data to localStorage
+        function saveUserFactionData() {
+            if (userFactionData && userMembersData.length > 0) {
+                try {
+                    localStorage.setItem('tornUserFactionData', JSON.stringify(userFactionData));
+                    localStorage.setItem('tornUserMembersData', JSON.stringify(userMembersData));
+                    console.log('User faction data saved to localStorage');
+                } catch (e) {
+                    console.warn('Failed to save user faction data:', e);
+                }
             }
         }
 
@@ -2163,7 +2827,7 @@
                 });
 
                 // Fetch TornStats spy data for enemy members (if API key provided)
-                await fetchTornStatsSpyData(memberIds);
+                await fetchTornStatsSpyData(memberIds, false, true);
 
                 // Save enemy faction data to localStorage for restore on reload
                 saveEnemyFactionData();
@@ -2243,7 +2907,7 @@
                 });
 
                 // Fetch TornStats spy data for own faction members (if API key provided)
-                await fetchTornStatsSpyData(memberIds);
+                await fetchTornStatsSpyData(memberIds, false, false);
 
                 // Update the War Portal display
                 renderWarPortal();
@@ -2277,8 +2941,7 @@
             }
 
             try {
-                const foundCount = await fetchTornStatsSpyData(memberIds, true);
-                alert(`TornStats update complete. Found spy data for ${foundCount} of ${memberIds.length} members.`);
+                await fetchTornStatsSpyData(memberIds, true, false);
                 renderWarPortal();
             } catch (e) {
                 alert('Error updating TornStats: ' + e.message);
@@ -2311,8 +2974,7 @@
             }
 
             try {
-                const foundCount = await fetchTornStatsSpyData(memberIds, true);
-                alert(`TornStats update complete. Found spy data for ${foundCount} of ${memberIds.length} members.`);
+                await fetchTornStatsSpyData(memberIds, true, true);
                 renderWarPortal();
             } catch (e) {
                 alert('Error updating TornStats: ' + e.message);
@@ -2324,6 +2986,600 @@
             }
         }
 
+        // Load faction for Faction Spying tab
+        async function loadSpyFaction() {
+            const apiKey = document.getElementById('apiKey').value.trim();
+            const spyFactionId = document.getElementById('spyFactionId').value.trim();
+
+            if (!apiKey) {
+                alert('Please enter your API key first');
+                return;
+            }
+
+            if (!spyFactionId) {
+                alert('Please enter a Faction ID');
+                return;
+            }
+
+            const container = document.getElementById('spyFactionContainer');
+            if (container) {
+                container.innerHTML = '<div style="padding: 40px; text-align: center; color: #666;"><p>Loading faction data...</p></div>';
+            }
+
+            try {
+                // Load faction basic info
+                const factionUrl = `https://api.torn.com/faction/${spyFactionId}?selections=basic&key=${apiKey}`;
+                const response = await fetch(factionUrl);
+                const data = await response.json();
+
+                if (data.error) {
+                    throw new Error(data.error.error);
+                }
+
+                spyFactionData = data;
+
+                // Extract member IDs
+                const memberIds = data.members ? Object.keys(data.members) : [];
+
+                // Fetch details for all members
+                const memberDetailsPromises = memberIds.map(id =>
+                    fetch(`https://api.torn.com/user/${id}?selections=profile,personalstats&key=${apiKey}`)
+                        .then(r => r.json())
+                        .then(d => ({ id, ...d }))
+                        .catch(e => ({ id, error: e.message }))
+                );
+
+                const memberDetails = await Promise.all(memberDetailsPromises);
+
+                // Merge member details with basic faction member data
+                spyMembersData = memberIds.map(id => {
+                    const member = data.members[id];
+                    const details = memberDetails.find(d => d.id === id) || {};
+                    return {
+                        id,
+                        ...member,
+                        details: details || {}
+                    };
+                });
+
+                // Fetch TornStats spy data
+                await fetchTornStatsSpyData(memberIds);
+
+                // Save last spied faction ID
+                localStorage.setItem('tornSpyFactionId', spyFactionId);
+
+                // Render the spy faction view
+                renderSpyFaction();
+
+            } catch (error) {
+                console.error('Error loading spy faction:', error);
+                if (container) {
+                    container.innerHTML = `<div style="padding: 40px; text-align: center; color: #c33;"><p>Error: ${error.message}</p></div>`;
+                }
+            }
+        }
+
+        // Render the Faction Spying tab content
+        function renderSpyFaction() {
+            const container = document.getElementById('spyFactionContainer');
+            if (!container || !spyFactionData) return;
+
+            // Update the main faction info area with spy faction data
+            updateMainFactionInfoForSpy();
+
+            // Hide auto-refresh info and update title
+            const autoRefreshInfo = document.getElementById('autoRefreshInfo');
+            const membersOverviewTitle = document.getElementById('membersOverviewTitle');
+            if (autoRefreshInfo) autoRefreshInfo.style.display = 'none';
+            if (membersOverviewTitle) membersOverviewTitle.textContent = 'Faction Spying';
+
+            // Update stats summary with spy faction stats
+            updateStatsSummaryForSpy();
+
+            // Render only the filters and table in the spy container
+            container.innerHTML = `
+                <div class="filters" style="padding: 10px 15px;">
+                    <input type="text" id="spySearchInput" placeholder="Search members..." onkeyup="filterSpyMembers()">
+                    <select id="spyStatusFilter" onchange="filterSpyMembers()">
+                        <option value="">All Status</option>
+                        <option value="Online">Online</option>
+                        <option value="Idle">Idle</option>
+                        <option value="Offline">Offline</option>
+                    </select>
+                </div>
+                <div id="spyMembersTableContainer"></div>
+            `;
+
+            filterSpyMembers();
+        }
+
+        // Update stats summary for spy faction
+        function updateStatsSummaryForSpy() {
+            const statsSummary = document.getElementById('statsSummary');
+            if (!statsSummary || !spyFactionData) return;
+
+            // Make sure it's visible (may have been hidden by War Portal)
+            statsSummary.style.display = '';
+
+            const onlineCount = spyMembersData.filter(m => m.last_action?.status === 'Online').length;
+            const idleCount = spyMembersData.filter(m => m.last_action?.status === 'Idle').length;
+            const offlineCount = spyMembersData.filter(m => m.last_action?.status === 'Offline').length;
+            const totalLevel = spyMembersData.reduce((sum, m) => sum + (m.level || 0), 0);
+            const avgLevel = spyMembersData.length > 0 ? Math.round(totalLevel / spyMembersData.length) : 0;
+
+            statsSummary.innerHTML = `
+                <div class="stat-card" style="background: linear-gradient(135deg, #1565c0 0%, #0d47a1 100%);">
+                    <h3>Online</h3>
+                    <div class="value">${onlineCount}</div>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #1565c0 0%, #0d47a1 100%);">
+                    <h3>Idle</h3>
+                    <div class="value">${idleCount}</div>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #1565c0 0%, #0d47a1 100%);">
+                    <h3>Offline</h3>
+                    <div class="value">${offlineCount}</div>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #1565c0 0%, #0d47a1 100%);">
+                    <h3>Average Level</h3>
+                    <div class="value">${avgLevel}</div>
+                </div>
+            `;
+        }
+
+        // Restore stats summary for user's faction
+        function restoreStatsSummaryForUser() {
+            const statsSummary = document.getElementById('statsSummary');
+            if (!statsSummary || !membersData.length) return;
+
+            // Make sure it's visible (may have been hidden by War Portal)
+            statsSummary.style.display = '';
+
+            const onlineCount = membersData.filter(m => m.last_action?.status === 'Online').length;
+            const idleCount = membersData.filter(m => m.last_action?.status === 'Idle').length;
+            const offlineCount = membersData.filter(m => m.last_action?.status === 'Offline').length;
+            const totalLevel = membersData.reduce((sum, m) => sum + (m.level || 0), 0);
+            const avgLevel = membersData.length > 0 ? Math.round(totalLevel / membersData.length) : 0;
+
+            statsSummary.innerHTML = `
+                <div class="stat-card">
+                    <h3>Online</h3>
+                    <div class="value">${onlineCount}</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Idle</h3>
+                    <div class="value">${idleCount}</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Offline</h3>
+                    <div class="value">${offlineCount}</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Average Level</h3>
+                    <div class="value">${avgLevel}</div>
+                </div>
+            `;
+        }
+
+        // Update main faction info area for War Portal - hide it since info is in the War Portal panel
+        function updateMainFactionInfoForWarPortal() {
+            const mainFactionInfo = document.getElementById('mainFactionInfo');
+            if (!mainFactionInfo) return;
+            // Hide the main faction info area - all info is shown in the War Portal comparison panel
+            mainFactionInfo.style.display = 'none';
+        }
+
+        // Update stats summary for War Portal - hide it since info is in the War Portal panel
+        function updateStatsSummaryForWarPortal() {
+            const statsSummary = document.getElementById('statsSummary');
+            if (!statsSummary) return;
+            // Hide the stats summary - all info is shown in the War Portal comparison panel
+            statsSummary.style.display = 'none';
+        }
+
+        // Get spy faction leader name
+        function getSpyLeaderName() {
+            if (!spyFactionData || !spyFactionData.leader) return 'Unknown';
+            const leader = spyMembersData.find(m => m.id == spyFactionData.leader);
+            return leader ? leader.name : 'Unknown';
+        }
+
+        // Restore user's faction info to the main display
+        function restoreUserFactionInfo() {
+            const mainFactionInfo = document.getElementById('mainFactionInfo');
+            if (!mainFactionInfo || !factionData) return;
+
+            // Make sure it's visible (may have been hidden by War Portal)
+            mainFactionInfo.style.display = '';
+
+            mainFactionInfo.innerHTML = `
+                <h2>${factionData.name || 'Faction Information'}</h2>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <label>Faction ID</label>
+                        <value>${factionData.ID || 'N/A'}</value>
+                    </div>
+                    <div class="info-item">
+                        <label>Members</label>
+                        <value>${membersData.length}</value>
+                    </div>
+                    <div class="info-item">
+                        <label>Respect</label>
+                        <value>${(factionData.respect || 0).toLocaleString()}</value>
+                    </div>
+                    <div class="info-item">
+                        <label>Age</label>
+                        <value>${factionData.age || 'N/A'} days</value>
+                    </div>
+                    <div class="info-item">
+                        <label>Capacity</label>
+                        <value>${factionData.capacity || 'N/A'}</value>
+                    </div>
+                    <div class="info-item">
+                        <label>Leader</label>
+                        <value>${factionData.leader ? `<a href="https://www.torn.com/profiles.php?XID=${factionData.leader}" target="_blank" style="color: #667eea; text-decoration: none;">${getLeaderName()}</a>` : 'N/A'}</value>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Update main faction info area for spy faction
+        function updateMainFactionInfoForSpy() {
+            const mainFactionInfo = document.getElementById('mainFactionInfo');
+            if (!mainFactionInfo || !spyFactionData) return;
+
+            // Make sure it's visible (may have been hidden by War Portal)
+            mainFactionInfo.style.display = '';
+
+            mainFactionInfo.innerHTML = `
+                <h2 style="color: #1565c0;">${spyFactionData.name || 'Faction Information'} <span style="font-size: 12px; font-weight: normal; color: #666;">- Spying</span></h2>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <label>Faction ID</label>
+                        <value>${spyFactionData.ID || 'N/A'}</value>
+                    </div>
+                    <div class="info-item">
+                        <label>Members</label>
+                        <value>${spyMembersData.length}</value>
+                    </div>
+                    <div class="info-item">
+                        <label>Respect</label>
+                        <value>${(spyFactionData.respect || 0).toLocaleString()}</value>
+                    </div>
+                    <div class="info-item">
+                        <label>Age</label>
+                        <value>${spyFactionData.age || 'N/A'} days</value>
+                    </div>
+                    <div class="info-item">
+                        <label>Capacity</label>
+                        <value>${spyFactionData.capacity || 'N/A'}</value>
+                    </div>
+                    <div class="info-item">
+                        <label>Leader</label>
+                        <value>${spyFactionData.leader ? `<a href="https://www.torn.com/profiles.php?XID=${spyFactionData.leader}" target="_blank" style="color: #667eea; text-decoration: none;">${getSpyLeaderName()}</a>` : 'N/A'}</value>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Filter spy faction members
+        function filterSpyMembers() {
+            const searchTerm = document.getElementById('spySearchInput')?.value.toLowerCase() || '';
+            const statusFilter = document.getElementById('spyStatusFilter')?.value || '';
+
+            let filtered = [...spyMembersData];
+
+            if (searchTerm) {
+                filtered = filtered.filter(m => m.name?.toLowerCase().includes(searchTerm));
+            }
+
+            if (statusFilter) {
+                filtered = filtered.filter(m => m.last_action?.status === statusFilter);
+            }
+
+            // Sort the filtered data
+            filtered = sortSpyMembersData(filtered);
+
+            renderSpyMembersTable(filtered);
+        }
+
+        // Sort spy members data based on current sort column and direction
+        function sortSpyMembersData(members) {
+            return members.sort((a, b) => {
+                let aVal, bVal;
+
+                switch (spyFactionSortColumn) {
+                    case 'name':
+                        aVal = a.name?.toLowerCase() || '';
+                        bVal = b.name?.toLowerCase() || '';
+                        break;
+                    case 'est_stats':
+                        aVal = estimateBattleStats(a).mid || 0;
+                        bVal = estimateBattleStats(b).mid || 0;
+                        break;
+                    case 'level':
+                        aVal = a.level || 0;
+                        bVal = b.level || 0;
+                        break;
+                    case 'age':
+                        aVal = a.details?.age || 0;
+                        bVal = b.details?.age || 0;
+                        break;
+                    case 'life':
+                        aVal = a.details?.life?.current || 0;
+                        bVal = b.details?.life?.current || 0;
+                        break;
+                    case 'elo':
+                        aVal = a.details?.personalstats?.elo || a.details?.personalstats?.rankedwarrating || 0;
+                        bVal = b.details?.personalstats?.elo || b.details?.personalstats?.rankedwarrating || 0;
+                        break;
+                    case 'best_damage':
+                        aVal = a.details?.personalstats?.bestdamage || a.details?.personalstats?.highestbeaten || 0;
+                        bVal = b.details?.personalstats?.bestdamage || b.details?.personalstats?.highestbeaten || 0;
+                        break;
+                    case 'critical_hits':
+                        const aHits = a.details?.personalstats?.attackhits || 0;
+                        const aCrits = a.details?.personalstats?.attackcriticalhits || 0;
+                        aVal = aHits > 0 ? (aCrits / aHits) * 100 : 0;
+                        const bHits = b.details?.personalstats?.attackhits || 0;
+                        const bCrits = b.details?.personalstats?.attackcriticalhits || 0;
+                        bVal = bHits > 0 ? (bCrits / bHits) * 100 : 0;
+                        break;
+                    case 'rw_hits':
+                        aVal = a.details?.personalstats?.rankedwarhits || 0;
+                        bVal = b.details?.personalstats?.rankedwarhits || 0;
+                        break;
+                    case 'xanax':
+                        aVal = a.details?.personalstats?.xantaken || 0;
+                        bVal = b.details?.personalstats?.xantaken || 0;
+                        break;
+                    case 'vicodin':
+                        aVal = a.details?.personalstats?.victaken || 0;
+                        bVal = b.details?.personalstats?.victaken || 0;
+                        break;
+                    case 'overdosed':
+                        aVal = a.details?.personalstats?.overdosed || 0;
+                        bVal = b.details?.personalstats?.overdosed || 0;
+                        break;
+                    case 'refills':
+                        aVal = a.details?.personalstats?.energydrinkused || a.details?.personalstats?.refills || 0;
+                        bVal = b.details?.personalstats?.energydrinkused || b.details?.personalstats?.refills || 0;
+                        break;
+                    case 'location':
+                        aVal = a.details?.status?.description || a.details?.status?.state || '';
+                        bVal = b.details?.status?.description || b.details?.status?.state || '';
+                        break;
+                    case 'str':
+                        aVal = getBattleStats(a).strength || 0;
+                        bVal = getBattleStats(b).strength || 0;
+                        break;
+                    case 'def':
+                        aVal = getBattleStats(a).defense || 0;
+                        bVal = getBattleStats(b).defense || 0;
+                        break;
+                    case 'spd':
+                        aVal = getBattleStats(a).speed || 0;
+                        bVal = getBattleStats(b).speed || 0;
+                        break;
+                    case 'dex':
+                        aVal = getBattleStats(a).dexterity || 0;
+                        bVal = getBattleStats(b).dexterity || 0;
+                        break;
+                    default:
+                        aVal = 0;
+                        bVal = 0;
+                }
+
+                if (typeof aVal === 'string') {
+                    const comparison = aVal.localeCompare(bVal);
+                    return spyFactionSortDirection === 'asc' ? comparison : -comparison;
+                }
+                return spyFactionSortDirection === 'asc' ? aVal - bVal : bVal - aVal;
+            });
+        }
+
+        // Render spy members table (same format as My Faction table)
+        function renderSpyMembersTable(members) {
+            const container = document.getElementById('spyMembersTableContainer');
+            if (!container) return;
+
+            const getSortClass = (column) => {
+                if (spyFactionSortColumn !== column) return 'sortable';
+                return spyFactionSortDirection === 'asc' ? 'sorted-asc' : 'sorted-desc';
+            };
+
+            // Build columns list - show est_stats followed by TornStats columns (str, def, spd, dex)
+            const estStatsIndex = spyFactionColumnOrder.indexOf('est_stats');
+            let columnsToShow;
+            if (estStatsIndex !== -1) {
+                // Insert TornStats columns right after est_stats
+                columnsToShow = [
+                    ...spyFactionColumnOrder.slice(0, estStatsIndex + 1),
+                    ...tornStatsColumns,
+                    ...spyFactionColumnOrder.slice(estStatsIndex + 1)
+                ];
+            } else {
+                // If no est_stats column, just append TornStats at the end
+                columnsToShow = [...spyFactionColumnOrder, ...tornStatsColumns];
+            }
+
+            // Combined column definitions
+            const allColumnDefs = { ...warPlanningColumnDefs, ...tornStatsColumnDefs };
+            const defaultWidths = { ...defaultWPColumnWidths, str: 70, def: 70, spd: 70, dex: 70 };
+
+            // Generate header row based on column order with resize handles
+            const headerCells = columnsToShow.map((col, index) => {
+                const def = allColumnDefs[col];
+                if (!def) return '';
+                const width = spyColumnWidths[col] || defaultWidths[col] || 70;
+                const isLast = index === columnsToShow.length - 1;
+                const resizeHandle = isLast ? '' : `<span class="wp-resize-handle" onmousedown="startSpyColumnResize(event, '${col}')"></span>`;
+                return `<th class="${getSortClass(def.sortKey)}"
+                    onclick="sortSpyMembers('${def.sortKey}')"
+                    draggable="true"
+                    data-column="${col}"
+                    style="width: ${width}px; min-width: ${width}px;">${def.label}${resizeHandle}</th>`;
+            }).join('');
+
+            // Generate body rows
+            const bodyRows = members.map(member => {
+                const stats = member.details?.personalstats || {};
+                const profile = member.details || member;
+                const battleStats = getBattleStats(member);
+
+                // Pre-calculate all member data
+                const memberData = {
+                    age: profile.age || 'N/A',
+                    life: profile.life ? `${profile.life.current}/${profile.life.maximum}` : 'N/A',
+                    elo: stats.elo || stats.rankedwarrating || 'N/A',
+                    bestDamage: stats.bestdamage || stats.highestbeaten || 'N/A',
+                    criticalPct: (stats.attackhits || 0) > 0 ? (((stats.attackcriticalhits || 0) / stats.attackhits) * 100).toFixed(2) : '0.00',
+                    rwHits: stats.rankedwarhits || 'N/A',
+                    xanax: stats.xantaken || 'N/A',
+                    vicodin: stats.victaken || 'N/A',
+                    overdosed: stats.overdosed || 'N/A',
+                    refills: stats.energydrinkused || stats.refills || 'N/A',
+                    estStats: estimateBattleStats(member),
+                    battleStats: battleStats,
+                    statusIndicatorClass: member.last_action?.status === 'Online' ? 'online' :
+                                         member.last_action?.status === 'Idle' ? 'idle' : 'offline',
+                    locationText: 'Unknown',
+                    locationClass: ''
+                };
+
+                // Get location/status information
+                const userStatus = profile.status || {};
+                if (userStatus.description) {
+                    memberData.locationText = userStatus.description;
+                } else if (userStatus.state) {
+                    memberData.locationText = userStatus.state;
+                }
+
+                // Format travel status to be shorter
+                const flyingToMatch = memberData.locationText.match(/Flying to (.+)/i);
+                const returningMatch = memberData.locationText.match(/Returning to (.+)/i);
+                const travelingToMatch = memberData.locationText.match(/Traveling to (.+)/i);
+                const inCountryMatch = memberData.locationText.match(/In (.+)/i);
+
+                if (flyingToMatch) {
+                    memberData.locationText = 'Outbound: ' + flyingToMatch[1];
+                } else if (travelingToMatch) {
+                    memberData.locationText = 'Outbound: ' + travelingToMatch[1];
+                } else if (returningMatch) {
+                    memberData.locationText = 'Inbound: ' + returningMatch[1];
+                } else if (inCountryMatch && !memberData.locationText.toLowerCase().includes('hospital') && !memberData.locationText.toLowerCase().includes('jail')) {
+                    memberData.locationText = 'Abroad: ' + inCountryMatch[1];
+                }
+
+                // Add color coding for different states
+                if (memberData.locationText.toLowerCase().includes('okay') || memberData.locationText.toLowerCase().includes('torn')) {
+                    memberData.locationClass = 'status-online';
+                } else if (memberData.locationText.toLowerCase().includes('hospital') || memberData.locationText.toLowerCase().includes('jail')) {
+                    memberData.locationClass = 'status-offline';
+                } else if (memberData.locationText.toLowerCase().includes('outbound') || memberData.locationText.toLowerCase().includes('inbound') || memberData.locationText.toLowerCase().includes('abroad')) {
+                    memberData.locationClass = 'status-idle';
+                }
+
+                // Generate cells in column order using the same function as My Faction
+                const cells = columnsToShow.map(col => getSpyCellContent(col, member, memberData)).join('');
+
+                return `<tr>${cells}</tr>`;
+            }).join('');
+
+            container.innerHTML = `
+                <table class="members-table" id="spyMembersTable">
+                    <thead>
+                        <tr>${headerCells}</tr>
+                    </thead>
+                    <tbody>
+                        ${bodyRows}
+                    </tbody>
+                </table>
+            `;
+
+            // Add drag event listeners for spy faction header
+            const spyHeaderRow = container.querySelector('thead tr');
+            if (spyHeaderRow) {
+                spyHeaderRow.addEventListener('dragstart', handleSpyFactionDragStart);
+                spyHeaderRow.addEventListener('dragover', handleSpyFactionDragOver);
+                spyHeaderRow.addEventListener('dragleave', handleSpyFactionDragLeave);
+                spyHeaderRow.addEventListener('drop', handleSpyFactionDrop);
+                spyHeaderRow.addEventListener('dragend', handleSpyFactionDragEnd);
+            }
+        }
+
+        // Get cell content for spy faction table (similar to getWarPlanningCellContent but without activity grid)
+        function getSpyCellContent(column, member, memberData) {
+            switch (column) {
+                case 'name':
+                    return `<td>
+                        <div class="member-name-cell">
+                            <div class="member-name-row">
+                                <span class="status-indicator ${memberData.statusIndicatorClass}"></span>
+                                <a href="https://www.torn.com/profiles.php?XID=${member.id}" target="_blank">
+                                    ${member.name}
+                                </a>
+                            </div>
+                        </div>
+                    </td>`;
+                case 'est_stats':
+                    return `<td class="est-stats">
+                        <span class="est-stats-value">${formatStatNumber(memberData.estStats.mid)}</span>
+                        <br><span style="font-size:10px;color:#999;">${formatStatNumber(memberData.estStats.low)} - ${formatStatNumber(memberData.estStats.high)}</span>
+                    </td>`;
+                case 'level':
+                    return `<td><span class="level-badge">${member.level || 'N/A'}</span></td>`;
+                case 'age':
+                    return `<td>${memberData.age}</td>`;
+                case 'life':
+                    return `<td>${memberData.life}</td>`;
+                case 'elo':
+                    return `<td>${memberData.elo}</td>`;
+                case 'best_damage':
+                    return `<td>${typeof memberData.bestDamage === 'number' ? memberData.bestDamage.toLocaleString() : memberData.bestDamage}</td>`;
+                case 'critical_hits':
+                    return `<td>${memberData.criticalPct}%</td>`;
+                case 'rw_hits':
+                    return `<td>${typeof memberData.rwHits === 'number' ? memberData.rwHits.toLocaleString() : memberData.rwHits}</td>`;
+                case 'xanax':
+                    return `<td>${typeof memberData.xanax === 'number' ? memberData.xanax.toLocaleString() : memberData.xanax}</td>`;
+                case 'vicodin':
+                    return `<td>${typeof memberData.vicodin === 'number' ? memberData.vicodin.toLocaleString() : memberData.vicodin}</td>`;
+                case 'overdosed':
+                    return `<td>${typeof memberData.overdosed === 'number' ? memberData.overdosed.toLocaleString() : memberData.overdosed}</td>`;
+                case 'refills':
+                    return `<td>${typeof memberData.refills === 'number' ? memberData.refills.toLocaleString() : memberData.refills}</td>`;
+                case 'location':
+                    return `<td class="${memberData.locationClass}">${memberData.locationText}</td>`;
+                case 'str':
+                    const strValue = memberData.battleStats?.strength;
+                    const strClass = memberData.battleStats?.isReal ? 'real-value' : 'est-value';
+                    const strTotal = memberData.battleStats ? (memberData.battleStats.strength || 0) + (memberData.battleStats.defense || 0) + (memberData.battleStats.speed || 0) + (memberData.battleStats.dexterity || 0) : 0;
+                    const strTooltip = strTotal > 0 ? `Total: ${formatStatNumber(strTotal)}` : '';
+                    return `<td title="${strTooltip}">${strValue ? `<span class="${strClass}">${formatStatNumber(strValue)}</span>` : '-'}</td>`;
+                case 'def':
+                    const defValue = memberData.battleStats?.defense;
+                    const defClass = memberData.battleStats?.isReal ? 'real-value' : 'est-value';
+                    const defTotal = memberData.battleStats ? (memberData.battleStats.strength || 0) + (memberData.battleStats.defense || 0) + (memberData.battleStats.speed || 0) + (memberData.battleStats.dexterity || 0) : 0;
+                    const defTooltip = defTotal > 0 ? `Total: ${formatStatNumber(defTotal)}` : '';
+                    return `<td title="${defTooltip}">${defValue ? `<span class="${defClass}">${formatStatNumber(defValue)}</span>` : '-'}</td>`;
+                case 'spd':
+                    const spdValue = memberData.battleStats?.speed;
+                    const spdClass = memberData.battleStats?.isReal ? 'real-value' : 'est-value';
+                    const spdTotal = memberData.battleStats ? (memberData.battleStats.strength || 0) + (memberData.battleStats.defense || 0) + (memberData.battleStats.speed || 0) + (memberData.battleStats.dexterity || 0) : 0;
+                    const spdTooltip = spdTotal > 0 ? `Total: ${formatStatNumber(spdTotal)}` : '';
+                    return `<td title="${spdTooltip}">${spdValue ? `<span class="${spdClass}">${formatStatNumber(spdValue)}</span>` : '-'}</td>`;
+                case 'dex':
+                    const dexValue = memberData.battleStats?.dexterity;
+                    const dexClass = memberData.battleStats?.isReal ? 'real-value' : 'est-value';
+                    const dexTotal = memberData.battleStats ? (memberData.battleStats.strength || 0) + (memberData.battleStats.defense || 0) + (memberData.battleStats.speed || 0) + (memberData.battleStats.dexterity || 0) : 0;
+                    const dexTooltip = dexTotal > 0 ? `Total: ${formatStatNumber(dexTotal)}` : '';
+                    return `<td title="${dexTooltip}">${dexValue ? `<span class="${dexClass}">${formatStatNumber(dexValue)}</span>` : '-'}</td>`;
+                default:
+                    return '<td>-</td>';
+            }
+        }
+
         // Load saved API key and faction ID from localStorage
         window.addEventListener('DOMContentLoaded', () => {
             loadActivityHistory();
@@ -2331,10 +3587,13 @@
             loadPortalColumnOrder();
             loadWarPlanningColumnOrder();
             loadWPColumnWidths();
+            loadSpyFactionColumnOrder();
+            loadSpyColumnWidths();
             initColumnResize();
             initWPColumnResize();
             loadTornStatsCache();
             loadEnemyFactionDataFromCache();
+            loadUserFactionDataFromCache();
 
             // Load saved auto-refresh interval
             const savedAutoRefresh = localStorage.getItem('tornAutoRefreshSeconds');
@@ -2347,26 +3606,400 @@
                 document.getElementById('apiKey').value = savedKey;
             }
 
-            const savedFactionId = localStorage.getItem('tornFactionId');
-            if (savedFactionId) {
-                document.getElementById('factionId').value = savedFactionId;
-            }
+            // savedFactionId kept in localStorage but input field removed
 
             const savedTornStatsKey = localStorage.getItem('tornStatsApiKey');
             if (savedTornStatsKey) {
                 document.getElementById('tornStatsApiKey').value = savedTornStatsKey;
             }
 
-            // Auto-load faction data if API key is saved
+            // Restore saved spy faction ID if available
+            const savedSpyFactionId = localStorage.getItem('tornSpyFactionId');
+            if (savedSpyFactionId) {
+                const spyInput = document.getElementById('spyFactionId');
+                if (spyInput) {
+                    spyInput.value = savedSpyFactionId;
+                }
+            }
+
+            // Initialize based on saved tab preference
             if (savedKey) {
-                loadFactionData();
+                initializeDashboard();
             }
         });
+
+        // Main initialization function
+        async function initializeDashboard() {
+            const apiKey = document.getElementById('apiKey').value.trim();
+            const savedTab = localStorage.getItem('tornActiveTab');
+
+            if (!apiKey) {
+                return;
+            }
+
+            showLoading();
+
+            try {
+                // Get the API key owner's faction ID first
+                const userResponse = await fetch(`https://api.torn.com/user?selections=profile&key=${apiKey}`);
+                const userData = await userResponse.json();
+
+                if (userData.error) {
+                    throw new Error(userData.error.error);
+                }
+
+                const ownerFactionId = userData.faction?.faction_id;
+
+                if (!ownerFactionId) {
+                    throw new Error('You are not in a faction');
+                }
+
+                // Save owner's faction ID
+                localStorage.setItem('tornUserFactionId', ownerFactionId.toString());
+
+                if (savedTab === 'war-portal') {
+                    // User was on War Portal - restore that view
+                    await initializeWarPortal(apiKey, ownerFactionId);
+                } else if (savedTab === 'faction-spying') {
+                    // User was on Faction Spying - load faction data then switch to that tab
+                    localStorage.setItem('tornFactionId', ownerFactionId.toString());
+                    await loadFactionDataForPlanning(apiKey, ownerFactionId);
+                    switchToTab('faction-spying');
+                    // Auto-load the last spied faction if available
+                    const savedSpyFactionId = localStorage.getItem('tornSpyFactionId');
+                    if (savedSpyFactionId) {
+                        document.getElementById('spyFactionId').value = savedSpyFactionId;
+                        loadSpyFaction();
+                    }
+                } else {
+                    // Default: Load My Faction tab with owner's faction
+                    localStorage.setItem('tornFactionId', ownerFactionId.toString());
+                    await loadFactionDataForPlanning(apiKey, ownerFactionId);
+                }
+
+            } catch (error) {
+                console.error('Error initializing dashboard:', error);
+                showError(`Error initializing: ${error.message}`);
+            }
+        }
+
+        // Initialize War Portal tab
+        async function initializeWarPortal(apiKey, ownerFactionId) {
+            // Try to load cached faction data first
+            const hasCachedUserFaction = loadUserFactionDataFromCache();
+            const hasCachedEnemyFaction = loadEnemyFactionDataFromCache();
+
+            console.log('Initializing War Portal - cached user:', hasCachedUserFaction, 'cached enemy:', hasCachedEnemyFaction);
+
+            // We need minimal data to render the dashboard structure
+            // Use cached data if available, otherwise fetch minimal data
+            if (hasCachedUserFaction && userFactionData) {
+                // Use cached data for factionData and membersData to render dashboard
+                factionData = userFactionData;
+                membersData = [...userMembersData];
+            } else {
+                // Fetch minimal faction data to render dashboard structure
+                const factionUrl = `https://api.torn.com/faction/${ownerFactionId}?selections=basic&key=${apiKey}`;
+                const response = await fetch(factionUrl);
+                const data = await response.json();
+                if (!data.error) {
+                    factionData = data;
+                    userFactionData = data;
+                    // Create basic membersData from faction members
+                    const memberIds = data.members ? Object.keys(data.members) : [];
+                    membersData = memberIds.map(id => ({
+                        id,
+                        ...data.members[id],
+                        details: {}
+                    }));
+                    userMembersData = [...membersData];
+                }
+            }
+
+            // Now render the dashboard (creates the warPortalContainer)
+            renderDashboard();
+
+            // Switch to War Portal tab
+            switchToWarPortal();
+
+            if (hasCachedUserFaction && hasCachedEnemyFaction) {
+                // Both factions cached - just render and do lightweight status refresh
+                renderWarPortal();
+                // Start lightweight refresh for status updates only
+                startLightweightRefresh(apiKey);
+            } else {
+                // Missing cached data - need to do full load
+                if (!hasCachedUserFaction) {
+                    await loadFullUserFaction(ownerFactionId, apiKey);
+                }
+
+                if (!hasCachedEnemyFaction) {
+                    // Find and load enemy faction
+                    const enemyId = await findEnemyFactionId(ownerFactionId, apiKey);
+                    if (enemyId) {
+                        localStorage.setItem('tornEnemyFactionId', enemyId);
+                        await loadEnemyFaction(enemyId);
+                    }
+                } else {
+                    renderWarPortal();
+                }
+            }
+        }
+
+        // Find enemy faction ID from ranked wars
+        async function findEnemyFactionId(ownerFactionId, apiKey) {
+            try {
+                const factionResponse = await fetch(`https://api.torn.com/faction/${ownerFactionId}?selections=rankedwars&key=${apiKey}`);
+                const factionRWData = await factionResponse.json();
+
+                if (factionRWData.error) return null;
+
+                const rankedWars = factionRWData.rankedwars || {};
+                const now = Math.floor(Date.now() / 1000);
+                const sortedWarIds = Object.keys(rankedWars).sort((a, b) => parseInt(b) - parseInt(a));
+
+                for (const warId of sortedWarIds) {
+                    const war = rankedWars[warId];
+                    const hasEnded = war.end && war.end > 0 && war.end < now;
+
+                    if (!hasEnded && war.factions) {
+                        for (const fId in war.factions) {
+                            if (fId != ownerFactionId) {
+                                return fId;
+                            }
+                        }
+                    }
+                }
+            } catch (e) {
+                console.log('Could not find enemy faction:', e);
+            }
+            return null;
+        }
+
+        // Full load of user faction with all details and TornStats
+        async function loadFullUserFaction(factionId, apiKey) {
+            try {
+                const factionUrl = `https://api.torn.com/faction/${factionId}?selections=basic&key=${apiKey}`;
+                const response = await fetch(factionUrl);
+                const data = await response.json();
+
+                if (data.error) throw new Error(data.error.error);
+
+                userFactionData = data;
+                factionData = data;
+
+                const memberIds = data.members ? Object.keys(data.members) : [];
+                const memberDetailsPromises = memberIds.map(id =>
+                    fetch(`https://api.torn.com/user/${id}?selections=profile,personalstats&key=${apiKey}`)
+                        .then(r => r.json())
+                        .then(d => ({ id, ...d }))
+                        .catch(e => ({ id, error: e.message }))
+                );
+
+                const memberDetails = await Promise.all(memberDetailsPromises);
+
+                userMembersData = memberIds.map(id => {
+                    const member = data.members[id];
+                    const details = memberDetails.find(d => d.id === id) || {};
+                    return { id, ...member, details: details || {} };
+                });
+                membersData = [...userMembersData];
+
+                await fetchTornStatsSpyData(memberIds, false, false);
+                saveUserFactionData();
+                renderWarPortal();
+            } catch (error) {
+                console.error('Error loading full user faction:', error);
+            }
+        }
+
+        // Check Status - instant lightweight refresh triggered by button
+        async function checkStatus() {
+            const apiKey = document.getElementById('apiKey').value.trim();
+            if (!apiKey) {
+                alert('Please enter your API key first');
+                return;
+            }
+
+            // Disable both buttons and show updating message
+            const ownBtn = document.getElementById('ownCheckStatusBtn');
+            const enemyBtn = document.getElementById('enemyCheckStatusBtn');
+            const originalText = 'Check Status';
+
+            if (ownBtn) {
+                ownBtn.disabled = true;
+                ownBtn.textContent = 'Updating...';
+            }
+            if (enemyBtn) {
+                enemyBtn.disabled = true;
+                enemyBtn.textContent = 'Updating...';
+            }
+
+            try {
+                await doLightweightRefresh(apiKey);
+            } finally {
+                // Re-enable buttons and restore text
+                if (ownBtn) {
+                    ownBtn.disabled = false;
+                    ownBtn.textContent = originalText;
+                }
+                if (enemyBtn) {
+                    enemyBtn.disabled = false;
+                    enemyBtn.textContent = originalText;
+                }
+            }
+        }
+
+        // Lightweight refresh - only updates status, life, hospital timers, online status
+        // Does NOT re-fetch full member details or TornStats
+        async function startLightweightRefresh(apiKey) {
+            // Do an initial lightweight refresh
+            await doLightweightRefresh(apiKey);
+
+            // Set up interval for ongoing lightweight refreshes
+            if (refreshInterval) {
+                clearInterval(refreshInterval);
+            }
+            refreshInterval = setInterval(() => doLightweightRefresh(apiKey), autoRefreshSeconds * 1000);
+        }
+
+        async function doLightweightRefresh(apiKey) {
+            const savedTab = localStorage.getItem('tornActiveTab');
+            if (savedTab !== 'war-portal') return; // Only refresh on War Portal
+
+            try {
+                // Get user faction ID
+                const userFactionId = localStorage.getItem('tornUserFactionId');
+                const enemyFactionId = localStorage.getItem('tornEnemyFactionId');
+
+                // Fetch basic faction data (includes member status, last_action, life)
+                if (userFactionId && userMembersData.length > 0) {
+                    const userFactionUrl = `https://api.torn.com/faction/${userFactionId}?selections=basic&key=${apiKey}`;
+                    const userResponse = await fetch(userFactionUrl);
+                    const userData = await userResponse.json();
+
+                    if (!userData.error && userData.members) {
+                        // Update only status fields in userMembersData
+                        userMembersData.forEach(member => {
+                            const freshData = userData.members[member.id];
+                            if (freshData) {
+                                member.last_action = freshData.last_action;
+                                member.status = freshData.status;
+                                // Update life in details if available
+                                if (member.details) {
+                                    member.details.life = freshData.life || member.details.life;
+                                }
+                            }
+                        });
+                    }
+                }
+
+                if (enemyFactionId && enemyMembersData.length > 0) {
+                    const enemyFactionUrl = `https://api.torn.com/faction/${enemyFactionId}?selections=basic&key=${apiKey}`;
+                    const enemyResponse = await fetch(enemyFactionUrl);
+                    const enemyData = await enemyResponse.json();
+
+                    if (!enemyData.error && enemyData.members) {
+                        // Update only status fields in enemyMembersData
+                        enemyMembersData.forEach(member => {
+                            const freshData = enemyData.members[member.id];
+                            if (freshData) {
+                                member.last_action = freshData.last_action;
+                                member.status = freshData.status;
+                                if (member.details) {
+                                    member.details.life = freshData.life || member.details.life;
+                                }
+                            }
+                        });
+                    }
+                }
+
+                // Re-render the portal with updated data
+                renderWarPortal();
+                lastRefreshTime = new Date();
+
+            } catch (error) {
+                console.error('Lightweight refresh error:', error);
+            }
+        }
+
+        // Load faction data specifically for War Planning tab
+        async function loadFactionDataForPlanning(apiKey, factionId) {
+            const tornStatsApiKey = document.getElementById('tornStatsApiKey').value.trim();
+
+            if (tornStatsApiKey) {
+                localStorage.setItem('tornStatsApiKey', tornStatsApiKey);
+            }
+
+            try {
+                const factionUrl = `https://api.torn.com/faction/${factionId}?selections=basic&key=${apiKey}`;
+                const response = await fetch(factionUrl);
+                const data = await response.json();
+
+                if (data.error) {
+                    throw new Error(data.error.error);
+                }
+
+                factionData = data;
+
+                // Extract member IDs
+                const memberIds = data.members ? Object.keys(data.members) : [];
+
+                const memberDetailsPromises = memberIds.map(id =>
+                    fetch(`https://api.torn.com/user/${id}?selections=profile,personalstats&key=${apiKey}`)
+                        .then(r => r.json())
+                        .then(d => ({ ...d, member_id: id }))
+                        .catch(e => ({ member_id: id, error: e.message }))
+                );
+
+                const memberDetails = await Promise.all(memberDetailsPromises);
+
+                membersData = memberIds.map(id => {
+                    const member = data.members[id];
+                    const details = memberDetails.find(d => d.member_id === id) || {};
+                    return {
+                        id,
+                        ...member,
+                        details: details || {}
+                    };
+                });
+
+                // Fetch TornStats spy data
+                await fetchTornStatsSpyData(memberIds);
+
+                // Also load user's faction for War Portal
+                userFactionData = data;
+                userMembersData = [...membersData];
+
+                renderDashboard();
+
+            } catch (error) {
+                console.error('Error loading faction data:', error);
+                showError(`Error loading faction: ${error.message}`);
+            }
+        }
+
+        // Load user faction data from cache
+        function loadUserFactionDataFromCache() {
+            try {
+                const savedFactionData = localStorage.getItem('tornUserFactionData');
+                const savedMembersData = localStorage.getItem('tornUserMembersData');
+                if (savedFactionData && savedMembersData) {
+                    userFactionData = JSON.parse(savedFactionData);
+                    userMembersData = JSON.parse(savedMembersData);
+                    console.log(`Restored user faction data: ${userFactionData.name} with ${userMembersData.length} members`);
+                    return true;
+                }
+            } catch (e) {
+                console.warn('Failed to load user faction data from cache:', e);
+            }
+            return false;
+        }
 
         async function loadFactionData() {
             const apiKey = document.getElementById('apiKey').value.trim();
             const tornStatsApiKey = document.getElementById('tornStatsApiKey').value.trim();
-            const factionId = document.getElementById('factionId').value.trim() || '';
+            const factionId = localStorage.getItem('tornFactionId') || '';
 
             if (!apiKey) {
                 showError('Please enter your API key');
@@ -2379,11 +4012,6 @@
             // Save TornStats API key to localStorage (if provided)
             if (tornStatsApiKey) {
                 localStorage.setItem('tornStatsApiKey', tornStatsApiKey);
-            }
-
-            // Save faction ID to localStorage (if provided)
-            if (factionId) {
-                localStorage.setItem('tornFactionId', factionId);
             }
 
             showLoading();
@@ -2409,7 +4037,6 @@
                 // If faction ID was blank, store the loaded faction's ID for future use
                 if (!factionId && data.ID) {
                     localStorage.setItem('tornFactionId', data.ID.toString());
-                    document.getElementById('factionId').value = data.ID;
                 }
 
                 // Extract member IDs from the faction data which includes members in basic
@@ -2596,7 +4223,7 @@
             const avgLevel = Math.round(totalLevel / membersData.length);
 
             content.innerHTML = `
-                <div class="faction-info">
+                <div class="faction-info" id="mainFactionInfo">
                     <h2>${factionData.name || 'Faction Information'}</h2>
                     <div class="info-grid">
                         <div class="info-item">
@@ -2627,8 +4254,8 @@
                 </div>
 
                 <div class="members-section">
-                    <h2>Members Overview: ${factionData.name || 'Unknown Faction'}</h2>
-                    <div class="refresh-info">
+                    <h2 id="membersOverviewTitle">Members Overview: ${factionData.name || 'Unknown Faction'}</h2>
+                    <div class="refresh-info" id="autoRefreshInfo">
                         Auto-refreshing every <span id="autoRefreshDisplay">${autoRefreshSeconds}</span> seconds.
                         <select id="autoRefreshSelect" onchange="changeAutoRefreshInterval(this.value)" style="margin-left: 10px; padding: 2px 5px; border-radius: 3px; border: 1px solid #ddd;">
                             <option value="5" ${autoRefreshSeconds === 5 ? 'selected' : ''}>5s</option>
@@ -2639,7 +4266,7 @@
                         Last updated: <span id="lastRefreshTime">${formatTime(lastRefreshTime)}</span>
                     </div>
 
-                    <div class="stats-summary">
+                    <div class="stats-summary" id="statsSummary">
                         <div class="stat-card">
                             <h3>Online</h3>
                             <div class="value">${onlineCount}</div>
@@ -2660,11 +4287,12 @@
 
                     <div class="tabs-container">
                         <div class="tab-buttons">
-                            <button class="tab-button active" onclick="switchTab('war-planning')">War Planning</button>
+                            <button class="tab-button active" onclick="switchTab('my-faction')">My Faction</button>
+                            <button class="tab-button" onclick="switchTab('faction-spying')">Faction Spying</button>
                             <button class="tab-button" onclick="switchTab('war-portal')">War Portal</button>
                         </div>
 
-                        <div id="war-planning" class="tab-content active">
+                        <div id="my-faction" class="tab-content active">
                             <div class="filters">
                                 <input type="text" id="searchInput" placeholder="Search members..." onkeyup="filterMembers()">
                                 <select id="statusFilter" onchange="filterMembers()">
@@ -2683,6 +4311,19 @@
                                 </select>
                             </div>
                             <div id="membersTableContainer"></div>
+                        </div>
+
+                        <div id="faction-spying" class="tab-content">
+                            <div class="faction-spying-input" style="padding: 15px; background: #f8f9fa; border-bottom: 1px solid #ddd; display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                                <label for="spyFactionId" style="font-weight: 600; font-size: 13px;">Faction ID:</label>
+                                <input type="text" id="spyFactionId" placeholder="Enter Faction ID" style="padding: 6px 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 12px; width: 150px;" onkeypress="if(event.key==='Enter') loadSpyFaction()">
+                                <button class="btn" onclick="loadSpyFaction()">Load Faction</button>
+                            </div>
+                            <div id="spyFactionContainer">
+                                <div style="padding: 40px; text-align: center; color: #666;">
+                                    <p>Enter a Faction ID above to view their members and stats.</p>
+                                </div>
+                            </div>
                         </div>
 
                         <div id="war-portal" class="tab-content">
@@ -3066,7 +4707,40 @@
             return 'N/A';
         }
 
+        // Get own faction leader name for War Portal
+        function getOwnLeaderName(faction, members) {
+            if (!faction || !faction.leader) return 'N/A';
+            // Look up leader name from faction members data
+            if (faction.members && faction.members[faction.leader]) {
+                return faction.members[faction.leader].name;
+            }
+            // Fallback: check members array
+            const leaderMember = members.find(m => m.id == faction.leader);
+            if (leaderMember) {
+                return leaderMember.name;
+            }
+            return 'N/A';
+        }
+
+        // Get enemy faction leader name for War Portal
+        function getEnemyLeaderName() {
+            if (!enemyFactionData || !enemyFactionData.leader) return 'N/A';
+            // Look up leader name from enemy faction members data
+            if (enemyFactionData.members && enemyFactionData.members[enemyFactionData.leader]) {
+                return enemyFactionData.members[enemyFactionData.leader].name;
+            }
+            // Fallback: check enemyMembersData array
+            const leaderMember = enemyMembersData.find(m => m.id == enemyFactionData.leader);
+            if (leaderMember) {
+                return leaderMember.name;
+            }
+            return 'N/A';
+        }
+
         function switchTab(tabId) {
+            // Get current tab before switching
+            const currentTab = localStorage.getItem('tornActiveTab');
+
             // Update tab buttons
             document.querySelectorAll('.tab-button').forEach(btn => {
                 btn.classList.remove('active');
@@ -3081,6 +4755,41 @@
 
             // Save active tab to localStorage
             localStorage.setItem('tornActiveTab', tabId);
+
+            // Handle faction info display and auto-refresh visibility based on tab
+            const autoRefreshInfo = document.getElementById('autoRefreshInfo');
+            const membersOverviewTitle = document.getElementById('membersOverviewTitle');
+
+            if (tabId === 'faction-spying') {
+                // Hide auto-refresh info on Faction Spying tab
+                if (autoRefreshInfo) autoRefreshInfo.style.display = 'none';
+                // Update title for spying
+                if (membersOverviewTitle) membersOverviewTitle.textContent = 'Faction Spying';
+                // Update faction info and stats if we have spy data
+                if (spyFactionData) {
+                    updateMainFactionInfoForSpy();
+                    updateStatsSummaryForSpy();
+                }
+            } else if (tabId === 'war-portal') {
+                // Show auto-refresh info on War Portal tab
+                if (autoRefreshInfo) autoRefreshInfo.style.display = 'block';
+                // Update title for war portal
+                if (membersOverviewTitle) membersOverviewTitle.textContent = 'War Portal';
+                // Update faction info and stats for war portal (both factions)
+                updateMainFactionInfoForWarPortal();
+                updateStatsSummaryForWarPortal();
+            } else {
+                // Show auto-refresh info on other tabs
+                if (autoRefreshInfo) autoRefreshInfo.style.display = 'block';
+                // Restore user's faction info when switching away from faction-spying or war-portal
+                if (currentTab === 'faction-spying' || currentTab === 'war-portal') {
+                    restoreUserFactionInfo();
+                    restoreStatsSummaryForUser();
+                    if (membersOverviewTitle && factionData) {
+                        membersOverviewTitle.textContent = `Members Overview: ${factionData.name || 'Unknown Faction'}`;
+                    }
+                }
+            }
         }
 
         // Restore active tab from localStorage
@@ -3297,8 +5006,7 @@
                 return `<span class="est-value">-</span>`;
             }
             if (isReal) {
-                const ageInfo = daysAgo !== null ? ` (${daysAgo}d ago)` : '';
-                return `<span class="real-value" title="Spied from TornStats${ageInfo}">${formatStatNumber(statValue)}</span>`;
+                return `<span class="real-value">${formatStatNumber(statValue)}</span>`;
             } else {
                 return `<span class="est-value">${formatStatNumber(statValue)}</span>`;
             }
@@ -3356,6 +5064,17 @@
                 timerClass = 'has-timer';
             }
 
+            // Build tooltip with total battle stats
+            let tooltip = '';
+            if (estStats.total) {
+                const totalFormatted = formatStatNumber(estStats.total);
+                const statsType = estStats.isReal ? 'Spied' : 'Estimated';
+                tooltip = `Total Battle Stats: ${totalFormatted} (${statsType})`;
+                if (estStats.isReal && estStats.daysAgo !== null) {
+                    tooltip += ` - Spied ${estStats.daysAgo} day${estStats.daysAgo !== 1 ? 's' : ''} ago`;
+                }
+            }
+
             // Prepare member data for cell rendering
             const memberData = {
                 statusClass,
@@ -3373,7 +5092,7 @@
             // Generate cells in column order
             const cells = columnOrder.map(col => getPortalCellContent(col, member, memberData)).join('');
 
-            return `<div class="portal-member-row">${cells}</div>`;
+            return `<div class="portal-member-row" title="${tooltip}">${cells}</div>`;
         }
 
         function renderWarPortal() {
@@ -3388,12 +5107,21 @@
             const ownMembers = userMembersData.length > 0 ? userMembersData : membersData;
             const ownFactionName = ownFaction ? (ownFaction.name || 'Your Faction') : 'Your Faction';
             const ownFactionTag = ownFaction ? (ownFaction.tag || '') : '';
+            const ownFactionId = ownFaction ? (ownFaction.ID || '') : '';
             const ownMemberCount = ownMembers.length;
+            const ownLeaderId = ownFaction?.leader || '';
+            const ownLeaderName = ownLeaderId ? getOwnLeaderName(ownFaction, ownMembers) : 'N/A';
 
             // Get enemy faction info
             const enemyFactionName = enemyFactionData ? (enemyFactionData.name || 'Enemy Faction') : 'Enemy Faction';
             const enemyFactionTag = enemyFactionData ? (enemyFactionData.tag || '') : '';
+            const enemyFactionId = enemyFactionData ? (enemyFactionData.ID || '') : '';
             const enemyMemberCount = enemyMembersData.length;
+            const enemyLeaderId = enemyFactionData?.leader || '';
+            const enemyLeaderName = enemyLeaderId ? getEnemyLeaderName() : 'N/A';
+
+            // Warning note for Force Update buttons
+            const forceUpdateWarning = '<span style="font-size: 10px; color: #856404; margin-left: 8px;">Warning: Refreshes all data including TornStats. Heavy API usage - only use if necessary.</span>';
 
             // Sort members
             const sortedOwnMembers = getSortedPortalMembers(ownMembers, ownPortalSortColumn, ownPortalSortDirection);
@@ -3445,16 +5173,54 @@
                 <span class="legend-item"><span class="legend-color" style="background:#667eea;"></span> Estimated</span>
             </div>`;
 
+            // Note for Check Status button
+            const checkStatusNote = '<span style="font-size: 10px; color: #1565c0; margin-left: 8px;">Quick Update: Can be used several times in succession with low API usage when required. Performs the same function as auto-refresh instantly.</span>';
+
+            // Build faction comparison panel with all stats
+            const ownRespect = ownFaction ? (ownFaction.respect || 0) : 0;
+            const ownAge = ownFaction ? (ownFaction.age || 'N/A') : 'N/A';
+            const enemyRespect = enemyFactionData ? (enemyFactionData.respect || 0) : 0;
+            const enemyAge = enemyFactionData ? (enemyFactionData.age || 'N/A') : 'N/A';
+
+            // Calculate online/idle/offline stats for both factions
+            const ownOnline = ownMembers.filter(m => m.last_action?.status === 'Online').length;
+            const ownIdle = ownMembers.filter(m => m.last_action?.status === 'Idle').length;
+            const ownOffline = ownMembers.filter(m => m.last_action?.status === 'Offline').length;
+            const ownTotalLevel = ownMembers.reduce((sum, m) => sum + (m.level || 0), 0);
+            const ownAvgLevel = ownMembers.length > 0 ? Math.round(ownTotalLevel / ownMembers.length) : 0;
+
+            const enemyOnline = enemyMembersData.filter(m => m.last_action?.status === 'Online').length;
+            const enemyIdle = enemyMembersData.filter(m => m.last_action?.status === 'Idle').length;
+            const enemyOffline = enemyMembersData.filter(m => m.last_action?.status === 'Offline').length;
+            const enemyTotalLevel = enemyMembersData.reduce((sum, m) => sum + (m.level || 0), 0);
+            const enemyAvgLevel = enemyMembersData.length > 0 ? Math.round(enemyTotalLevel / enemyMembersData.length) : 0;
+
             container.innerHTML = `
                 <div class="war-portal-container">
                     <!-- Your Faction Column -->
                     <div class="faction-column">
-                        <div class="faction-input-panel" style="border-radius: 8px 8px 0 0; border: 1px solid #ddd;">
-                            <button class="btn" id="ownForceUpdateBtn" onclick="forceUpdateOwnTornStats()" title="Scan all members and refresh TornStats spy data">Force Update</button>
+                        <div class="faction-input-panel" style="border-radius: 8px 8px 0 0; border: 1px solid #ddd; flex-wrap: wrap;">
+                            <div style="display: flex; align-items: center; width: 100%; margin-bottom: 4px;">
+                                <button class="btn btn-blue" id="ownCheckStatusBtn" onclick="checkStatus()">Check Status</button>
+                                ${checkStatusNote}
+                            </div>
+                            <div style="display: flex; align-items: center; width: 100%;">
+                                <button class="btn" id="ownForceUpdateBtn" onclick="forceUpdateOwnTornStats()" title="Scan all members and refresh TornStats spy data">Force Update</button>
+                                ${forceUpdateWarning}
+                            </div>
                         </div>
                         <div class="faction-header">
-                            <h3>${ownFactionTag ? '[' + ownFactionTag + '] ' : ''}${ownFactionName}</h3>
-                            <div class="faction-header-info">${ownMemberCount} Members</div>
+                            <h3>${ownFactionTag ? '[' + ownFactionTag + '] ' : ''}${ownFactionName}${ownFactionId ? ' (' + ownFactionId + ')' : ''} ${ownLeaderId ? '- <a href="https://www.torn.com/profiles.php?XID=' + ownLeaderId + '" target="_blank" style="color: white; text-decoration: underline;">' + ownLeaderName + '</a>' : ''}</h3>
+                            <div class="faction-header-stats" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px 12px; font-size: 11px; margin: 8px 0;">
+                                <div><span style="opacity: 0.8;">Members:</span> <strong>${ownMemberCount}</strong></div>
+                                <div><span style="opacity: 0.8;">Respect:</span> <strong>${ownRespect.toLocaleString()}</strong></div>
+                                <div><span style="opacity: 0.8;">Age:</span> <strong>${ownAge} days</strong></div>
+                                <div><span style="opacity: 0.8;">Avg Level:</span> <strong>${ownAvgLevel}</strong></div>
+                                <div><span style="opacity: 0.8;">Online:</span> <strong>${ownOnline}</strong></div>
+                                <div><span style="opacity: 0.8;">Idle:</span> <strong>${ownIdle}</strong></div>
+                                <div><span style="opacity: 0.8;">Offline:</span> <strong>${ownOffline}</strong></div>
+                                <div></div>
+                            </div>
                             ${statsLegend}
                         </div>
                         <div class="faction-members-list" id="ownMembersList">
@@ -3468,22 +5234,35 @@
 
                     <!-- Enemy Faction Column -->
                     <div class="faction-column">
-                        <div class="faction-input-panel" style="border-radius: 8px 8px 0 0; border: 1px solid #ddd;">
-                            <input type="text" id="portalEnemyFactionId" placeholder="Enemy Faction ID" value="${savedEnemyId}" onkeypress="if(event.key==='Enter') loadEnemyFaction()">
-                            <button class="btn" onclick="loadEnemyFaction()">Load</button>
-                            <button class="btn" onclick="findEnemyForPortal()" style="background: #dc3545;">Find Enemy</button>
-                            <button class="btn" id="enemyForceUpdateBtn" onclick="forceUpdateEnemyTornStats()" title="Scan all enemy members and refresh TornStats spy data">Force Update</button>
+                        <div class="faction-input-panel" style="border-radius: 8px 8px 0 0; border: 1px solid #ddd; flex-wrap: wrap;">
+                            <div style="display: flex; align-items: center; width: 100%; margin-bottom: 4px;">
+                                <button class="btn btn-blue" id="enemyCheckStatusBtn" onclick="checkStatus()">Check Status</button>
+                                ${checkStatusNote}
+                            </div>
+                            <div style="display: flex; align-items: center; width: 100%;">
+                                <button class="btn" id="enemyForceUpdateBtn" onclick="forceUpdateEnemyTornStats()" title="Scan all enemy members and refresh TornStats spy data">Force Update</button>
+                                ${forceUpdateWarning}
+                            </div>
                         </div>
                         <div class="faction-header enemy" style="border-radius: 0;">
-                            <h3>${enemyFactionTag ? '[' + enemyFactionTag + '] ' : ''}${enemyFactionName}</h3>
-                            <div class="faction-header-info">${enemyMemberCount > 0 ? enemyMemberCount + ' Members' : 'Not loaded'}</div>
+                            <h3>${enemyFactionTag ? '[' + enemyFactionTag + '] ' : ''}${enemyFactionName}${enemyFactionId ? ' (' + enemyFactionId + ')' : ''} ${enemyLeaderId ? '- <a href="https://www.torn.com/profiles.php?XID=' + enemyLeaderId + '" target="_blank" style="color: white; text-decoration: underline;">' + enemyLeaderName + '</a>' : ''}</h3>
+                            <div class="faction-header-stats" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px 12px; font-size: 11px; margin: 8px 0;">
+                                <div><span style="opacity: 0.8;">Members:</span> <strong>${enemyMemberCount > 0 ? enemyMemberCount : 'N/A'}</strong></div>
+                                <div><span style="opacity: 0.8;">Respect:</span> <strong>${enemyFactionData ? enemyRespect.toLocaleString() : 'N/A'}</strong></div>
+                                <div><span style="opacity: 0.8;">Age:</span> <strong>${enemyFactionData ? enemyAge + ' days' : 'N/A'}</strong></div>
+                                <div><span style="opacity: 0.8;">Avg Level:</span> <strong>${enemyMembersData.length > 0 ? enemyAvgLevel : 'N/A'}</strong></div>
+                                <div><span style="opacity: 0.8;">Online:</span> <strong>${enemyMembersData.length > 0 ? enemyOnline : 'N/A'}</strong></div>
+                                <div><span style="opacity: 0.8;">Idle:</span> <strong>${enemyMembersData.length > 0 ? enemyIdle : 'N/A'}</strong></div>
+                                <div><span style="opacity: 0.8;">Offline:</span> <strong>${enemyMembersData.length > 0 ? enemyOffline : 'N/A'}</strong></div>
+                                <div></div>
+                            </div>
                             ${statsLegend}
                         </div>
                         <div class="faction-members-list" id="enemyMembersList">
                             ${enemyHeadersHtml}
                             ${sortedEnemyMembers.length > 0
                                 ? sortedEnemyMembers.map(member => renderMemberRow(member, true)).join('')
-                                : '<div class="portal-no-data">Enter enemy faction ID and click Load, or click Find Enemy</div>'
+                                : '<div class="portal-no-data">Loading enemy faction data...</div>'
                             }
                         </div>
                     </div>
@@ -3515,6 +5294,13 @@
                 enemyHeaderRow.addEventListener('dragleave', handlePortalDragLeave);
                 enemyHeaderRow.addEventListener('drop', (e) => handlePortalDrop(e, true));
                 enemyHeaderRow.addEventListener('dragend', handlePortalDragEnd);
+            }
+
+            // Update faction info and stats summary for War Portal
+            const currentTab = localStorage.getItem('tornActiveTab');
+            if (currentTab === 'war-portal') {
+                updateMainFactionInfoForWarPortal();
+                updateStatsSummaryForWarPortal();
             }
         }
 

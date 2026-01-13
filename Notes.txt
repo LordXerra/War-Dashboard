@@ -1,8 +1,10 @@
+We need to show revivable players in the enemy faction and our own, so they can be told to switch them off.
 
 Final thought perhaps for the pre war report. A nice to have would be if it highlighted the time/date when the Xanax taken increases and does the same if/when the OD increases. Would give us a good indication for OD’s and who may be on Xanax CD.
 
 
 Sorting enemies on the planning panel into easy/tricky/hard/group sections based on their stats compared to the owner of the api key.
+
 
  
 Benefits over torn stats
