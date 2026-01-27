@@ -478,103 +478,6 @@
             display: block;
         }
 
-        /* War Portal specific styles */
-        .war-portal-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 15px;
-            margin-top: 15px;
-        }
-
-        .member-card {
-            background: #f8f9fa;
-            border-radius: 8px;
-            padding: 15px;
-            border-left: 4px solid #667eea;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .member-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .member-card.online {
-            border-left-color: #28a745;
-        }
-
-        .member-card.idle {
-            border-left-color: #ffc107;
-        }
-
-        .member-card.offline {
-            border-left-color: #dc3545;
-        }
-
-        .member-card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .member-card-name {
-            font-weight: 600;
-            font-size: 16px;
-            color: #333;
-        }
-
-        .member-card-name a {
-            color: #667eea;
-            text-decoration: none;
-        }
-
-        .member-card-name a:hover {
-            text-decoration: underline;
-        }
-
-        .member-card-details {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            font-size: 13px;
-            color: #666;
-        }
-
-        .member-card-detail {
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .member-card-detail span:first-child {
-            color: #999;
-        }
-
-        .member-card-detail span:last-child {
-            font-weight: 500;
-            color: #333;
-        }
-
-        .war-portal-filters {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-bottom: 15px;
-        }
-
-        .war-portal-filters input,
-        .war-portal-filters select {
-            padding: 10px;
-            border: 2px solid #ddd;
-            border-radius: 5px;
-            font-size: 14px;
-        }
-
-        .war-portal-filters input {
-            flex: 1;
-            min-width: 200px;
-        }
-
         /* War Portal Two-Faction Layout */
         .war-portal-container {
             display: flex;
@@ -678,6 +581,22 @@
 
         .portal-member-name a:hover {
             text-decoration: underline;
+        }
+
+        .portal-member-name .attack-skull {
+            margin-left: auto;
+            text-decoration: none;
+            font-size: 14px;
+            opacity: 0.7;
+            transition: opacity 0.2s, transform 0.2s;
+            padding-left: 8px;
+            flex-shrink: 0;
+        }
+
+        .portal-member-name .attack-skull:hover {
+            opacity: 1;
+            transform: scale(1.2);
+            text-decoration: none;
         }
 
         .portal-member-stats {
@@ -968,11 +887,27 @@
         .member-name-row {
             display: flex;
             align-items: center;
+            width: 100%;
+        }
+
+        .member-name-row .attack-skull {
+            margin-left: auto;
+            text-decoration: none;
+            font-size: 14px;
+            opacity: 0.7;
+            transition: opacity 0.2s, transform 0.2s;
+            padding-left: 8px;
+        }
+
+        .member-name-row .attack-skull:hover {
+            opacity: 1;
+            transform: scale(1.2);
+            text-decoration: none;
         }
 
         /* Estimated Stats Column */
         .est-stats {
-            font-size: 11px;
+            font-size: 12px;
             color: #666;
         }
 
@@ -985,6 +920,15 @@
             font-weight: 600;
             color: #28a745;
         }
+
+        .stats-tooltip {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .stats-tooltip[title] {
+            position: relative;
+        }
     </style>
 </head>
 <body>
@@ -992,7 +936,7 @@
         <div class="header">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
                 <h1 style="font-size: 1.4em; margin: 0;">Torn Ranked War Dashboard by <a href="https://www.torn.com/profiles.php?XID=2775419" target="_blank" style="color: #667eea; text-decoration: none;">Xerra [2775419]</a> with thanks to <a href="https://www.torn.com/profiles.php?XID=2863072" target="_blank" style="color: #667eea; text-decoration: none;">NestFreemark [2863072]</a> and <a href="https://www.torn.com/profiles.php?XID=2935003" target="_blank" style="color: #667eea; text-decoration: none;">Pickaxe1977 [2935003]</a></h1>
-                <span style="font-size: 12px; color: #666; white-space: nowrap; margin-left: 15px;">V0.18 - 13/01/2026</span>
+                <span style="font-size: 12px; color: #666; white-space: nowrap; margin-left: 15px;">V0.19 - 27/01/2026</span>
             </div>
             <div class="api-input-group" style="display: flex; justify-content: space-between; align-items: flex-end;">
                 <div style="display: flex; gap: 10px; align-items: flex-end;">
@@ -1017,8 +961,8 @@
                     <button type="button" class="btn" id="getFactionBtn" onclick="getFaction()" style="background: #28a745;">Get Faction</button>
                 </div>
                 <div style="display: flex; align-items: center; gap: 8px;">
-                    <span style="font-size: 10px; color: #888; max-width: 200px;">Clears all saved data from early versions of this script</span>
-                    <button type="button" class="btn" onclick="resetAllData()" style="background: #dc3545; white-space: nowrap;">Reset Data</button>
+                    <span style="font-size: 10px; color: #888; max-width: 200px;">Clears cached data and settings (API keys preserved)</span>
+                    <button type="button" class="btn" onclick="resetAllData()" style="background: #dc3545; white-space: nowrap;" title="Reset all cached data and settings. Your API keys will be preserved.">Reset Data</button>
                 </div>
             </div>
             <div class="info-text">
@@ -1040,6 +984,12 @@
     </div>
 
     <script>
+        // Current version - update this when releasing new versions that require data reset
+        const CURRENT_VERSION = '0.19';
+
+        // Current user data (API key owner)
+        let currentUserId = null;
+
         let factionData = null;
         let membersData = [];
         let enemyFactionData = null;
@@ -1090,8 +1040,7 @@
         let enemyPortalSortColumn = 'name';
         let enemyPortalSortDirection = 'asc';
 
-        // Hospital timers - stores end timestamps for countdown
-        let hospitalTimers = {};
+        // Hospital timer interval reference
         let hospitalTimerInterval = null;
 
         // TornStats spy data cache - stores fetched spy data by player ID
@@ -1122,10 +1071,11 @@
         }
 
         // Portal column widths (stored separately for own and enemy factions)
-        // Default widths in pixels for: name, level, str, def, spd, dex, life, status, timer
+        // Default widths in pixels for: name, level, est_stats, str, def, spd, dex, life, status, timer
         const defaultColumnWidths = {
             name: 150,
             level: 50,
+            est_stats: 80,
             str: 65,
             def: 65,
             spd: 65,
@@ -1138,7 +1088,7 @@
         let enemyColumnWidths = { ...defaultColumnWidths };
 
         // Portal column order (draggable columns)
-        const defaultPortalColumns = ['name', 'level', 'str', 'def', 'spd', 'dex', 'life', 'status', 'timer'];
+        const defaultPortalColumns = ['name', 'level', 'est_stats', 'str', 'def', 'spd', 'dex', 'life', 'status', 'timer'];
         let ownPortalColumnOrder = [...defaultPortalColumns];
         let enemyPortalColumnOrder = [...defaultPortalColumns];
 
@@ -1146,6 +1096,7 @@
         const portalColumnDefs = {
             name: { label: 'Name', sortKey: 'name' },
             level: { label: 'Level', sortKey: 'level' },
+            est_stats: { label: 'Est. Stats', sortKey: 'est_stats' },
             str: { label: 'STR', sortKey: 'str' },
             def: { label: 'DEF', sortKey: 'def' },
             spd: { label: 'SPD', sortKey: 'spd' },
@@ -1427,6 +1378,7 @@
         }
 
         // War Planning column order (draggable columns)
+        // Note: 'energy' column removed as it requires Full Access API key which most users don't have
         const defaultWarPlanningColumns = [
             'name', 'est_stats', 'level', 'age', 'life', 'elo', 'best_damage',
             'critical_hits', 'rw_hits', 'xanax', 'vicodin', 'overdosed', 'refills', 'location'
@@ -2061,6 +2013,7 @@
             };
         }
 
+        // Get energy display for a member
         // Show TornStats checking indicator on a faction list
         function showTornStatsIndicator(isEnemy, message) {
             const listId = isEnemy ? 'enemyMembersList' : 'ownMembersList';
@@ -2094,6 +2047,65 @@
                     indicator.remove();
                 }
             }
+        }
+
+        // Batched fetch for member details to avoid hitting API rate limits
+        // Returns array of member details, updates a container element with progress
+        // containerSelector: DOM element, CSS selector string, or 'global' to use the main loading indicator
+        async function fetchMemberDetailsBatched(memberIds, apiKey, containerSelector = null, labelText = 'Loading members') {
+            const batchSize = 5;
+            const delayMs = 1000; // 1 second between batches to stay well under rate limit
+            const results = [];
+
+            // Determine which progress indicator to use
+            const useGlobalLoader = containerSelector === 'global';
+            let container = null;
+            if (!useGlobalLoader && containerSelector) {
+                container = typeof containerSelector === 'string'
+                    ? document.querySelector(containerSelector)
+                    : containerSelector;
+            }
+
+            const updateProgress = (current, total) => {
+                if (useGlobalLoader) {
+                    updateLoadingProgress(current, total, labelText);
+                } else if (container) {
+                    container.innerHTML = `
+                        <div style="padding: 40px; text-align: center;">
+                            <div style="color: #666; margin-bottom: 15px;">${labelText}...</div>
+                            <div style="width: 200px; height: 20px; background: #e0e0e0; border-radius: 10px; margin: 0 auto; overflow: hidden;">
+                                <div style="width: ${(current/total)*100}%; height: 100%; background: linear-gradient(90deg, #4a7c4e, #6a9b6e); transition: width 0.3s;"></div>
+                            </div>
+                            <div style="color: #888; margin-top: 10px; font-size: 14px;">${current} / ${total} members</div>
+                        </div>
+                    `;
+                }
+            };
+
+            updateProgress(0, memberIds.length);
+
+            for (let i = 0; i < memberIds.length; i += batchSize) {
+                const batch = memberIds.slice(i, i + batchSize);
+
+                const batchPromises = batch.map(id =>
+                    fetch(`https://api.torn.com/user/${id}?selections=profile,personalstats&key=${apiKey}`)
+                        .then(r => r.json())
+                        .then(d => ({ id, ...d }))
+                        .catch(e => ({ id, error: e.message }))
+                );
+
+                const batchResults = await Promise.all(batchPromises);
+                results.push(...batchResults);
+
+                updateProgress(Math.min(i + batchSize, memberIds.length), memberIds.length);
+
+                // Delay before next batch (except for last batch)
+                if (i + batchSize < memberIds.length) {
+                    await new Promise(resolve => setTimeout(resolve, delayMs));
+                }
+            }
+
+            return results;
         }
 
         // Fetch spy data from TornStats for a list of player IDs
@@ -2145,8 +2157,8 @@
             let foundCount = 0;
             let checkedCount = 0;
 
-            // TornStats API has rate limits, so we batch requests with delays
-            const batchSize = 10;
+            // TornStats API has rate limits (10 req/sec), so we batch requests with delays
+            const batchSize = 5;
             const delayMs = 1000; // 1 second between batches
 
             for (let i = 0; i < idsToFetch.length; i += batchSize) {
@@ -2260,6 +2272,34 @@
             return num.toString();
         }
 
+        // Format stats with tooltip showing breakdown
+        function formatStatsWithTooltip(battleStats) {
+            if (!battleStats || !battleStats.total) {
+                return '<span class="est-stats-value">N/A</span>';
+            }
+
+            const total = battleStats.total;
+            const totalFormatted = formatStatNumber(total);
+            const isReal = battleStats.isReal;
+            const colorClass = isReal ? 'real-value' : 'est-value';
+
+            let tooltip = '';
+            if (isReal && battleStats.strength !== undefined) {
+                // Real spy data - show individual stats
+                tooltip = `STR: ${formatStatNumber(battleStats.strength)}&#10;DEF: ${formatStatNumber(battleStats.defense)}&#10;SPD: ${formatStatNumber(battleStats.speed)}&#10;DEX: ${formatStatNumber(battleStats.dexterity)}&#10;Total: ${formatStatNumber(total)}`;
+                if (battleStats.daysAgo !== null) {
+                    tooltip += `&#10;(Spied ${battleStats.daysAgo} day${battleStats.daysAgo !== 1 ? 's' : ''} ago)`;
+                }
+            } else if (battleStats.low !== undefined && battleStats.high !== undefined) {
+                // Estimated stats - show range
+                tooltip = `Estimated Total: ${formatStatNumber(total)}&#10;Range: ${formatStatNumber(battleStats.low)} - ${formatStatNumber(battleStats.high)}`;
+            } else {
+                tooltip = `Total: ${formatStatNumber(total)}`;
+            }
+
+            return `<span class="${colorClass} stats-tooltip" title="${tooltip}" style="cursor: help;">${totalFormatted}</span>`;
+        }
+
         // Handle Enter key press on input fields
         function handleEnterKey(event) {
             if (event.key === 'Enter') {
@@ -2300,6 +2340,9 @@
                     throw new Error('You are not in a faction');
                 }
 
+                // Store current user's ID
+                currentUserId = userData.player_id?.toString() || null;
+
                 // Save user's faction ID
                 localStorage.setItem('tornUserFactionId', myFactionId.toString());
 
@@ -2314,16 +2357,14 @@
 
                 factionData = factionBasicData;
 
-                // Extract member IDs and fetch their details
+                // Extract member IDs and fetch their details with batching
                 const memberIds = factionBasicData.members ? Object.keys(factionBasicData.members) : [];
-                const memberDetailsPromises = memberIds.map(id =>
-                    fetch(`https://api.torn.com/user/${id}?selections=profile,personalstats&key=${apiKey}`)
-                        .then(r => r.json())
-                        .then(d => ({ id, ...d }))
-                        .catch(e => ({ id, error: e.message }))
+                const memberDetails = await fetchMemberDetailsBatched(
+                    memberIds,
+                    apiKey,
+                    'global',
+                    'Loading faction members'
                 );
-
-                const memberDetails = await Promise.all(memberDetailsPromises);
 
                 membersData = memberIds.map(id => {
                     const member = factionBasicData.members[id];
@@ -2350,28 +2391,30 @@
 
                 // Re-render to show updated stats
                 renderMembersTable(membersData);
-
-                hideLoading();
             } catch (error) {
-                hideLoading();
                 showError(error.message);
             }
         }
 
         // Reset all saved data from localStorage
-        function resetAllData() {
-            const confirmed = confirm(
+        function resetAllData(skipConfirm = false) {
+            const confirmed = skipConfirm || confirm(
                 'Are you sure you want to reset all data?\n\n' +
                 'This will clear:\n' +
-                '- API keys\n' +
                 '- All cached faction data\n' +
-                '- TornStats cache\n' +
+                '- TornStats spy cache\n' +
                 '- Column settings and preferences\n' +
                 '- All other saved configuration\n\n' +
+                'Your API keys will be preserved.\n\n' +
                 'This action cannot be undone.'
             );
 
             if (confirmed) {
+                // Save API keys before reset
+                const savedApiKey = localStorage.getItem('tornApiKey');
+                const savedTornStatsKey = localStorage.getItem('tornStatsApiKey');
+                const savedVersion = localStorage.getItem('tornDashboardVersion');
+
                 // Get all localStorage keys that start with 'torn'
                 const keysToRemove = [];
                 for (let i = 0; i < localStorage.length; i++) {
@@ -2384,9 +2427,16 @@
                 // Remove all torn-related keys
                 keysToRemove.forEach(key => localStorage.removeItem(key));
 
-                // Clear input fields
-                document.getElementById('apiKey').value = '';
-                document.getElementById('tornStatsApiKey').value = '';
+                // Restore API keys and version
+                if (savedApiKey) {
+                    localStorage.setItem('tornApiKey', savedApiKey);
+                }
+                if (savedTornStatsKey) {
+                    localStorage.setItem('tornStatsApiKey', savedTornStatsKey);
+                }
+                if (savedVersion) {
+                    localStorage.setItem('tornDashboardVersion', savedVersion);
+                }
 
                 // Reset in-memory data
                 factionData = null;
@@ -2402,7 +2452,7 @@
                 // Clear the content area
                 document.getElementById('content').innerHTML = '';
 
-                alert('All data has been reset. Please enter your API key to start fresh.');
+                alert('All data has been reset. Your API keys have been preserved. Click "Get Faction" to reload your data.');
             }
         }
 
@@ -2629,16 +2679,14 @@
 
                 factionData = factionBasicData;
 
-                // Extract member IDs and fetch their details
+                // Extract member IDs and fetch their details with batching
                 const memberIds = factionBasicData.members ? Object.keys(factionBasicData.members) : [];
-                const memberDetailsPromises = memberIds.map(id =>
-                    fetch(`https://api.torn.com/user/${id}?selections=profile,personalstats&key=${apiKey}`)
-                        .then(r => r.json())
-                        .then(d => ({ id, ...d }))
-                        .catch(e => ({ id, error: e.message }))
+                const memberDetails = await fetchMemberDetailsBatched(
+                    memberIds,
+                    apiKey,
+                    'global',
+                    'Loading your faction members'
                 );
-
-                const memberDetails = await Promise.all(memberDetailsPromises);
 
                 membersData = memberIds.map(id => {
                     const member = factionBasicData.members[id];
@@ -2740,6 +2788,8 @@
                     updateMainFactionInfoForSpy();
                     updateStatsSummaryForSpy();
                 }
+                // Refresh war history dropdown
+                populateWarHistoryDropdown();
             } else if (tabId === 'war-portal') {
                 // Show auto-refresh info on War Portal tab
                 if (autoRefreshInfo) autoRefreshInfo.style.display = 'block';
@@ -2770,8 +2820,14 @@
 
         // Load user faction specifically for War Layout (includes TornStats)
         async function loadUserFactionForWarLayout(factionId, apiKey) {
+            const ownList = document.getElementById('ownMembersList');
+
             try {
                 // Load user's faction data
+                if (ownList) {
+                    ownList.innerHTML = '<div class="portal-no-data">Loading your faction info...</div>';
+                }
+
                 const factionUrl = `https://api.torn.com/faction/${factionId}?selections=basic&key=${apiKey}`;
                 const response = await fetch(factionUrl);
                 const data = await response.json();
@@ -2785,15 +2841,13 @@
                 // Extract member IDs from the faction data
                 const memberIds = data.members ? Object.keys(data.members) : [];
 
-                // Fetch details for all members
-                const memberDetailsPromises = memberIds.map(id =>
-                    fetch(`https://api.torn.com/user/${id}?selections=profile,personalstats&key=${apiKey}`)
-                        .then(r => r.json())
-                        .then(d => ({ id, ...d }))
-                        .catch(e => ({ id, error: e.message }))
+                // Fetch details for all members with batching
+                const memberDetails = await fetchMemberDetailsBatched(
+                    memberIds,
+                    apiKey,
+                    ownList,
+                    'Loading your faction members'
                 );
-
-                const memberDetails = await Promise.all(memberDetailsPromises);
 
                 // Merge member details with basic faction member data
                 userMembersData = memberIds.map(id => {
@@ -3087,12 +3141,13 @@
 
             // Show loading in enemy column
             const enemyList = document.getElementById('enemyMembersList');
-            if (enemyList) {
-                enemyList.innerHTML = '<div class="portal-no-data">Loading enemy faction...</div>';
-            }
 
             try {
                 // Load enemy faction basic info
+                if (enemyList) {
+                    enemyList.innerHTML = '<div class="portal-no-data">Loading enemy faction info...</div>';
+                }
+
                 const factionUrl = `https://api.torn.com/faction/${enemyFactionId}?selections=basic&key=${apiKey}`;
                 const response = await fetch(factionUrl);
                 const data = await response.json();
@@ -3106,15 +3161,13 @@
                 // Extract member IDs from the faction data
                 const memberIds = data.members ? Object.keys(data.members) : [];
 
-                // Fetch details for all enemy members
-                const memberDetailsPromises = memberIds.map(id =>
-                    fetch(`https://api.torn.com/user/${id}?selections=profile,personalstats&key=${apiKey}`)
-                        .then(r => r.json())
-                        .then(d => ({ id, ...d }))
-                        .catch(e => ({ id, error: e.message }))
+                // Fetch details for all enemy members with batching and progress indicator
+                const memberDetails = await fetchMemberDetailsBatched(
+                    memberIds,
+                    apiKey,
+                    enemyList,
+                    'Loading enemy members'
                 );
-
-                const memberDetails = await Promise.all(memberDetailsPromises);
 
                 // Merge member details with basic faction member data
                 enemyMembersData = memberIds.map(id => {
@@ -3136,6 +3189,11 @@
                 // Update the War Portal display
                 renderWarPortal();
 
+                // Start/restart lightweight refresh for status updates
+                if (apiKey) {
+                    startLightweightRefresh(apiKey);
+                }
+
             } catch (error) {
                 console.error('Error loading enemy faction:', error);
                 const enemyList = document.getElementById('enemyMembersList');
@@ -3153,8 +3211,15 @@
                 return;
             }
 
+            // Show loading in own members column
+            const ownList = document.getElementById('ownMembersList');
+
             try {
                 // First, get the user's faction ID
+                if (ownList) {
+                    ownList.innerHTML = '<div class="portal-no-data">Loading your faction info...</div>';
+                }
+
                 const userResponse = await fetch(`https://api.torn.com/user?selections=basic&key=${apiKey}`);
                 const userData = await userResponse.json();
 
@@ -3186,15 +3251,13 @@
                 // Extract member IDs from the faction data
                 const memberIds = data.members ? Object.keys(data.members) : [];
 
-                // Fetch details for all members
-                const memberDetailsPromises = memberIds.map(id =>
-                    fetch(`https://api.torn.com/user/${id}?selections=profile,personalstats&key=${apiKey}`)
-                        .then(r => r.json())
-                        .then(d => ({ id, ...d }))
-                        .catch(e => ({ id, error: e.message }))
+                // Fetch details for all members with batching and progress indicator
+                const memberDetails = await fetchMemberDetailsBatched(
+                    memberIds,
+                    apiKey,
+                    ownList,
+                    'Loading your faction members'
                 );
-
-                const memberDetails = await Promise.all(memberDetailsPromises);
 
                 // Merge member details with basic faction member data
                 userMembersData = memberIds.map(id => {
@@ -3212,6 +3275,9 @@
 
                 // Update the War Portal display
                 renderWarPortal();
+
+                // Start/restart lightweight refresh for status updates
+                startLightweightRefresh(apiKey);
 
             } catch (error) {
                 console.error('Error loading user faction:', error);
@@ -3303,12 +3369,12 @@
             }
 
             const container = document.getElementById('spyFactionContainer');
-            if (container) {
-                container.innerHTML = '<div style="padding: 40px; text-align: center; color: #666;"><p>Loading faction data...</p></div>';
-            }
-
             try {
                 // Load faction basic info
+                if (container) {
+                    container.innerHTML = '<div style="padding: 40px; text-align: center; color: #666;"><p>Loading faction info...</p></div>';
+                }
+
                 const factionUrl = `https://api.torn.com/faction/${spyFactionId}?selections=basic&key=${apiKey}`;
                 const response = await fetch(factionUrl);
                 const data = await response.json();
@@ -3322,15 +3388,13 @@
                 // Extract member IDs
                 const memberIds = data.members ? Object.keys(data.members) : [];
 
-                // Fetch details for all members
-                const memberDetailsPromises = memberIds.map(id =>
-                    fetch(`https://api.torn.com/user/${id}?selections=profile,personalstats&key=${apiKey}`)
-                        .then(r => r.json())
-                        .then(d => ({ id, ...d }))
-                        .catch(e => ({ id, error: e.message }))
+                // Fetch details for all members with batching and progress indicator
+                const memberDetails = await fetchMemberDetailsBatched(
+                    memberIds,
+                    apiKey,
+                    container,
+                    'Loading faction members'
                 );
-
-                const memberDetails = await Promise.all(memberDetailsPromises);
 
                 // Merge member details with basic faction member data
                 spyMembersData = memberIds.map(id => {
@@ -3811,6 +3875,9 @@
 
         // Get cell content for spy faction table (similar to getWarPlanningCellContent but without activity grid)
         function getSpyCellContent(column, member, memberData) {
+            const stats = memberData.battleStats;
+            const hasRealStats = stats && stats.isReal && stats.strength !== undefined;
+
             switch (column) {
                 case 'name':
                     return `<td>
@@ -3820,14 +3887,19 @@
                                 <a href="https://www.torn.com/profiles.php?XID=${member.id}" target="_blank">
                                     ${member.name}
                                 </a>
+                                <a href="https://www.torn.com/loader.php?sid=attack&user2ID=${member.id}" target="_blank" class="attack-skull" title="Attack ${member.name}">💀</a>
                             </div>
                         </div>
                     </td>`;
                 case 'est_stats':
-                    return `<td class="est-stats">
-                        <span class="est-stats-value">${formatStatNumber(memberData.estStats.mid)}</span>
-                        <br><span style="font-size:10px;color:#999;">${formatStatNumber(memberData.estStats.low)} - ${formatStatNumber(memberData.estStats.high)}</span>
-                    </td>`;
+                    // Show estimated stats only when we don't have real TornStats data
+                    if (hasRealStats) {
+                        return `<td class="est-stats"><span style="color: #999;">-</span></td>`;
+                    } else {
+                        const estTotal = stats?.total || 0;
+                        const tooltip = `Estimated Total: ${formatStatNumber(estTotal)}`;
+                        return `<td class="est-stats"><span class="est-value" title="${tooltip}" style="cursor: help;">${formatStatNumber(estTotal)}</span></td>`;
+                    }
                 case 'level':
                     return `<td><span class="level-badge">${member.level || 'N/A'}</span></td>`;
                 case 'age':
@@ -3853,35 +3925,68 @@
                 case 'location':
                     return `<td class="${memberData.locationClass}">${memberData.locationText}</td>`;
                 case 'str':
-                    const strValue = memberData.battleStats?.strength;
-                    const strClass = memberData.battleStats?.isReal ? 'real-value' : 'est-value';
-                    const strTotal = memberData.battleStats ? (memberData.battleStats.strength || 0) + (memberData.battleStats.defense || 0) + (memberData.battleStats.speed || 0) + (memberData.battleStats.dexterity || 0) : 0;
-                    const strTooltip = strTotal > 0 ? `Total: ${formatStatNumber(strTotal)}` : '';
-                    return `<td title="${strTooltip}">${strValue ? `<span class="${strClass}">${formatStatNumber(strValue)}</span>` : '-'}</td>`;
+                    // Show real stats only when we have TornStats data
+                    if (hasRealStats) {
+                        return `<td>${formatStatCell(stats.strength, true, stats.daysAgo)}</td>`;
+                    } else {
+                        return `<td><span style="color: #999;">-</span></td>`;
+                    }
                 case 'def':
-                    const defValue = memberData.battleStats?.defense;
-                    const defClass = memberData.battleStats?.isReal ? 'real-value' : 'est-value';
-                    const defTotal = memberData.battleStats ? (memberData.battleStats.strength || 0) + (memberData.battleStats.defense || 0) + (memberData.battleStats.speed || 0) + (memberData.battleStats.dexterity || 0) : 0;
-                    const defTooltip = defTotal > 0 ? `Total: ${formatStatNumber(defTotal)}` : '';
-                    return `<td title="${defTooltip}">${defValue ? `<span class="${defClass}">${formatStatNumber(defValue)}</span>` : '-'}</td>`;
+                    if (hasRealStats) {
+                        return `<td>${formatStatCell(stats.defense, true, stats.daysAgo)}</td>`;
+                    } else {
+                        return `<td><span style="color: #999;">-</span></td>`;
+                    }
                 case 'spd':
-                    const spdValue = memberData.battleStats?.speed;
-                    const spdClass = memberData.battleStats?.isReal ? 'real-value' : 'est-value';
-                    const spdTotal = memberData.battleStats ? (memberData.battleStats.strength || 0) + (memberData.battleStats.defense || 0) + (memberData.battleStats.speed || 0) + (memberData.battleStats.dexterity || 0) : 0;
-                    const spdTooltip = spdTotal > 0 ? `Total: ${formatStatNumber(spdTotal)}` : '';
-                    return `<td title="${spdTooltip}">${spdValue ? `<span class="${spdClass}">${formatStatNumber(spdValue)}</span>` : '-'}</td>`;
+                    if (hasRealStats) {
+                        return `<td>${formatStatCell(stats.speed, true, stats.daysAgo)}</td>`;
+                    } else {
+                        return `<td><span style="color: #999;">-</span></td>`;
+                    }
                 case 'dex':
-                    const dexValue = memberData.battleStats?.dexterity;
-                    const dexClass = memberData.battleStats?.isReal ? 'real-value' : 'est-value';
-                    const dexTotal = memberData.battleStats ? (memberData.battleStats.strength || 0) + (memberData.battleStats.defense || 0) + (memberData.battleStats.speed || 0) + (memberData.battleStats.dexterity || 0) : 0;
-                    const dexTooltip = dexTotal > 0 ? `Total: ${formatStatNumber(dexTotal)}` : '';
-                    return `<td title="${dexTooltip}">${dexValue ? `<span class="${dexClass}">${formatStatNumber(dexValue)}</span>` : '-'}</td>`;
+                    if (hasRealStats) {
+                        return `<td>${formatStatCell(stats.dexterity, true, stats.daysAgo)}</td>`;
+                    } else {
+                        return `<td><span style="color: #999;">-</span></td>`;
+                    }
                 default:
                     return '<td>-</td>';
             }
         }
 
         // Load saved API key and faction ID from localStorage
+        // Check if this is a new version that requires data reset notification
+        function checkVersionAndPromptReset() {
+            const lastAcknowledgedVersion = localStorage.getItem('tornDashboardVersion');
+
+            // If this is version 0.19 and user hasn't acknowledged it yet
+            if (CURRENT_VERSION === '0.19' && lastAcknowledgedVersion !== '0.19') {
+                const shouldReset = confirm(
+                    '🔄 Welcome to Torn War Dashboard V0.19!\n\n' +
+                    'This update includes significant changes to the War Portal and data structures.\n\n' +
+                    'It is STRONGLY RECOMMENDED that you reset your cached data to ensure everything works correctly.\n\n' +
+                    '✓ Your API keys will be preserved\n' +
+                    '✗ Cached faction data will be cleared\n' +
+                    '✗ Column settings will be reset\n\n' +
+                    'Click OK to reset data now (recommended)\n' +
+                    'Click Cancel to skip (may cause display issues)'
+                );
+
+                // Mark this version as acknowledged so we don't prompt again
+                localStorage.setItem('tornDashboardVersion', CURRENT_VERSION);
+
+                if (shouldReset) {
+                    resetAllData(true); // Skip the confirmation since user just confirmed
+                    return true; // Indicate reset was performed
+                }
+            } else if (lastAcknowledgedVersion !== CURRENT_VERSION) {
+                // For future versions, just update the stored version without prompting
+                localStorage.setItem('tornDashboardVersion', CURRENT_VERSION);
+            }
+
+            return false; // No reset performed
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
             loadActivityHistory();
             loadColumnWidths();
@@ -3923,8 +4028,11 @@
                 }
             }
 
-            // Initialize based on saved tab preference
-            if (savedKey) {
+            // Check for version update and prompt for reset if needed
+            const wasReset = checkVersionAndPromptReset();
+
+            // Initialize based on saved tab preference (skip if data was just reset)
+            if (savedKey && !wasReset) {
                 initializeDashboard();
             }
         });
@@ -3941,7 +4049,7 @@
             showLoading();
 
             try {
-                // Get the API key owner's faction ID first
+                // Get the API key owner's faction ID
                 const userResponse = await fetch(`https://api.torn.com/user?selections=profile&key=${apiKey}`);
                 const userData = await userResponse.json();
 
@@ -3954,6 +4062,9 @@
                 if (!ownerFactionId) {
                     throw new Error('You are not in a faction');
                 }
+
+                // Store current user's ID
+                currentUserId = userData.player_id?.toString() || null;
 
                 // Save owner's faction ID
                 localStorage.setItem('tornUserFactionId', ownerFactionId.toString());
@@ -4044,6 +4155,9 @@
                 } else {
                     renderWarPortal();
                 }
+
+                // Start lightweight refresh for status updates after loading completes
+                startLightweightRefresh(apiKey);
             }
         }
 
@@ -4077,9 +4191,128 @@
             return null;
         }
 
+        // Fetch ranked war history and return list of opponent factions
+        async function fetchRankedWarHistory() {
+            const apiKey = document.getElementById('apiKey').value.trim();
+            if (!apiKey) return [];
+
+            try {
+                const userFactionId = localStorage.getItem('tornUserFactionId');
+                if (!userFactionId) return [];
+
+                const factionResponse = await fetch(`https://api.torn.com/faction/${userFactionId}?selections=rankedwars&key=${apiKey}`);
+                const factionRWData = await factionResponse.json();
+
+                if (factionRWData.error) return [];
+
+                const rankedWars = factionRWData.rankedwars || {};
+                const opponents = [];
+                const seenFactions = new Set();
+
+                // Sort wars by ID (descending = most recent first)
+                const sortedWarIds = Object.keys(rankedWars).sort((a, b) => parseInt(b) - parseInt(a));
+
+                for (const warId of sortedWarIds) {
+                    const war = rankedWars[warId];
+                    if (war.factions) {
+                        for (const fId in war.factions) {
+                            if (fId != userFactionId && !seenFactions.has(fId)) {
+                                seenFactions.add(fId);
+                                const factionInfo = war.factions[fId];
+                                opponents.push({
+                                    id: fId,
+                                    name: factionInfo.name || `Faction ${fId}`,
+                                    score: factionInfo.score || 0,
+                                    warId: warId
+                                });
+                            }
+                        }
+                    }
+                }
+
+                // Save to localStorage for quick access
+                localStorage.setItem('tornRankedWarHistory', JSON.stringify(opponents));
+                return opponents;
+            } catch (e) {
+                console.log('Could not fetch ranked war history:', e);
+                return [];
+            }
+        }
+
+        // Load ranked war history from cache
+        function loadRankedWarHistoryFromCache() {
+            try {
+                const cached = localStorage.getItem('tornRankedWarHistory');
+                return cached ? JSON.parse(cached) : [];
+            } catch (e) {
+                return [];
+            }
+        }
+
+        // Populate the ranked war history dropdown
+        async function populateWarHistoryDropdown() {
+            const dropdown = document.getElementById('warHistoryDropdown');
+            if (!dropdown) return;
+
+            // First try cached data for instant display
+            let opponents = loadRankedWarHistoryFromCache();
+
+            // Then fetch fresh data in background
+            fetchRankedWarHistory().then(freshOpponents => {
+                if (freshOpponents.length > 0) {
+                    opponents = freshOpponents;
+                    updateWarHistoryDropdownOptions(dropdown, opponents);
+                }
+            });
+
+            updateWarHistoryDropdownOptions(dropdown, opponents);
+        }
+
+        // Update dropdown options
+        function updateWarHistoryDropdownOptions(dropdown, opponents) {
+            dropdown.innerHTML = '<option value="">-- Recent War Opponents --</option>';
+
+            if (opponents.length === 0) {
+                dropdown.innerHTML += '<option value="" disabled>No ranked war history found</option>';
+                return;
+            }
+
+            opponents.forEach((opponent, index) => {
+                const option = document.createElement('option');
+                option.value = opponent.id;
+                option.textContent = `${opponent.name} [${opponent.id}]`;
+                dropdown.appendChild(option);
+            });
+        }
+
+        // Handle war history dropdown selection
+        function selectWarHistoryFaction(factionId) {
+            if (!factionId) return;
+
+            const spyInput = document.getElementById('spyFactionId');
+            if (spyInput) {
+                spyInput.value = factionId;
+            }
+
+            // Auto-load the faction
+            loadSpyFaction();
+
+            // Reset dropdown to placeholder
+            const dropdown = document.getElementById('warHistoryDropdown');
+            if (dropdown) {
+                dropdown.selectedIndex = 0;
+            }
+        }
+
         // Full load of user faction with all details and TornStats
         async function loadFullUserFaction(factionId, apiKey) {
+            const ownList = document.getElementById('ownMembersList');
+
             try {
+                if (ownList) {
+                    ownList.innerHTML = '<div class="portal-no-data">Loading your faction info...</div>';
+                }
+
                 const factionUrl = `https://api.torn.com/faction/${factionId}?selections=basic&key=${apiKey}`;
                 const response = await fetch(factionUrl);
                 const data = await response.json();
@@ -4090,14 +4323,12 @@
                 factionData = data;
 
                 const memberIds = data.members ? Object.keys(data.members) : [];
-                const memberDetailsPromises = memberIds.map(id =>
-                    fetch(`https://api.torn.com/user/${id}?selections=profile,personalstats&key=${apiKey}`)
-                        .then(r => r.json())
-                        .then(d => ({ id, ...d }))
-                        .catch(e => ({ id, error: e.message }))
+                const memberDetails = await fetchMemberDetailsBatched(
+                    memberIds,
+                    apiKey,
+                    ownList,
+                    'Loading your faction members'
                 );
-
-                const memberDetails = await Promise.all(memberDetailsPromises);
 
                 userMembersData = memberIds.map(id => {
                     const member = data.members[id];
@@ -4157,17 +4388,12 @@
             // Do an initial lightweight refresh
             await doLightweightRefresh(apiKey);
 
-            // Set up interval for ongoing lightweight refreshes
-            if (refreshInterval) {
-                clearInterval(refreshInterval);
-            }
-            refreshInterval = setInterval(() => doLightweightRefresh(apiKey), autoRefreshSeconds * 1000);
+            // Start the unified auto-refresh (handles both tabs)
+            startUnifiedAutoRefresh();
         }
 
         async function doLightweightRefresh(apiKey) {
-            const savedTab = localStorage.getItem('tornActiveTab');
-            if (savedTab !== 'war-portal') return; // Only refresh on War Portal
-
+            // This function refreshes War Portal data specifically
             try {
                 // Get user faction ID
                 const userFactionId = localStorage.getItem('tornUserFactionId');
@@ -4186,9 +4412,10 @@
                             if (freshData) {
                                 member.last_action = freshData.last_action;
                                 member.status = freshData.status;
-                                // Update life in details if available
+                                // Update life and status in details if available
                                 if (member.details) {
                                     member.details.life = freshData.life || member.details.life;
+                                    member.details.status = freshData.status || member.details.status;
                                 }
                             }
                         });
@@ -4209,6 +4436,7 @@
                                 member.status = freshData.status;
                                 if (member.details) {
                                     member.details.life = freshData.life || member.details.life;
+                                    member.details.status = freshData.status || member.details.status;
                                 }
                             }
                         });
@@ -4219,8 +4447,97 @@
                 renderWarPortal();
                 lastRefreshTime = new Date();
 
+                // Update the refresh time display
+                const refreshTimeElement = document.getElementById('lastRefreshTime');
+                if (refreshTimeElement) {
+                    refreshTimeElement.textContent = formatTime(lastRefreshTime);
+                }
+
             } catch (error) {
                 console.error('Lightweight refresh error:', error);
+            }
+        }
+
+        // Unified auto-refresh that handles both My Faction and War Portal tabs
+        function startUnifiedAutoRefresh() {
+            // Clear any existing interval
+            if (refreshInterval) {
+                clearInterval(refreshInterval);
+            }
+
+            refreshInterval = setInterval(async () => {
+                const apiKey = document.getElementById('apiKey').value.trim();
+                if (!apiKey) return;
+
+                const savedTab = localStorage.getItem('tornActiveTab');
+
+                try {
+                    if (savedTab === 'war-portal') {
+                        // Refresh War Portal
+                        await doLightweightRefresh(apiKey);
+                    } else if (savedTab === 'my-faction') {
+                        // Refresh My Faction tab
+                        await doMyFactionRefresh(apiKey);
+                    }
+                    // Other tabs don't need auto-refresh
+                } catch (error) {
+                    console.error('Auto-refresh error:', error);
+                }
+            }, autoRefreshSeconds * 1000);
+        }
+
+        // Refresh function for My Faction tab
+        async function doMyFactionRefresh(apiKey) {
+            try {
+                const userFactionId = localStorage.getItem('tornUserFactionId');
+                if (!userFactionId) return;
+
+                // Use efficient faction-level API call
+                const factionUrl = `https://api.torn.com/faction/${userFactionId}?selections=basic&key=${apiKey}`;
+                const response = await fetch(factionUrl);
+                const data = await response.json();
+
+                if (data.error || !data.members) return;
+
+                // Update member status from faction data
+                const updateMemberFromFaction = (member) => {
+                    const freshData = data.members[member.id];
+                    if (freshData) {
+                        return {
+                            ...member,
+                            status: freshData.status || member.status,
+                            last_action: freshData.last_action || member.last_action,
+                            details: {
+                                ...member.details,
+                                status: freshData.status || member.details?.status,
+                                last_action: freshData.last_action || member.details?.last_action,
+                                life: freshData.life || member.details?.life
+                            }
+                        };
+                    }
+                    return member;
+                };
+
+                // Update faction members
+                if (membersData.length > 0) {
+                    membersData = membersData.map(updateMemberFromFaction);
+                }
+                if (userMembersData.length > 0) {
+                    userMembersData = userMembersData.map(updateMemberFromFaction);
+                }
+
+                lastRefreshTime = new Date();
+
+                // Update the refresh time display
+                const refreshTimeElement = document.getElementById('lastRefreshTime');
+                if (refreshTimeElement) {
+                    refreshTimeElement.textContent = formatTime(lastRefreshTime);
+                }
+
+                // Re-render the members table
+                renderMembersTable(membersData);
+            } catch (error) {
+                console.error('My Faction refresh error:', error);
             }
         }
 
@@ -4246,18 +4563,17 @@
                 // Extract member IDs
                 const memberIds = data.members ? Object.keys(data.members) : [];
 
-                const memberDetailsPromises = memberIds.map(id =>
-                    fetch(`https://api.torn.com/user/${id}?selections=profile,personalstats&key=${apiKey}`)
-                        .then(r => r.json())
-                        .then(d => ({ ...d, member_id: id }))
-                        .catch(e => ({ member_id: id, error: e.message }))
+                // Fetch details with batching
+                const memberDetails = await fetchMemberDetailsBatched(
+                    memberIds,
+                    apiKey,
+                    'global',
+                    'Loading faction members'
                 );
-
-                const memberDetails = await Promise.all(memberDetailsPromises);
 
                 membersData = memberIds.map(id => {
                     const member = data.members[id];
-                    const details = memberDetails.find(d => d.member_id === id) || {};
+                    const details = memberDetails.find(d => d.id === id) || {};
                     return {
                         id,
                         ...member,
@@ -4344,26 +4660,16 @@
                 const memberIds = data.members ? Object.keys(data.members) : [];
                 console.log('Fetching details for', memberIds.length, 'members');
 
-                const memberDetailsPromises = memberIds.map(id =>
-                    fetch(`https://api.torn.com/user/${id}?selections=profile,personalstats&key=${apiKey}`)
-                        .then(r => r.json())
-                        .then(d => {
-                            console.log(`Member ${id} data:`, d);
-                            if (d.error) {
-                                console.warn(`API returned error for member ${id}:`, d.error);
-                            }
-                            return { ...d, member_id: id };
-                        })
-                        .catch(e => {
-                            console.error(`Error fetching member ${id}:`, e);
-                            return { member_id: id, error: e.message };
-                        })
+                // Fetch details with batching and progress indicator
+                const memberDetails = await fetchMemberDetailsBatched(
+                    memberIds,
+                    apiKey,
+                    'global',
+                    'Loading faction members'
                 );
 
-                const memberDetails = await Promise.all(memberDetailsPromises);
-
                 membersData = Object.entries(data.members || {}).map(([id, member]) => {
-                    const details = memberDetails.find(d => d.member_id == id || d.player_id == id);
+                    const details = memberDetails.find(d => d.id == id || d.player_id == id);
 
                     // Check if the details have an error
                     if (details && details.error) {
@@ -4400,80 +4706,8 @@
         }
 
         function startAutoRefresh() {
-            // Clear any existing interval
-            if (refreshInterval) {
-                clearInterval(refreshInterval);
-            }
-
-            // Refresh based on user-selected interval - refreshes status for both factions
-            refreshInterval = setInterval(async () => {
-                const apiKey = document.getElementById('apiKey').value.trim();
-
-                if (!apiKey) return;
-
-                try {
-                    // Collect all member IDs to refresh (both own and enemy factions)
-                    const ownMemberIds = (userMembersData.length > 0 ? userMembersData : membersData).map(m => m.id);
-                    const enemyMemberIds = enemyMembersData.map(m => m.id);
-                    const allMemberIds = [...ownMemberIds, ...enemyMemberIds];
-
-                    if (allMemberIds.length === 0) return;
-
-                    // Fetch basic status info for all members
-                    const statusPromises = allMemberIds.map(id =>
-                        fetch(`https://api.torn.com/user/${id}?selections=profile&key=${apiKey}`)
-                            .then(r => r.json())
-                            .then(d => ({ id, ...d }))
-                            .catch(e => ({ id, error: e.message }))
-                    );
-
-                    const statusUpdates = await Promise.all(statusPromises);
-
-                    // Helper function to update member data with status
-                    const updateMemberStatus = (member) => {
-                        const update = statusUpdates.find(u => u.id === member.id);
-                        if (update && !update.error) {
-                            return {
-                                ...member,
-                                status: update.status || member.status,
-                                last_action: update.last_action || member.last_action,
-                                details: {
-                                    ...member.details,
-                                    status: update.status || member.details?.status,
-                                    last_action: update.last_action || member.details?.last_action,
-                                    life: update.life || member.details?.life
-                                }
-                            };
-                        }
-                        return member;
-                    };
-
-                    // Update own faction members
-                    if (userMembersData.length > 0) {
-                        userMembersData = userMembersData.map(updateMemberStatus);
-                    } else if (membersData.length > 0) {
-                        membersData = membersData.map(updateMemberStatus);
-                    }
-
-                    // Update enemy faction members
-                    if (enemyMembersData.length > 0) {
-                        enemyMembersData = enemyMembersData.map(updateMemberStatus);
-                    }
-
-                    lastRefreshTime = new Date();
-
-                    // Update the refresh time display
-                    const refreshTimeElement = document.getElementById('lastRefreshTime');
-                    if (refreshTimeElement) {
-                        refreshTimeElement.textContent = formatTime(lastRefreshTime);
-                    }
-
-                    // Re-render the War Portal to show updated status
-                    renderWarPortal();
-                } catch (error) {
-                    console.error('Auto-refresh error:', error);
-                }
-            }, autoRefreshSeconds * 1000);
+            // Use the unified auto-refresh that handles both tabs
+            startUnifiedAutoRefresh();
         }
 
         function changeAutoRefreshInterval(seconds) {
@@ -4487,23 +4721,34 @@
             }
 
             // Restart the auto-refresh with the new interval
-            startAutoRefresh();
+            startUnifiedAutoRefresh();
         }
 
-        function stopAutoRefresh() {
-            if (refreshInterval) {
-                clearInterval(refreshInterval);
-                refreshInterval = null;
-            }
-        }
-
-        function showLoading() {
+        function showLoading(message = 'Loading faction data...') {
             document.getElementById('content').innerHTML = `
                 <div class="loading">
                     <div class="loading-spinner"></div>
-                    <p>Loading faction data...</p>
+                    <p id="loadingMessage">${message}</p>
+                    <div id="loadingProgress" style="display: none; margin-top: 15px;">
+                        <div style="width: 200px; height: 20px; background: #e0e0e0; border-radius: 10px; margin: 0 auto; overflow: hidden;">
+                            <div id="loadingProgressBar" style="width: 0%; height: 100%; background: linear-gradient(90deg, #4a7c4e, #6a9b6e); transition: width 0.3s;"></div>
+                        </div>
+                        <div id="loadingProgressText" style="color: #888; margin-top: 10px; font-size: 14px;"></div>
+                    </div>
                 </div>
             `;
+        }
+
+        function updateLoadingProgress(current, total, label = 'Loading members') {
+            const progressDiv = document.getElementById('loadingProgress');
+            const progressBar = document.getElementById('loadingProgressBar');
+            const progressText = document.getElementById('loadingProgressText');
+            const message = document.getElementById('loadingMessage');
+
+            if (progressDiv) progressDiv.style.display = 'block';
+            if (progressBar) progressBar.style.width = `${(current/total)*100}%`;
+            if (progressText) progressText.textContent = `${current} / ${total} members`;
+            if (message) message.textContent = `${label}...`;
         }
 
         function showError(message) {
@@ -4619,10 +4864,14 @@
                                 <label for="spyFactionId" style="font-weight: 600; font-size: 13px;">Faction ID:</label>
                                 <input type="text" id="spyFactionId" placeholder="Enter Faction ID" style="padding: 6px 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 12px; width: 150px;" onkeypress="if(event.key==='Enter') loadSpyFaction()">
                                 <button class="btn" onclick="loadSpyFaction()">Load Faction</button>
+                                <span style="color: #999; margin: 0 5px;">or</span>
+                                <select id="warHistoryDropdown" onchange="selectWarHistoryFaction(this.value)" style="padding: 6px 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 12px; min-width: 220px; max-width: 300px;">
+                                    <option value="">-- Recent War Opponents --</option>
+                                </select>
                             </div>
                             <div id="spyFactionContainer">
                                 <div style="padding: 40px; text-align: center; color: #666;">
-                                    <p>Enter a Faction ID above to view their members and stats.</p>
+                                    <p>Enter a Faction ID above or select from recent war opponents to view their members and stats.</p>
                                 </div>
                             </div>
                         </div>
@@ -4636,6 +4885,7 @@
 
             renderMembersTable(membersData);
             renderWarPortal();
+            populateWarHistoryDropdown();
         }
 
         function getUniquePositions() {
@@ -4732,8 +4982,10 @@
                         bVal = b.name.toLowerCase();
                         break;
                     case 'est_stats':
-                        aVal = estimateBattleStats(a).mid;
-                        bVal = estimateBattleStats(b).mid;
+                        const aStats = getBattleStats(a);
+                        const bStats = getBattleStats(b);
+                        aVal = aStats.total || 0;
+                        bVal = bStats.total || 0;
                         break;
                     case 'level':
                         aVal = a.level || 0;
@@ -4786,8 +5038,27 @@
                     case 'location':
                         const aStatus = (a.details && a.details.status) || {};
                         const bStatus = (b.details && b.details.status) || {};
-                        aVal = (aStatus.description || aStatus.state || 'Unknown').toLowerCase();
-                        bVal = (bStatus.description || bStatus.state || 'Unknown').toLowerCase();
+                        const aLocText = (aStatus.description || aStatus.state || 'Unknown').toLowerCase();
+                        const bLocText = (bStatus.description || bStatus.state || 'Unknown').toLowerCase();
+                        const aInHospital = aLocText.includes('hospital');
+                        const bInHospital = bLocText.includes('hospital');
+
+                        // If both in hospital, sort by hospital end time
+                        if (aInHospital && bInHospital) {
+                            aVal = aStatus.until || Number.MAX_SAFE_INTEGER;
+                            bVal = bStatus.until || Number.MAX_SAFE_INTEGER;
+                        } else if (aInHospital) {
+                            // Hospital players sort before non-hospital when ascending
+                            aVal = 0;
+                            bVal = 1;
+                        } else if (bInHospital) {
+                            aVal = 1;
+                            bVal = 0;
+                        } else {
+                            // Neither in hospital, sort alphabetically
+                            aVal = aLocText;
+                            bVal = bLocText;
+                        }
                         break;
                     case 'status':
                         aVal = a.last_action.status;
@@ -4812,7 +5083,7 @@
         // Column definitions for War Planning table
         const warPlanningColumnDefs = {
             name: { label: 'Name / 24h Activity', sortKey: 'name' },
-            est_stats: { label: 'Est. Stats', sortKey: 'est_stats' },
+            est_stats: { label: 'Stats', sortKey: 'est_stats' },
             level: { label: 'Level', sortKey: 'level' },
             age: { label: 'Age (days)', sortKey: 'age' },
             life: { label: 'Life', sortKey: 'life' },
@@ -4843,10 +5114,7 @@
                         </div>
                     </td>`;
                 case 'est_stats':
-                    return `<td class="est-stats">
-                        <span class="est-stats-value">${formatStatNumber(memberData.estStats.mid)}</span>
-                        <br><span style="font-size:10px;color:#999;">${formatStatNumber(memberData.estStats.low)} - ${formatStatNumber(memberData.estStats.high)}</span>
-                    </td>`;
+                    return `<td class="est-stats">${formatStatsWithTooltip(memberData.battleStats)}</td>`;
                 case 'level':
                     return `<td><span class="level-badge">${member.level || 'N/A'}</span></td>`;
                 case 'age':
@@ -4915,6 +5183,7 @@
                     overdosed: stats.overdosed || 'N/A',
                     refills: stats.energydrinkused || stats.refills || 'N/A',
                     estStats: estimateBattleStats(member),
+                    battleStats: getBattleStats(member),
                     statusIndicatorClass: member.last_action.status === 'Online' ? 'online' :
                                          member.last_action.status === 'Idle' ? 'idle' : 'offline',
                     locationText: 'Unknown',
@@ -4983,10 +5252,6 @@
 
             // Apply stored column widths to body cells
             applyWPColumnWidths();
-        }
-
-        function formatLastAction(relative) {
-            return relative || 'Unknown';
         }
 
         function formatTime(date) {
@@ -5071,6 +5336,8 @@
                     updateMainFactionInfoForSpy();
                     updateStatsSummaryForSpy();
                 }
+                // Refresh war history dropdown
+                populateWarHistoryDropdown();
             } else if (tabId === 'war-portal') {
                 // Show auto-refresh info on War Portal tab
                 if (autoRefreshInfo) autoRefreshInfo.style.display = 'block';
@@ -5150,6 +5417,11 @@
                         aVal = a.level || 0;
                         bVal = b.level || 0;
                         break;
+                    case 'est_stats':
+                        // Sort by total estimated/real stats
+                        aVal = getBattleStats(a).total || 0;
+                        bVal = getBattleStats(b).total || 0;
+                        break;
                     case 'str':
                         aVal = getBattleStats(a).strength || 0;
                         bVal = getBattleStats(b).strength || 0;
@@ -5217,7 +5489,6 @@
                 // Extract hospital time from status
                 if (userStatus.until) {
                     hospitalEndTime = userStatus.until * 1000; // Convert to milliseconds
-                    hospitalTimers[member.id] = hospitalEndTime;
                 }
             } else if (statusText.toLowerCase().includes('jail')) {
                 statusClass = 'status-jail';
@@ -5307,38 +5578,70 @@
         }
 
         // Get cell content for portal member row
-        // Helper to format individual stat cell
+        // Helper to format individual stat cell with optional age tooltip
         function formatStatCell(statValue, isReal, daysAgo) {
             if (statValue === null || statValue === undefined) {
                 return `<span class="est-value">-</span>`;
             }
             if (isReal) {
-                return `<span class="real-value">${formatStatNumber(statValue)}</span>`;
+                const ageText = daysAgo !== null && daysAgo !== undefined ? `Spy data: ${daysAgo} day${daysAgo !== 1 ? 's' : ''} old` : '';
+                return `<span class="real-value" title="${ageText}" style="cursor: ${ageText ? 'help' : 'default'};">${formatStatNumber(statValue)}</span>`;
             } else {
                 return `<span class="est-value">${formatStatNumber(statValue)}</span>`;
             }
         }
 
-        function getPortalCellContent(column, member, memberData) {
+        function getPortalCellContent(column, member, memberData, isEnemy = false) {
             const stats = memberData.estStats;
+            const hasRealStats = stats.isReal && stats.strength !== undefined;
             switch (column) {
                 case 'name':
+                    const attackLink = isEnemy ? `<a href="https://www.torn.com/loader.php?sid=attack&user2ID=${member.id}" target="_blank" class="attack-skull" title="Attack ${member.name}">💀</a>` : '';
                     return `<div class="portal-member-name" data-column="name">
                         <span class="status-indicator ${memberData.statusClass}"></span>
                         <a href="https://www.torn.com/profiles.php?XID=${member.id}" target="_blank">${member.name}</a>
+                        ${attackLink}
                     </div>`;
                 case 'level':
                     return `<div class="portal-member-level" data-column="level">
                         <span class="level-badge">Lv ${member.level || 'N/A'}</span>
                     </div>`;
+                case 'est_stats':
+                    // Show estimated stats only when we don't have real TornStats data
+                    if (hasRealStats) {
+                        return `<div class="portal-member-stats" data-column="est_stats"><span style="color: #999;">-</span></div>`;
+                    } else {
+                        const estTotal = stats.total || 0;
+                        const tooltip = `Estimated Total: ${formatStatNumber(estTotal)}`;
+                        return `<div class="portal-member-stats" data-column="est_stats">
+                            <span class="est-value" title="${tooltip}" style="cursor: help;">${formatStatNumber(estTotal)}</span>
+                        </div>`;
+                    }
                 case 'str':
-                    return `<div class="portal-member-stats" data-column="str">${formatStatCell(stats.strength, stats.isReal, stats.daysAgo)}</div>`;
+                    // Show real stats only when we have TornStats data
+                    if (hasRealStats) {
+                        return `<div class="portal-member-stats" data-column="str">${formatStatCell(stats.strength, true, stats.daysAgo)}</div>`;
+                    } else {
+                        return `<div class="portal-member-stats" data-column="str"><span style="color: #999;">-</span></div>`;
+                    }
                 case 'def':
-                    return `<div class="portal-member-stats" data-column="def">${formatStatCell(stats.defense, stats.isReal, stats.daysAgo)}</div>`;
+                    if (hasRealStats) {
+                        return `<div class="portal-member-stats" data-column="def">${formatStatCell(stats.defense, true, stats.daysAgo)}</div>`;
+                    } else {
+                        return `<div class="portal-member-stats" data-column="def"><span style="color: #999;">-</span></div>`;
+                    }
                 case 'spd':
-                    return `<div class="portal-member-stats" data-column="spd">${formatStatCell(stats.speed, stats.isReal, stats.daysAgo)}</div>`;
+                    if (hasRealStats) {
+                        return `<div class="portal-member-stats" data-column="spd">${formatStatCell(stats.speed, true, stats.daysAgo)}</div>`;
+                    } else {
+                        return `<div class="portal-member-stats" data-column="spd"><span style="color: #999;">-</span></div>`;
+                    }
                 case 'dex':
-                    return `<div class="portal-member-stats" data-column="dex">${formatStatCell(stats.dexterity, stats.isReal, stats.daysAgo)}</div>`;
+                    if (hasRealStats) {
+                        return `<div class="portal-member-stats" data-column="dex">${formatStatCell(stats.dexterity, true, stats.daysAgo)}</div>`;
+                    } else {
+                        return `<div class="portal-member-stats" data-column="dex"><span style="color: #999;">-</span></div>`;
+                    }
                 case 'life':
                     return `<div class="portal-member-life ${memberData.lifeClass}" data-column="life">${memberData.life}</div>`;
                 case 'status':
@@ -5397,7 +5700,7 @@
             const columnOrder = isEnemy ? enemyPortalColumnOrder : ownPortalColumnOrder;
 
             // Generate cells in column order
-            const cells = columnOrder.map(col => getPortalCellContent(col, member, memberData)).join('');
+            const cells = columnOrder.map(col => getPortalCellContent(col, member, memberData, isEnemy)).join('');
 
             return `<div class="portal-member-row" title="${tooltip}">${cells}</div>`;
         }
@@ -5526,7 +5829,6 @@
                                 <div><span style="opacity: 0.8;">Online:</span> <strong>${ownOnline}</strong></div>
                                 <div><span style="opacity: 0.8;">Idle:</span> <strong>${ownIdle}</strong></div>
                                 <div><span style="opacity: 0.8;">Offline:</span> <strong>${ownOffline}</strong></div>
-                                <div></div>
                             </div>
                             ${statsLegend}
                         </div>
@@ -5561,7 +5863,6 @@
                                 <div><span style="opacity: 0.8;">Online:</span> <strong>${enemyMembersData.length > 0 ? enemyOnline : 'N/A'}</strong></div>
                                 <div><span style="opacity: 0.8;">Idle:</span> <strong>${enemyMembersData.length > 0 ? enemyIdle : 'N/A'}</strong></div>
                                 <div><span style="opacity: 0.8;">Offline:</span> <strong>${enemyMembersData.length > 0 ? enemyOffline : 'N/A'}</strong></div>
-                                <div></div>
                             </div>
                             ${statsLegend}
                         </div>
