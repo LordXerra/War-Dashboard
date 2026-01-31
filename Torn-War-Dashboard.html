@@ -144,6 +144,31 @@
             100% { transform: rotate(360deg); }
         }
 
+        @keyframes flash {
+            0%, 100% { opacity: 1; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+            50% { opacity: 0.7; background: linear-gradient(135deg, #8b9cf7 0%, #9b6fc4 100%); }
+        }
+
+        .manual-link {
+            display: inline-block;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white !important;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            animation: flash 1.5s ease-in-out infinite;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .manual-link:hover {
+            animation: none;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.6);
+        }
+
         .error {
             background: #fee;
             color: #c33;
@@ -476,6 +501,134 @@
 
         .tab-content.active {
             display: block;
+        }
+
+        /* War Status Banner */
+        .war-status-banner {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .war-status-header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 12px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .war-status-header .faction-name {
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .war-status-header .faction-name.own {
+            color: #90EE90;
+        }
+
+        .war-status-header .faction-name.enemy {
+            color: #ffb3b3;
+        }
+
+        .war-status-header .vs-text {
+            color: #888;
+            font-size: 14px;
+        }
+
+        .war-status-scores {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .war-score-box {
+            flex: 0 0 auto;
+            text-align: center;
+            min-width: 100px;
+        }
+
+        .war-score-box .score {
+            font-size: 36px;
+            font-weight: bold;
+            line-height: 1;
+        }
+
+        .war-score-box .ok-count {
+            font-size: 12px;
+            margin-top: 5px;
+            opacity: 0.9;
+        }
+
+        .war-score-box.winning .score {
+            color: #90EE90;
+        }
+
+        .war-score-box.losing .score {
+            color: #ffb3b3;
+        }
+
+        .war-lead-target {
+            flex: 1;
+            text-align: center;
+            padding: 10px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+
+        .war-lead-target .label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #aaa;
+            margin-bottom: 5px;
+        }
+
+        .war-lead-target .target-info {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .war-lead-target .progress-bar {
+            height: 8px;
+            background: #333;
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .war-lead-target .progress-bar .own-progress {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.3s ease;
+        }
+
+        .war-lead-target .progress-bar .enemy-progress {
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100%;
+            background: linear-gradient(90deg, #a71d2a, #dc3545);
+            transition: width 0.3s ease;
+        }
+
+        .war-lead-target .war-timer {
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 8px;
+            color: #ffc107;
         }
 
         /* War Portal Two-Faction Layout */
@@ -936,7 +1089,10 @@
         <div class="header">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
                 <h1 style="font-size: 1.4em; margin: 0;">Torn Ranked War Dashboard by <a href="https://www.torn.com/profiles.php?XID=2775419" target="_blank" style="color: #667eea; text-decoration: none;">Xerra [2775419]</a> with thanks to <a href="https://www.torn.com/profiles.php?XID=2863072" target="_blank" style="color: #667eea; text-decoration: none;">NestFreemark [2863072]</a> and <a href="https://www.torn.com/profiles.php?XID=2935003" target="_blank" style="color: #667eea; text-decoration: none;">Pickaxe1977 [2935003]</a></h1>
-                <span style="font-size: 12px; color: #666; white-space: nowrap; margin-left: 15px;">V0.19 - 27/01/2026</span>
+                <span style="font-size: 12px; color: #666; white-space: nowrap; margin-left: 15px;">V0.20 - 31/01/2026</span>
+            </div>
+            <div style="margin-bottom: 12px;">
+                <a href="manual.html" target="_blank" class="manual-link">📖 User Manual - Click Here for Help</a>
             </div>
             <div class="api-input-group" style="display: flex; justify-content: space-between; align-items: flex-end;">
                 <div style="display: flex; gap: 10px; align-items: flex-end;">
@@ -985,7 +1141,7 @@
 
     <script>
         // Current version - update this when releasing new versions that require data reset
-        const CURRENT_VERSION = '0.19';
+        const CURRENT_VERSION = '0.20';
 
         // Current user data (API key owner)
         let currentUserId = null;
@@ -996,6 +1152,63 @@
         let enemyMembersData = [];
         let spyFactionData = null;
         let spyMembersData = [];
+
+        // War scores for the current ranked war
+        let currentWarScores = {
+            ownScore: null,
+            enemyScore: null,
+            isActiveWar: false,
+            target: null,          // Lead target score needed to win (user-entered, not from API)
+            ownName: null,         // Own faction name
+            enemyName: null,       // Enemy faction name
+            ownChain: null,        // Own faction chain
+            enemyChain: null,      // Enemy faction chain
+            warStart: null,        // War start timestamp
+            warEnd: null           // War end timestamp (when it will end if no more hits)
+        };
+
+        // Calculate when the war will end based on target decay
+        // Target decays 1% per hour after the first 24 hours
+        // War ends when target decays to current lead
+        function calculateWarEndTime() {
+            if (!currentWarScores.isActiveWar || !currentWarScores.warStart || !currentWarScores.target) {
+                return null;
+            }
+
+            const now = Math.floor(Date.now() / 1000);
+            const warStart = currentWarScores.warStart;
+            const hoursElapsed = (now - warStart) / 3600;
+            const lead = Math.abs(currentWarScores.ownScore - currentWarScores.enemyScore);
+            const originalTarget = currentWarScores.target;
+
+            // If lead already meets or exceeds target, war could end soon
+            if (lead >= originalTarget) {
+                return now; // Already winning
+            }
+
+            // Calculate current target (with decay if past 24 hours)
+            let currentTarget = originalTarget;
+            if (hoursElapsed > 24) {
+                const decayHours = hoursElapsed - 24;
+                const decayPercent = Math.min(decayHours, 99);
+                currentTarget = originalTarget * (1 - decayPercent / 100);
+            }
+
+            // If current lead already meets decayed target
+            if (lead >= currentTarget) {
+                return now;
+            }
+
+            // Calculate how many more hours of decay needed for target to reach current lead
+            // After 24 hours: target = original * (1 - (hours_past_24 / 100))
+            // We need: lead = original * (1 - (hours_past_24 / 100))
+            // So: hours_past_24 = 100 * (1 - lead/original)
+            const hoursOfDecayNeeded = 100 * (1 - lead / originalTarget);
+            const totalHoursToEnd = 24 + hoursOfDecayNeeded;
+            const endTime = warStart + (totalHoursToEnd * 3600);
+
+            return Math.floor(endTime);
+        }
 
         // Save enemy faction data to localStorage
         function saveEnemyFactionData() {
@@ -2993,6 +3206,10 @@
                         for (const fId in war.factions) {
                             if (fId != myFactionId) {
                                 enemyFactionId = fId;
+                                // Capture war scores
+                                currentWarScores.ownScore = war.factions[myFactionId]?.score || 0;
+                                currentWarScores.enemyScore = war.factions[fId]?.score || 0;
+                                currentWarScores.isActiveWar = true;
                                 break;
                             }
                         }
@@ -3001,6 +3218,7 @@
                 }
 
                 if (!enemyFactionId) {
+                    currentWarScores.isActiveWar = false;
                     throw new Error('NO_RANKED_WAR');
                 }
 
@@ -3991,6 +4209,7 @@
             loadActivityHistory();
             loadColumnWidths();
             loadPortalColumnOrder();
+            loadPortalSortState();
             loadWarPlanningColumnOrder();
             loadWPColumnWidths();
             loadSpyFactionColumnOrder();
@@ -4392,9 +4611,67 @@
             startUnifiedAutoRefresh();
         }
 
+        // Refresh war scores from the API
+        async function refreshWarScores(apiKey) {
+            try {
+                const myFactionId = localStorage.getItem('tornUserFactionId');
+                if (!myFactionId) return;
+
+                const factionResponse = await fetch(`https://api.torn.com/faction/${myFactionId}?selections=rankedwars&key=${apiKey}`);
+                const factionRWData = await factionResponse.json();
+
+                if (factionRWData.error) return;
+
+                const rankedWars = factionRWData.rankedwars || {};
+                const now = Math.floor(Date.now() / 1000);
+                const sortedWarIds = Object.keys(rankedWars).sort((a, b) => parseInt(b) - parseInt(a));
+
+                for (const warId of sortedWarIds) {
+                    const rankedWar = rankedWars[warId];
+                    // The war details are in rankedWar.war, factions in rankedWar.factions
+                    const warInfo = rankedWar.war || {};
+                    const hasEnded = warInfo.end && warInfo.end > 0 && warInfo.end < now;
+
+                    if (!hasEnded && rankedWar.factions) {
+                        // Find the enemy faction in this war
+                        for (const fId in rankedWar.factions) {
+                            if (fId != myFactionId) {
+                                const ownFaction = rankedWar.factions[myFactionId];
+                                const enemyFaction = rankedWar.factions[fId];
+
+                                currentWarScores.ownScore = ownFaction?.score || 0;
+                                currentWarScores.enemyScore = enemyFaction?.score || 0;
+                                currentWarScores.isActiveWar = true;
+                                currentWarScores.ownName = ownFaction?.name || 'Your Faction';
+                                currentWarScores.enemyName = enemyFaction?.name || 'Enemy Faction';
+                                currentWarScores.ownChain = ownFaction?.chain || 0;
+                                currentWarScores.enemyChain = enemyFaction?.chain || 0;
+
+                                // Get war timing and target from the nested war object
+                                currentWarScores.warStart = warInfo.start || null;
+                                currentWarScores.target = warInfo.target || 0;
+                                currentWarScores.warEnd = warInfo.end || null;
+
+                                console.log('Full ranked war data:', rankedWar);
+                                console.log('War info:', warInfo);
+                                console.log('War scores updated:', currentWarScores);
+                                return;
+                            }
+                        }
+                    }
+                }
+                currentWarScores.isActiveWar = false;
+            } catch (error) {
+                console.error('Error refreshing war scores:', error);
+            }
+        }
+
         async function doLightweightRefresh(apiKey) {
             // This function refreshes War Portal data specifically
             try {
+                // Refresh war scores first
+                await refreshWarScores(apiKey);
+
                 // Get user faction ID
                 const userFactionId = localStorage.getItem('tornUserFactionId');
                 const enemyFactionId = localStorage.getItem('tornEnemyFactionId');
@@ -5347,13 +5624,18 @@
                 updateMainFactionInfoForWarPortal();
                 updateStatsSummaryForWarPortal();
                 // Auto-load enemy faction if not loaded, or validate existing
+                const apiKey = document.getElementById('apiKey').value.trim();
                 if (enemyMembersData.length === 0) {
                     autoLoadEnemyFaction();
                 } else {
                     validateEnemyFaction();
+                    // Ensure auto-refresh is running when switching to War Portal with existing data
+                    if (apiKey) {
+                        startUnifiedAutoRefresh();
+                    }
                 }
             } else {
-                // Show auto-refresh info on other tabs
+                // Show auto-refresh info on other tabs (including My Faction)
                 if (autoRefreshInfo) autoRefreshInfo.style.display = 'block';
                 // Restore user's faction info when switching away from faction-spying or war-portal
                 if (currentTab === 'faction-spying' || currentTab === 'war-portal') {
@@ -5361,6 +5643,13 @@
                     restoreStatsSummaryForUser();
                     if (membersOverviewTitle && factionData) {
                         membersOverviewTitle.textContent = `Members Overview: ${factionData.name || 'Unknown Faction'}`;
+                    }
+                }
+                // Ensure auto-refresh is running when switching to My Faction tab
+                if (tabId === 'my-faction') {
+                    const apiKey = document.getElementById('apiKey').value.trim();
+                    if (apiKey) {
+                        startUnifiedAutoRefresh();
                     }
                 }
             }
@@ -5392,6 +5681,9 @@
                     enemyPortalSortColumn = column;
                     enemyPortalSortDirection = 'asc';
                 }
+                // Save enemy sort state
+                localStorage.setItem('tornEnemyPortalSortColumn', enemyPortalSortColumn);
+                localStorage.setItem('tornEnemyPortalSortDirection', enemyPortalSortDirection);
             } else {
                 if (ownPortalSortColumn === column) {
                     ownPortalSortDirection = ownPortalSortDirection === 'asc' ? 'desc' : 'asc';
@@ -5399,8 +5691,24 @@
                     ownPortalSortColumn = column;
                     ownPortalSortDirection = 'asc';
                 }
+                // Save own sort state
+                localStorage.setItem('tornOwnPortalSortColumn', ownPortalSortColumn);
+                localStorage.setItem('tornOwnPortalSortDirection', ownPortalSortDirection);
             }
             renderWarPortal();
+        }
+
+        // Load portal sort state from localStorage
+        function loadPortalSortState() {
+            const savedOwnCol = localStorage.getItem('tornOwnPortalSortColumn');
+            const savedOwnDir = localStorage.getItem('tornOwnPortalSortDirection');
+            const savedEnemyCol = localStorage.getItem('tornEnemyPortalSortColumn');
+            const savedEnemyDir = localStorage.getItem('tornEnemyPortalSortDirection');
+
+            if (savedOwnCol) ownPortalSortColumn = savedOwnCol;
+            if (savedOwnDir) ownPortalSortDirection = savedOwnDir;
+            if (savedEnemyCol) enemyPortalSortColumn = savedEnemyCol;
+            if (savedEnemyDir) enemyPortalSortDirection = savedEnemyDir;
         }
 
         // Get sorted members for portal
@@ -5567,6 +5875,26 @@
                     }
                 }
             });
+
+            // Update war end timer - recalculate based on current lead vs decaying target
+            const warTimerEl = document.getElementById('warEndTimer');
+            if (warTimerEl && currentWarScores.isActiveWar && currentWarScores.target > 0) {
+                const calculatedEndTime = calculateWarEndTime();
+                if (calculatedEndTime && calculatedEndTime > 0) {
+                    const now = Math.floor(Date.now() / 1000);
+                    const remaining = calculatedEndTime - now;
+                    if (remaining <= 0) {
+                        warTimerEl.textContent = '00:00:00';
+                    } else {
+                        const hours = Math.floor(remaining / 3600);
+                        const minutes = Math.floor((remaining % 3600) / 60);
+                        const seconds = remaining % 60;
+                        warTimerEl.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                    }
+                    // Update the data attribute too
+                    warTimerEl.dataset.endTime = calculatedEndTime;
+                }
+            }
         }
 
         // Start hospital timer interval
@@ -5805,7 +6133,95 @@
             const enemyTotalLevel = enemyMembersData.reduce((sum, m) => sum + (m.level || 0), 0);
             const enemyAvgLevel = enemyMembersData.length > 0 ? Math.round(enemyTotalLevel / enemyMembersData.length) : 0;
 
+            // Calculate OK counts (members not in hospital, jail, or traveling)
+            const getOkCount = (members) => {
+                return members.filter(m => {
+                    const statusInfo = getMemberStatusInfo(m);
+                    return statusInfo.statusClass === 'status-ok';
+                }).length;
+            };
+            const ownOkCount = getOkCount(ownMembers);
+            const enemyOkCount = getOkCount(enemyMembersData);
+
+            // Build war status banner HTML
+            const warStatusBannerHtml = currentWarScores.isActiveWar ? (() => {
+                const ownWinning = currentWarScores.ownScore >= currentWarScores.enemyScore;
+                const enemyWinning = currentWarScores.enemyScore > currentWarScores.ownScore;
+                const target = currentWarScores.target || 0;
+                const lead = Math.abs(currentWarScores.ownScore - currentWarScores.enemyScore);
+
+                // Calculate progress percentages for the progress bar based on lead vs target
+                let leadProgressPct = 0;
+                if (target > 0) {
+                    leadProgressPct = Math.min((lead / target) * 100, 100);
+                }
+
+                // Calculate war end time based on target decay
+                const calculatedWarEnd = calculateWarEndTime();
+
+                // Format war end timer countdown
+                const formatWarTimer = (endTimestamp) => {
+                    if (!endTimestamp || endTimestamp === 0) return '--:--:--';
+                    const now = Math.floor(Date.now() / 1000);
+                    const remaining = endTimestamp - now;
+                    if (remaining <= 0) return '00:00:00';
+                    const hours = Math.floor(remaining / 3600);
+                    const minutes = Math.floor((remaining % 3600) / 60);
+                    const seconds = remaining % 60;
+                    return hours.toString().padStart(2, '0') + ':' + minutes.toString().padStart(2, '0') + ':' + seconds.toString().padStart(2, '0');
+                };
+
+                // Format war end time in local timezone
+                const formatWarEndTime = (endTimestamp) => {
+                    if (!endTimestamp || endTimestamp === 0) return '';
+                    const endDate = new Date(endTimestamp * 1000);
+                    return endDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }) + ' on ' + endDate.toLocaleDateString([], { month: 'short', day: 'numeric' });
+                };
+
+                const warEndTimeStr = formatWarEndTime(calculatedWarEnd);
+                const warTimerStr = formatWarTimer(calculatedWarEnd);
+
+                // Calculate current target with decay
+                const getCurrentTarget = () => {
+                    if (!currentWarScores.warStart || !target) return target;
+                    const now = Math.floor(Date.now() / 1000);
+                    const hoursElapsed = (now - currentWarScores.warStart) / 3600;
+                    if (hoursElapsed <= 24) return target;
+                    const decayPercent = Math.min(hoursElapsed - 24, 99);
+                    return Math.floor(target * (1 - decayPercent / 100));
+                };
+                const currentTarget = getCurrentTarget();
+
+                return `
+                    <div class="war-status-banner">
+                        <div class="war-status-header">
+                            <span class="faction-name own">${currentWarScores.ownName || ownFactionName}</span>
+                            <span class="vs-text">vs</span>
+                            <span class="faction-name enemy">${currentWarScores.enemyName || enemyFactionName}</span>
+                        </div>
+                        <div class="war-status-scores">
+                            <div class="war-score-box ${ownWinning ? 'winning' : 'losing'}">
+                                <div class="score">${currentWarScores.ownScore.toLocaleString()}</div>
+                                <div class="ok-count">⊙ ${ownOkCount} / ${ownMembers.length}</div>
+                            </div>
+                            <div class="war-lead-target">
+                                <div class="label">Lead Target${target > 0 && currentTarget !== target ? ' (decayed)' : ''}</div>
+                                <div class="target-info">${lead.toLocaleString()} / ${target > 0 ? currentTarget.toLocaleString() : '---'}</div>
+                                <div class="progress-bar"><div class="own-progress" style="width: ${leadProgressPct}%; background: linear-gradient(90deg, ${ownWinning ? '#667eea, #764ba2' : '#dc3545, #a71d2a'});"></div></div>
+                                <div class="war-timer" id="warEndTimer" data-end-time="${calculatedWarEnd || 0}">${warTimerStr}</div>
+                                ${warEndTimeStr ? '<div class="war-end-time" style="font-size: 11px; color: #aaa; margin-top: 2px;">Ends at ' + warEndTimeStr + '</div>' : ''}
+                            </div>
+                            <div class="war-score-box ${enemyWinning ? 'winning' : 'losing'}">
+                                <div class="score">${currentWarScores.enemyScore.toLocaleString()}</div>
+                                <div class="ok-count">⊙ ${enemyOkCount} / ${enemyMembersData.length}</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            })() : '';
+
             container.innerHTML = `
+                ${warStatusBannerHtml}
                 <div class="war-portal-container">
                     <!-- Your Faction Column -->
                     <div class="faction-column">

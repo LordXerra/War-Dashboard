@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Torn War Dashboard - User Manual</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .manual-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .manual-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 40px;
+            text-align: center;
+        }
+
+        .manual-header h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+        }
+
+        .manual-header .version {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .manual-header .back-link {
+            margin-top: 15px;
+        }
+
+        .manual-header .back-link a {
+            color: white;
+            text-decoration: none;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 20px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            transition: background 0.3s;
+        }
+
+        .manual-header .back-link a:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .manual-content {
+            padding: 40px;
+        }
+
+        .toc {
+            background: #f8f9fa;
+            padding: 25px 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .toc h2 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .toc ul {
+            list-style: none;
+            columns: 2;
+            column-gap: 30px;
+        }
+
+        .toc li {
+            margin-bottom: 8px;
+        }
+
+        .toc a {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 0.95em;
+        }
+
+        .toc a:hover {
+            text-decoration: underline;
+        }
+
+        h2 {
+            color: #333;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        h3 {
+            color: #555;
+            margin-top: 25px;
+            margin-bottom: 12px;
+            font-size: 1.2em;
+        }
+
+        p {
+            color: #444;
+            margin-bottom: 15px;
+        }
+
+        ul, ol {
+            margin-left: 25px;
+            margin-bottom: 15px;
+            color: #444;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .feature-box {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .feature-box h4 {
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .tip-box {
+            background: #e8f5e9;
+            border-left: 4px solid #28a745;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .tip-box::before {
+            content: "💡 Tip: ";
+            font-weight: bold;
+            color: #28a745;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning-box::before {
+            content: "⚠️ Note: ";
+            font-weight: bold;
+            color: #856404;
+        }
+
+        .stats-legend {
+            display: inline-flex;
+            gap: 20px;
+            margin: 15px 0;
+        }
+
+        .stat-green {
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .stat-blue {
+            color: #1976d2;
+            font-weight: bold;
+        }
+
+        code {
+            background: #f1f1f1;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background: #667eea;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        .column-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .column-item {
+            background: #f8f9fa;
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-size: 0.9em;
+        }
+
+        .footer {
+            background: #f8f9fa;
+            padding: 25px 40px;
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+            border-top: 1px solid #eee;
+        }
+
+        .footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .manual-container {
+                box-shadow: none;
+            }
+            .manual-header {
+                background: #333;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .back-link {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .toc ul {
+                columns: 1;
+            }
+            .manual-content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="manual-container">
+        <div class="manual-header">
+            <h1>Torn War Dashboard</h1>
+            <div class="version">User Manual - Version 0.20</div>
+            <div class="back-link">
+                <a href="Torn-War-Dashboard.html">← Back to Dashboard</a>
+            </div>
+        </div>
+
+        <div class="manual-content">
+            <div class="toc">
+                <h2>Table of Contents</h2>
+                <ul>
+                    <li><a href="#getting-started">1. Getting Started</a></li>
+                    <li><a href="#api-setup">2. API Key Setup</a></li>
+                    <li><a href="#my-faction">3. My Faction Tab</a></li>
+                    <li><a href="#faction-spying">4. Faction Spying Tab</a></li>
+                    <li><a href="#war-portal">5. War Portal Tab</a></li>
+                    <li><a href="#columns">6. Understanding Columns</a></li>
+                    <li><a href="#customization">7. Customization</a></li>
+                    <li><a href="#tornstats">8. TornStats Integration</a></li>
+                    <li><a href="#data-storage">9. Data Storage</a></li>
+                    <li><a href="#troubleshooting">10. Troubleshooting</a></li>
+                </ul>
+            </div>
+
+            <h2 id="getting-started">1. Getting Started</h2>
+            <p>The Torn War Dashboard is a browser-based tool designed to help faction leaders and members manage ranked wars effectively. It provides real-time information about your faction and enemy factions, helping you make strategic decisions during warfare.</p>
+
+            <div class="feature-box">
+                <h4>Key Features</h4>
+                <ul>
+                    <li>Real-time faction member status monitoring</li>
+                    <li>Side-by-side war comparison view</li>
+                    <li>Battle stats tracking with TornStats integration</li>
+                    <li>24-hour activity history visualization</li>
+                    <li>Customizable columns and layouts</li>
+                    <li>Auto-refresh functionality</li>
+                </ul>
+            </div>
+
+            <h2 id="api-setup">2. API Key Setup</h2>
+
+            <h3>Torn API Key (Required)</h3>
+            <p>To use the dashboard, you need a Torn API key. This is how the dashboard fetches your faction data.</p>
+            <ol>
+                <li>Go to <a href="https://www.torn.com/preferences.php#tab=api" target="_blank">Torn Preferences → API Key</a></li>
+                <li>Create a new API key (a basic key is sufficient)</li>
+                <li>Copy the key and paste it into the "Torn API Key" field</li>
+                <li>Click "Get Faction" to load your data</li>
+            </ol>
+
+            <div class="tip-box">
+                Your API key is stored locally in your browser and is only sent to Torn's official API servers. It is never shared with any third parties.
+            </div>
+
+            <h3>TornStats API Key (Optional)</h3>
+            <p>For enhanced battle stats tracking, you can add your TornStats API key:</p>
+            <ol>
+                <li>Go to <a href="https://www.tornstats.com/settings" target="_blank">TornStats Settings</a></li>
+                <li>Copy your API key</li>
+                <li>Paste it into the "TornStats API Key" field</li>
+            </ol>
+            <p>With TornStats integration, you'll see real spied battle stats when available, displayed in <span class="stat-green">green</span>.</p>
+
+            <h2 id="my-faction">3. My Faction Tab</h2>
+            <p>The My Faction tab displays information about your own faction members. This is the default view when you first load the dashboard.</p>
+
+            <h3>Faction Overview</h3>
+            <p>At the top of the tab, you'll see summary information including:</p>
+            <ul>
+                <li><strong>Faction Name & ID</strong> - Your faction's name and 5-digit ID</li>
+                <li><strong>Leader</strong> - Clickable link to the faction leader's profile</li>
+                <li><strong>Members</strong> - Total member count</li>
+                <li><strong>Respect</strong> - Total faction respect</li>
+                <li><strong>Age</strong> - Days since faction was founded</li>
+            </ul>
+
+            <h3>Stats Summary Cards</h3>
+            <p>Quick-glance statistics about your faction:</p>
+            <ul>
+                <li><strong>Online</strong> - Members currently online (green indicator)</li>
+                <li><strong>Idle</strong> - Members idle but in-game (yellow indicator)</li>
+                <li><strong>Offline</strong> - Members currently offline (red indicator)</li>
+                <li><strong>Avg Level</strong> - Average level of all members</li>
+            </ul>
+
+            <h3>Member Table</h3>
+            <p>The main table shows detailed information about each faction member. See the <a href="#columns">Understanding Columns</a> section for details on each column.</p>
+
+            <h3>Auto-Refresh</h3>
+            <p>Use the dropdown selector to set automatic refresh intervals: 5s, 10s, 15s, or 30s. The "Last updated" timestamp shows when data was last fetched.</p>
+
+            <h2 id="faction-spying">4. Faction Spying Tab</h2>
+            <p>The Faction Spying tab allows you to look up any faction by ID and view their member details.</p>
+
+            <h3>Loading a Faction</h3>
+            <ol>
+                <li>Enter the faction ID in the input field, OR</li>
+                <li>Select from "Recent War Opponents" dropdown (auto-populated from your ranked war history)</li>
+                <li>Click "Load Faction"</li>
+            </ol>
+
+            <h3>Enemy Information</h3>
+            <p>Once loaded, you'll see the same information as the My Faction tab, but for the spied faction. This is useful for pre-war intelligence gathering.</p>
+
+            <div class="tip-box">
+                The Recent War Opponents dropdown automatically populates with factions you've faced in ranked wars, making it easy to revisit previous opponents.
+            </div>
+
+            <h2 id="war-portal">5. War Portal Tab</h2>
+            <p>The War Portal is the primary view for active ranked war management. It displays both factions side-by-side for easy comparison.</p>
+
+            <h3>Layout</h3>
+            <ul>
+                <li><strong>Left Column</strong> - Your faction's data</li>
+                <li><strong>Right Column</strong> - Enemy faction's data</li>
+            </ul>
+
+            <h3>Controls</h3>
+            <ul>
+                <li><strong>Check Status</strong> - Quick update of member online/offline status (low API usage)</li>
+                <li><strong>Force Update</strong> - Complete data refresh including TornStats scans (higher API usage)</li>
+            </ul>
+
+            <h3>Attack Links</h3>
+            <p>On the enemy faction side, each member has a skull icon (💀) that links directly to their attack page in Torn.</p>
+
+            <h3>Hospital Timers</h3>
+            <p>Members in hospital show real-time countdown timers that update every second, helping you track when targets become available.</p>
+
+            <h3>War Status Banner</h3>
+            <p>During an active ranked war, a prominent status banner appears at the top of the War Portal showing:</p>
+            <ul>
+                <li><strong>Faction Names</strong> - Both faction names displayed with "vs" between them</li>
+                <li><strong>War Scores</strong> - Large score display for each faction. The winning faction's score is shown in <span style="color: #28a745; font-weight: bold;">green</span>, while the losing faction's is shown in <span style="color: #dc3545; font-weight: bold;">red</span></li>
+                <li><strong>OK Counts</strong> - Shows how many members are "OK" (not in hospital/jail/traveling) vs total members for each faction</li>
+                <li><strong>Lead Target</strong> - Shows the current lead and the target score needed to win, with a visual progress bar</li>
+                <li><strong>War Timer</strong> - Countdown showing when the war will end if no more hits are made (updates in real-time)</li>
+            </ul>
+
+            <div class="warning-box">
+                The War Portal automatically detects your current ranked war opponent. If you're not in an active ranked war, you'll need to manually load an enemy faction from the Faction Spying tab first.
+            </div>
+
+            <h2 id="columns">6. Understanding Columns</h2>
+            <p>The member tables display various data columns. Here's what each one means:</p>
+
+            <table>
+                <tr>
+                    <th>Column</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><strong>Name</strong></td>
+                    <td>Member name with status indicator and 24-hour activity grid</td>
+                </tr>
+                <tr>
+                    <td><strong>Stats</strong></td>
+                    <td>Total battle stats (sum of strength, defense, speed, dexterity)</td>
+                </tr>
+                <tr>
+                    <td><strong>Level</strong></td>
+                    <td>Player level (displayed as badge)</td>
+                </tr>
+                <tr>
+                    <td><strong>Age</strong></td>
+                    <td>Days since the player's account was created</td>
+                </tr>
+                <tr>
+                    <td><strong>Life</strong></td>
+                    <td>Current / Maximum life points</td>
+                </tr>
+                <tr>
+                    <td><strong>ELO</strong></td>
+                    <td>Ranked war ELO rating</td>
+                </tr>
+                <tr>
+                    <td><strong>Best DMG</strong></td>
+                    <td>Highest single damage dealt in an attack</td>
+                </tr>
+                <tr>
+                    <td><strong>Crit %</strong></td>
+                    <td>Critical hit percentage rate</td>
+                </tr>
+                <tr>
+                    <td><strong>RW Hits</strong></td>
+                    <td>Total ranked war attacks made</td>
+                </tr>
+                <tr>
+                    <td><strong>Xanax</strong></td>
+                    <td>Number of xanax consumed (stat indicator)</td>
+                </tr>
+                <tr>
+                    <td><strong>Vicodin</strong></td>
+                    <td>Number of vicodin consumed</td>
+                </tr>
+                <tr>
+                    <td><strong>OD</strong></td>
+                    <td>Number of drug overdoses</td>
+                </tr>
+                <tr>
+                    <td><strong>Refills</strong></td>
+                    <td>Energy drink refills used</td>
+                </tr>
+                <tr>
+                    <td><strong>Location</strong></td>
+                    <td>Current status (Hospital with timer, Traveling, Jail, etc.)</td>
+                </tr>
+            </table>
+
+            <h3>Activity Grid</h3>
+            <p>The 24-hour activity grid in the Name column shows a visual representation of when a member was online or offline over the past 24 hours. This helps identify activity patterns.</p>
+
+            <h2 id="customization">7. Customization</h2>
+
+            <h3>Column Reordering</h3>
+            <p>Click and drag any column header to reorder the columns. Your custom order is saved and persists between sessions.</p>
+
+            <h3>Column Resizing</h3>
+            <p>Hover over the border between column headers to see a resize handle. Click and drag to adjust column widths.</p>
+
+            <h3>Filtering & Searching</h3>
+            <ul>
+                <li><strong>Search Bar</strong> - Type to filter members by name</li>
+                <li><strong>Status Filter</strong> - Filter by Online, Idle, or Offline</li>
+                <li><strong>Location Filter</strong> - Filter by Hospital, Traveling, Jail, etc.</li>
+                <li><strong>Position Filter</strong> - Filter by faction position</li>
+            </ul>
+
+            <h3>Sorting</h3>
+            <p>Click any column header to sort by that column. Click again to toggle between ascending and descending order.</p>
+
+            <h2 id="tornstats">8. TornStats Integration</h2>
+            <p>When you add a TornStats API key, the dashboard can display real spied battle stats instead of estimates.</p>
+
+            <h3>Stats Color Legend</h3>
+            <div class="stats-legend">
+                <span><span class="stat-green">Green stats</span> = Real spied data from TornStats</span>
+                <span><span class="stat-blue">Blue stats</span> = Estimated based on xanax usage</span>
+            </div>
+
+            <h3>How Estimates Work</h3>
+            <p>When real spy data isn't available, the dashboard estimates total battle stats based on xanax consumption. This is based on community research suggesting a correlation between xanax usage and total stats. While not exact, it provides a rough indicator of a player's strength.</p>
+
+            <div class="warning-box">
+                Estimated stats are approximations only. Real spied stats from TornStats are always more accurate when available.
+            </div>
+
+            <h2 id="data-storage">9. Data Storage</h2>
+            <p>All data is stored locally in your browser using localStorage. Nothing is sent to external servers except API calls to Torn and TornStats.</p>
+
+            <h3>What's Stored</h3>
+            <ul>
+                <li>API keys (Torn and TornStats)</li>
+                <li>Faction data and member information</li>
+                <li>Column order and width preferences</li>
+                <li>Activity history</li>
+                <li>TornStats cache (with timestamps)</li>
+                <li>Ranked war history</li>
+            </ul>
+
+            <h3>Clearing Data</h3>
+            <p>Click the "Reset Data" button in the header to clear all cached data. Your API keys will be preserved.</p>
+
+            <div class="tip-box">
+                If you're experiencing issues, try the Reset Data button first before re-entering your API keys.
+            </div>
+
+            <h2 id="troubleshooting">10. Troubleshooting</h2>
+
+            <h3>Common Issues</h3>
+
+            <div class="feature-box">
+                <h4>"N/A" showing for some stats</h4>
+                <p>This occurs when:</p>
+                <ul>
+                    <li>The player hasn't set those stats yet</li>
+                    <li>The player's privacy settings restrict access</li>
+                    <li>The data hasn't been fetched yet</li>
+                </ul>
+            </div>
+
+            <div class="feature-box">
+                <h4>Data not loading</h4>
+                <p>Check that:</p>
+                <ul>
+                    <li>Your API key is correct and not expired</li>
+                    <li>You have internet connectivity</li>
+                    <li>Torn's API is not down for maintenance</li>
+                </ul>
+            </div>
+
+            <div class="feature-box">
+                <h4>Enemy faction not showing in War Portal</h4>
+                <p>This can happen if:</p>
+                <ul>
+                    <li>You're not in an active ranked war</li>
+                    <li>The war just started and data hasn't synced</li>
+                </ul>
+                <p>Solution: Load the enemy faction manually from the Faction Spying tab first.</p>
+            </div>
+
+            <h3>Debug Console</h3>
+            <p>For detailed troubleshooting, open your browser's developer console (press F12) to see API response information and any error messages.</p>
+
+            <h3>Getting Help</h3>
+            <p>For bug reports or feature requests, visit the <a href="https://github.com/LordXerra/War-Dashboard" target="_blank">GitHub repository</a>.</p>
+        </div>
+
+        <div class="footer">
+            <p>
+                Torn War Dashboard by <a href="https://www.torn.com/profiles.php?XID=2775419" target="_blank">Xerra [2775419]</a><br>
+                with thanks to <a href="https://www.torn.com/profiles.php?XID=2863072" target="_blank">NestFreemark [2863072]</a>
+                and <a href="https://www.torn.com/profiles.php?XID=2935003" target="_blank">Pickaxe1977 [2935003]</a>
+            </p>
+            <p style="margin-top: 10px;">
+                <a href="https://lordxerra.github.io/War-Dashboard/Torn-War-Dashboard.html" target="_blank">GitHub Pages</a> |
+                <a href="https://github.com/LordXerra/War-Dashboard" target="_blank">Source Code</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
